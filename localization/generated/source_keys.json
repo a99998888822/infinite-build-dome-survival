@@ -1248,6 +1248,7 @@
   "右列为基础天赋点": "ui.settlement.base_conversion_hint",
   "本次获得天赋点": "ui.settlement.camp_coins_earned",
   "天赋点结算": "ui.settlement.camp_title",
+  "基础 %s ×%d%% + 阵亡补偿 %s = %s": "ui.settlement.conversion_compensation",
   "右列为各项折算的天赋点": "ui.settlement.conversion_hint",
   "这么快就回来了？下次记得先保住小命！": "ui.settlement.death_no_advice",
   "结束本次冒险，按失败奖励的50%结算天赋点（向下取整）。": "ui.settlement.retreat_hint",

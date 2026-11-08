@@ -1,9 +1,8 @@
 extends RefCounted
 ## Terminal ground dimensions, shared by collision and presentation.
 const ATTACK = preload("res://scripts/battle/attack_footprint.gd")
+## Every spell footprint lies on the battlefield ground plane; one tilt for all.
 const GROUND_FLATTEN := ATTACK.ELLIPSE_RATIO
-const WATER_FLATTEN := 0.66
-const ICE_FLATTEN := 0.55
 const WIND_RADIUS := 72.0
 static var _shapes: Dictionary = {}
 

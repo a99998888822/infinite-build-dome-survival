@@ -44,7 +44,7 @@ func _ready() -> void:
 	_inspect.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	_inspect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	_inspect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	_inspect.mouse_filter = Control.MOUSE_FILTER_STOP
+	_inspect.mouse_filter = Control.MOUSE_FILTER_IGNORE if MobileProfile.is_mobile() else Control.MOUSE_FILTER_STOP
 	_inspect.mouse_default_cursor_shape = Control.CURSOR_HELP
 	body.add_child(_inspect)
 	_inspect.mouse_entered.connect(func():

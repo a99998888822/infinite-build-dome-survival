@@ -101,7 +101,7 @@ func _capture_dash_boundary(weapon: WeaponInstance) -> void:
 	boundary.default_color = Color("f5c968")
 	boundary.z_index = 90
 	for index in 129:
-		boundary.add_point(Vector2.from_angle(TAU * float(index) / 128.0) * weapon.get_hit_radius())
+		boundary.add_point(AttackFootprint.project(Vector2.from_angle(TAU * float(index) / 128.0) * weapon.get_hit_radius()))
 	player.get_parent().add_child(boundary)
 	boundary.global_position = player.global_position
 	await capture("dash_slash_hit_boundary")
@@ -301,6 +301,9 @@ func _run() -> void:
 	battle.active_controller.select_slot(0)
 	battle.active_controller.indicator.configure(blade, Vector2(140,0))
 	battle.active_controller.indicator.show()
+	var landing_axes: Vector2 = battle.active_controller.indicator.mobility_indicator.get_landing_impact_axes()
+	check(is_equal_approx(landing_axes.y / landing_axes.x, AttackFootprint.ELLIPSE_RATIO) and landing_axes.x > landing_axes.y,
+		"dash landing indicator uses the 145:220 battle tilt instead of a screen circle")
 	await capture("dash_indicator")
 	battle.active_controller.cancel_aim()
 	var dash := cast(0, Vector2(140,0))

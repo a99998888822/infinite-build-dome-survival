@@ -1,7 +1,7 @@
 [
   {
     "id": "scroll_radial",
-    "release_locked": true,
+    "release_locked": false,
     "display_name": "环射",
     "description": "投射物数量+2，所有投射物向四周均匀发射。与卫星互斥。",
     "enchantment_type": "spell", "category": "enchantment_scroll", "rarity": "epic",
@@ -10,7 +10,7 @@
   },
   {
     "id": "scroll_orbit",
-    "release_locked": true,
+    "release_locked": false,
     "display_name": "环绕",
     "description": "投射物改为环绕自身飞行。冷却时间决定绕行一圈的时间，攻击距离决定半径，数量决定同时环绕的弹体数。",
     "enchantment_type": "spell", "category": "enchantment_scroll", "rarity": "rare",
@@ -19,7 +19,7 @@
   },
   {
     "id": "scroll_giant",
-    "release_locked": true,
+    "release_locked": false,
     "display_name": "巨弹",
     "description": "将此前形成的投射物融铸为一枚巨弹，合计伤害；数量越多，体积越大。",
     "enchantment_type": "spell", "category": "enchantment_scroll", "rarity": "rare",
@@ -28,7 +28,7 @@
   },
   {
     "id": "scroll_guard",
-    "release_locked": true,
+    "release_locked": false,
     "display_name": "格挡",
     "description": "攻击可以击毁敌方投射物。消弹不触发命中附魔，也不消耗穿透次数。",
     "enchantment_type": "spell", "category": "enchantment_scroll", "rarity": "uncommon",
@@ -37,7 +37,7 @@
   },
   {
     "id": "scroll_satellite",
-    "release_locked": true,
+    "release_locked": false,
     "display_name": "卫星",
     "description": "投射物数量+1，保留一枚主弹，其余投射物环绕主弹飞行。新增弹体使用原始单弹伤害和体积。与环射互斥。",
     "enchantment_type": "spell", "category": "enchantment_scroll", "rarity": "epic",
@@ -46,7 +46,7 @@
   },
   {
     "id": "scroll_might",
-    "release_locked": true,
+    "release_locked": false,
     "display_name": "巨力",
     "description": "全部伤害增加20%",
     "enchantment_type": "buff",
@@ -61,7 +61,7 @@
   },
   {
     "id": "scroll_wisdom",
-    "release_locked": true,
+    "release_locked": false,
     "display_name": "智慧",
     "description": "元素伤害增加30%",
     "enchantment_type": "buff",
@@ -104,7 +104,7 @@
   },
   {
     "id": "scroll_precision",
-    "release_locked": true,
+    "release_locked": false,
     "display_name": "会心",
     "description": "暴击率增加25%",
     "enchantment_type": "buff",
@@ -119,7 +119,7 @@
   },
   {
     "id": "scroll_lethality",
-    "release_locked": true,
+    "release_locked": false,
     "display_name": "致命",
     "description": "暴击伤害增加50%",
     "enchantment_type": "buff",
@@ -134,7 +134,7 @@
   },
   {
     "id": "scroll_haste",
-    "release_locked": true,
+    "release_locked": false,
     "display_name": "迅捷",
     "description": "攻击速度+25%",
     "enchantment_type": "buff",
@@ -149,7 +149,7 @@
   },
   {
     "id": "scroll_bounce",
-    "release_locked": true,
+    "release_locked": false,
     "display_name": "弹跳",
     "description": "首次命中时，在命中位置立刻追加一次攻击",
     "enchantment_type": "spell",
@@ -262,7 +262,7 @@
   },
   {
     "id": "scroll_explosion",
-    "release_locked": true,
+    "release_locked": false,
     "display_name": "震荡",
     "description": "命中时释放震荡波，向四周推开附近敌人",
     "enchantment_type": "spell",

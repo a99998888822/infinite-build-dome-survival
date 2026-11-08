@@ -23,6 +23,11 @@ static func flash_alpha_at(t: float) -> float:
 
 func _ready() -> void:
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	# The caller assigns admission before entering the tree. Suppressed strikes
+	# still keep their clock/RNG echo, without three empty render children.
+	if tier == BUDGET.Tier.SUPPRESSED:
+		set_process(false)
+		return
 	column = Node2D.new()
 	ground = Node2D.new()
 	impact = Node2D.new()
@@ -45,6 +50,7 @@ func setup(height: float, radius: float, scale_time: float, opacity: float, dens
 
 func advance(value: float) -> void:
 	age = value
+	if tier == BUDGET.Tier.SUPPRESSED: return
 	var a := age/lifetime_scale
 	var echo := a >= 0.20
 	column.modulate.a = flash_alpha_at(a)*alpha
@@ -63,6 +69,7 @@ func is_active() -> bool:
 	return age < maxf(0.55,lifetime_scale*0.36)
 
 func _draw_column() -> void:
+	if tier == BUDGET.Tier.SUPPRESSED: return
 	var t := age/lifetime_scale
 	VISUAL.draw(column,"strike_echo" if t>=0.20 else "strike_primary",maxf(0.0,t-0.20) if t>=0.20 else t,column_scale)
 
@@ -71,6 +78,7 @@ func _draw_ground() -> void:
 	VISUAL.draw(ground,"strike_ground",age,ground_scale)
 
 func _draw_impact() -> void:
+	if tier == BUDGET.Tier.SUPPRESSED: return
 	var t := age/lifetime_scale
 	if t<0.16:
 		VISUAL.draw(impact,"strike_impact",t,Vector2.ONE,Color(1,1,1,flash_alpha_at(t)))

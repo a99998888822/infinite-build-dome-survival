@@ -10,6 +10,8 @@ uniform float progress = 0.0;
 uniform vec2 direction = vec2(1.0,0.0);
 uniform vec2 terminal_axes = vec2(1.0);
 uniform float sphere_radius = 31.5;
+// Ground rings share the battlefield projection so they read as lying flat.
+uniform float projection_ratio = 0.6590909;
 varying vec2 point;
 
 void vertex() { point = VERTEX; }
@@ -40,7 +42,7 @@ vec4 water(vec2 p, float t, float u) {
 }
 
 vec4 shock(vec2 p, float t, float u) {
-    vec2 q=p/vec2(reach);
+    vec2 q=p/vec2(reach,reach*projection_ratio);
     float r=length(q);
     float a=atan(q.y,q.x);
     float n=flow(q,t);

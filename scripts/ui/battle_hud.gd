@@ -929,6 +929,10 @@ func _apply_combat_layout() -> void:
 		_finance_economy_back.size = economy_size + Vector2(30, 13.333333)
 		quick_shop_button.position = economy_panel.position + (Vector2(0, economy_size.y + 6) if MobileProfile.is_mobile() else Vector2(-112, 12))
 		quick_shop_button.size = Vector2(100, 46)
+		if MobileProfile.is_mobile():
+			# The open parchment drawer starts at y=90 and covers the old button
+			# below the balances. Reserve a separate slot to its left in both states.
+			quick_shop_button.position.x = economy_left - quick_shop_button.size.x - 12.0
 	if exp_panel != null:
 		if MobileProfile.is_mobile():
 			exp_panel.anchor_left = 0.28
@@ -1409,6 +1413,9 @@ func _format_stat_value(stat_id: String, value: float) -> String:
 	var text_value := "%.2f" % value
 	if (StatDefinitions.is_integer_stat(stat_id) and stat_id != "shop_price_percent") or is_equal_approx(value, roundf(value)):
 		text_value = "%d" % roundi(value)
+	else:
+		# Half points exist (health pack bonus), so drop the padded zeros.
+		text_value = text_value.rstrip("0").rstrip(".")
 	var show_percent := StatDefinitions.is_percent_stat(stat_id) and stat_id not in STAT_VALUES_WITHOUT_PERCENT
 	return text_value + ("%" if show_percent else "")
 

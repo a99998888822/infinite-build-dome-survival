@@ -44,7 +44,7 @@ func initialize(source: WeaponInstance, original: WeaponInstance, recipe: Attack
 			body.position = last_center + _orbit_offset(float(body.phase))
 		if recipe.satellite and i > 0:
 			body.phase = TAU * (i - 1) / maxi(recipe.units.size() - 1, 1)
-			body.position = (units[0].position as Vector2) + Vector2.from_angle(float(body.phase)) * satellite_radius
+			body.position = (units[0].position as Vector2) + AttackFootprint.project(Vector2.from_angle(float(body.phase)) * satellite_radius)
 		if str(source.weapon_data.get("projectile_behavior", "")) == "plasma":
 			var visual := load("res://scripts/effects/plasma_ball_visual.gd").new() as Node2D
 			add_child(visual)
@@ -60,7 +60,7 @@ func is_attacking() -> bool:
 	return not cancelled and age < 0.18
 
 func _orbit_offset(angle: float) -> Vector2:
-	return Vector2.from_angle(angle) * reach
+	return AttackFootprint.project(Vector2.from_angle(angle) * reach)
 
 func _physics_process(delta: float) -> void:
 	if not ready_to_tick(): return

@@ -32,6 +32,7 @@ var _detail_title: Label
 var _detail_effect: Label
 var _detail_next: Label
 var _detail_cost: Label
+var _detail_purchase: Button
 var _currency_label: Label
 var _reset_button: Button
 var _back_button: Button
@@ -108,6 +109,11 @@ func _build_interface() -> void:
 	_detail_effect.position = Vector2(30, 70)
 	_detail_next.position = Vector2(30, 106.666667)
 	_detail_cost.position = Vector2(30, 150)
+	# The detail box repeats the tree arrow's purchase so no panning is required.
+	_detail_purchase = _button("", 23)
+	_detail_purchase.add_theme_color_override("font_disabled_color", MUTED)
+	_detail_purchase.pressed.connect(_purchase_selected)
+	_detail_panel.add_child(_detail_purchase)
 	_summary_panel = _panel()
 	_content.add_child(_summary_panel)
 	_summary_title = _label(27, TEXT)
@@ -257,8 +263,22 @@ func _layout_content() -> void:
 		# Preserve the readable default scale as branches open; icons keep HUD padding.
 		_zoom = 1.0
 		_layout_initialized = true
+	# Re-apply the selected record so a resized viewport keeps the details intact.
+	if _selected_id.is_empty(): _layout_detail_purchase()
+	else: _refresh_detail()
 	_apply_view()
 	queue_redraw()
+
+
+func _layout_detail_purchase(cost_row_y := 150.0) -> void:
+	if _detail_purchase == null or _detail_panel == null: return
+	var extent := Vector2(160, 53.333333)
+	if MobileProfile.is_mobile(): extent.y = 56
+	_detail_purchase.size = extent
+	# Sit beside the cost row, clear of the wrapped benefit text above it.
+	_detail_purchase.position = Vector2(
+		roundf(_detail_panel.size.x - extent.x - 30),
+		roundf(cost_row_y + 13 - extent.y * 0.5))
 
 
 func _apply_view() -> void:
@@ -458,6 +478,12 @@ func _refresh_detail() -> void:
 	_upgrade_button.position = node.position + Vector2(node.size.x + 6, (node.size.y - _upgrade_button.size.y) / 2)
 	_upgrade_button.move_to_front()
 	_upgrade_tooltip_text.text = L10n.text("ui.talent_tree.maxed") if level >= maximum else L10n.text("ui.talent_tree.upgrade_tooltip") % cost
+	# Offer the same purchase inside the fixed detail box; hide it once nothing is left.
+	_detail_purchase.visible = level < maximum
+	_detail_purchase.disabled = _upgrade_button.disabled or level >= maximum
+	_detail_purchase.text = L10n.text("ui.common.buy")
+	_detail_purchase.tooltip_text = "" if level >= maximum else L10n.text("ui.talent_tree.upgrade_tooltip") % cost
+	_layout_detail_purchase(_detail_cost.position.y)
 	if _upgrade_tooltip.visible: _position_upgrade_tooltip()
 
 

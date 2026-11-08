@@ -53,7 +53,9 @@ func _run() -> void:
 			check(hp > last_hp, "HP increases every wave: tier %s wave %d" % [tier, wave])
 			check(hp == roundi((24.0 + 200.0 * float(wave - 1) / 19.0) * float(manager._difficulty.stat_multiplier)), "ordinary HP follows linear growth in tier %s wave %d" % [tier, wave])
 			check(rate > last_rate, "density increases every wave: tier %s wave %d" % [tier, wave])
-			check(damage >= 4 and damage <= 8, "contact damage rises while retaining player survivability: tier %s wave %d" % [tier, wave])
+			var early := BattleDifficulty.early_damage_scale(manager.current_wave_index)
+			var expected_damage := roundi(9.0 * float(manager._difficulty.damage) * (1.0 + float(manager._difficulty.damage_growth) * float(wave - 1) / 100.0) * early)
+			check(damage == expected_damage, "contact damage follows wave growth and the early opening ramp: tier %s wave %d" % [tier, wave])
 			last_hp = hp
 			last_rate = rate
 			spawned = 0
@@ -72,8 +74,9 @@ func _run() -> void:
 				# Full-wave doubling/+20% acceptance lives in spawn_density_test.
 				check(ratio > 1.0, "twenty-second supply increases: tier %s wave %d" % [tier, wave])
 				rows.append(row)
-		check(tier_rows.back().hp == {"1": 182, "2": 218, "3": 236}[tier], "sixteenth-wave HP retains the existing per-wave growth")
-		check(tier_rows.back().spawned_20s > tier_rows[0].spawned_20s * 3, "late density exceeds three times opening density")
+		check(tier_rows.back().hp == {"1": 140, "2": 168, "3": 182}[tier], "final-wave HP retains the existing per-wave growth")
+		# The twelve-wave campaign roughly doubles opening supply by its last wave.
+		check(tier_rows.back().spawned_20s > tier_rows[0].spawned_20s * 2.0, "late density roughly doubles opening density")
 		previous_tier = tier_rows
 		manager.free()
 		p.free()

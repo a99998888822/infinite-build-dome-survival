@@ -39,20 +39,22 @@ func run() -> void:
 	var first_hp := 0
 	var first_damage := 0.0
 	var first_speed := 0.0
-	for sample in [[0.0,1.0,1.0],[10.0,1.5,1.0],[20.0,2.0,1.0],[30.0,2.25,1.5],[40.0,2.5,2.0],[50.0,2.75,2.25],[60.0,3.0,2.5],[100.0,4.0,3.5]]:
+	for sample in [[0.0,1.0,1.0],[10.0,4.0/3.0,1.0],[20.0,5.0/3.0,1.0],[30.0,2.0,4.0/3.0],[40.0,2.0+0.35/3.0,5.0/3.0],[50.0,2.0+0.7/3.0,2.0],[60.0,2.35,2.0+0.35/3.0],[80.0,2.0+1.75/3.0,2.35],[100.0,2.0+2.45/3.0,2.0+1.75/3.0]]:
 		var result := spawn_probe(float(sample[0]))
 		var enemy := result.enemy as EnemyController
 		check(enemy != null,"new enemy at night "+str(sample[0]))
 		if enemy == null: continue
 		check(absf(enemy.get_stat("max_hp")-float(result.hp)*float(sample[1]))<=1.0,"spawn HP factor at "+str(sample[0]))
-		check(is_equal_approx(enemy.get_stat("melee_damage"),float(result.damage)*float(sample[2])),"spawn attack factor at "+str(sample[0]))
+		# Stats are integers, so an early-wave fractional base can differ by one
+		# point from the rounded spawn value multiplied by the night factor.
+		check(absf(enemy.get_stat("melee_damage")-float(result.damage)*float(sample[2]))<=1.0,"spawn attack factor at "+str(sample[0]))
 		check(enemy.current_hp==int(enemy.get_stat("max_hp")),"fresh enemy starts at its grown max HP")
-		if sample[0]<=40.0:
-			check(is_equal_approx(enemy.get_chase_speed(),result.speed),"no speed growth through night 40")
-		elif sample[0]==50.0:
-			check(enemy.get_chase_speed()>float(result.speed) and enemy.get_chase_speed()<player.get_stat("move_speed")*0.95,"speed rises gradually at night 50")
-		elif sample[0]>=60.0:
-			check(is_equal_approx(enemy.get_chase_speed(),player.get_stat("move_speed")*0.95),"speed reaches 95 percent at night 60 and stays capped")
+		if sample[0]<=50.0:
+			check(is_equal_approx(enemy.get_chase_speed(),result.speed),"no speed growth through night 50")
+		elif sample[0]<80.0:
+			check(enemy.get_chase_speed()>float(result.speed) and enemy.get_chase_speed()<player.get_stat("move_speed")*0.95,"speed rises gradually before night 80")
+		else:
+			check(is_equal_approx(enemy.get_chase_speed(),player.get_stat("move_speed")*0.95),"speed reaches 95 percent at night 80 and stays capped")
 		timeline.append({"night_seconds":sample[0],"hp":enemy.current_hp,"attack":enemy.get_stat("melee_damage"),"speed":enemy.get_chase_speed()})
 		if first == null:
 			first = enemy
@@ -108,8 +110,13 @@ func verify_speed_cap() -> void:
 	hunter.skill_state = "dash"
 	hunter._state_time = 0.0
 	var before := hunter.global_position
+	# The telegraphed attack keeps its authored 160ms motion; only chasing is
+	# capped. Keep this movement probe from killing the player and ending night.
+	player._invincibility_timer = 1.0
 	hunter._process_special_behavior(0.05)
-	check(hunter.global_position.distance_to(before)<=cap*0.05+0.01,"night hunter dash also respects player speed cap")
+	var skill_step := float(hunter._profile.get("dash_distance", 240)) / (float(hunter._profile.get("dash_ms", 160)) / 1000.0) * 0.05
+	check(is_equal_approx(hunter.global_position.distance_to(before), skill_step),"night hunter keeps its telegraphed skill travel while chase remains capped")
+	player._invincibility_timer = 0.0
 	player.modifier_stack.remove_by_source("test","night_test")
 	clear_probe_enemies()
 	await frames()

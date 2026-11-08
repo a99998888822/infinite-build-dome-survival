@@ -154,9 +154,9 @@ func _test_enemy_pressure_display() -> void:
 	var old_wave := manager.current_wave_index
 	var old_bonus := manager.enemy_pressure.wave_bonus.duplicate()
 	var old_challenge := manager.wave_challenges.active.duplicate(true)
-	manager.current_wave_index = 19
+	manager.current_wave_index = 11
 	manager.enemy_pressure.wave_bonus = {"normal": 60, "elite": 30}
-	manager.wave_challenges.active = {"wave": 20, "body": "challenge fixture"}
+	manager.wave_challenges.active = {"wave": 12, "body": "challenge fixture"}
 	player.modifier_stack.set_base_stat("divinity", 100)
 	var old_locale := L10n.locale
 	for locale in ["zh_CN", "en"]:

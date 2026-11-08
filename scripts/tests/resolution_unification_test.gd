@@ -122,7 +122,7 @@ func run() -> void:
 		source.use_active_range_rules = true
 		check(is_equal_approx(source.get_attack_range(), float(reaches[id])), "native range " + id)
 		if source.is_ritual_tome():
-			check(source.get_domain_axes().is_equal_approx(Vector2(300,242)), "current ritual domain axes")
+			check(source.get_domain_axes().is_equal_approx(Vector2(300, 300 * AttackFootprint.ELLIPSE_RATIO)), "ritual domain follows the 145:220 ground tilt")
 		if source.is_grenade():
 			check(is_equal_approx(source.get_grenade_blast_radius(), 107.0), "grenade blast migrates with its range")
 	await capture("05_battle")

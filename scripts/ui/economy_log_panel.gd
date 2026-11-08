@@ -45,7 +45,7 @@ func _ready() -> void:
 	heading.text = "ui.economy_log.title"
 	heading.tooltip_text = "ui.economy_log.retention_hint"
 	heading.add_theme_color_override("font_color", Color("e0c68a"))
-	heading.add_theme_font_size_override("font_size", 13)
+	heading.add_theme_font_size_override("font_size", 16)
 	column.add_child(heading)
 	log_text = RichTextLabel.new()
 	log_text.name = "EconomyLogText"
@@ -55,8 +55,8 @@ func _ready() -> void:
 	log_text.fit_content = false
 	log_text.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	log_text.add_theme_color_override("default_color", Color("dddac7"))
-	log_text.add_theme_font_size_override("normal_font_size", 13)
-	log_text.add_theme_constant_override("line_separation", 2)
+	log_text.add_theme_font_size_override("normal_font_size", 16)
+	log_text.add_theme_constant_override("line_separation", 3)
 	column.add_child(log_text)
 	panel.hide()
 	apply_layout()
@@ -100,7 +100,8 @@ func apply_layout() -> void:
 
 func apply_finance_layout(content_rect: Rect2, button_rect: Rect2) -> void:
 	if not _finance_style:
-		panel.add_theme_stylebox_override("panel", FinanceFrameSkin.with_margins(panel, "panel", "panel"))
+		# A ruled dialog frame keeps both border lines visible at every window scale.
+		panel.add_theme_stylebox_override("panel", FinanceFrameSkin.with_margins(panel, "panel", "dialog"))
 		FinanceFrameSkin.scrollbar(log_text.get_v_scroll_bar())
 		(panel.find_child("LogTitle", true, false) as Label).add_theme_color_override("font_color", FinanceUIStyle.TEXT)
 		log_text.add_theme_color_override("default_color", FinanceUIStyle.TEXT)

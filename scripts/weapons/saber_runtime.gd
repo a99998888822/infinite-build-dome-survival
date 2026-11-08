@@ -2,6 +2,9 @@ extends DirectedWeaponRuntime
 class_name SaberRuntime
 const ART = preload("res://scripts/effects/candidate_weapon_art.gd")
 const CUT_GAP := 4.0 / 60.0
+## Contact width only: the painted warning keeps the authored 8 px half-width,
+## while the real blade sweeps twice as wide.
+const DAMAGE_WIDTH_SCALE := 2.0
 var live_source: WeaponInstance
 var origin := Vector2.ZERO
 var destination := Vector2.ZERO
@@ -96,7 +99,7 @@ func _build_shape() -> void:
 	var length := origin.distance_to(destination)
 	_shapes.clear()
 	if length < 4.0: return
-	var points := AttackFootprint.saber_outline(length, weapon.get_hit_radius())
+	var points := AttackFootprint.saber_outline(length, weapon.get_hit_radius() * DAMAGE_WIDTH_SCALE)
 	# The sharp tips have a shallow concavity. Preserve it with convex pieces,
 	# instead of letting the physics engine replace the blade with its hull.
 	for polygon in Geometry2D.decompose_polygon_in_convex(points):

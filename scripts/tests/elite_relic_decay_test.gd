@@ -75,7 +75,7 @@ func _test_drops() -> void:
 	check(non_elite is RelicPickup, "non-elite source creates a real relic choice token")
 	player.add_relic("relic_finance_manager")
 	check(drops.get_elite_relics_dropped_this_wave() == before, "other sources do not change elite decay")
-	var expected_chances := {"exp_orb": 100.0, "health_pack": 20.0}
+	var expected_chances := {"exp_orb": 100.0, "health_pack": 10.0}
 	for action in drops.build_drop_actions("drop_elite_enemy", player):
 		if expected_chances.has(action.type):
 			check(is_equal_approx(action.adjusted_chance_percent, expected_chances[action.type]), "non-relic probability unchanged: " + action.type)
@@ -192,7 +192,7 @@ func _test_collision_and_events() -> void:
 			total += sampled
 			bounded = bounded and sampled >= floori(expected) and sampled <= ceili(expected)
 		check(bounded and absf(float(total) / 10000.0 - expected) < 0.02, "10000 samples preserve mean and adjacent counts: %s" % expected)
-	manager.current_wave_index = 18
+	manager.current_wave_index = 10
 	manager.start_next_wave()
 	var snapshot := manager.get_miniboss_spawn_snapshot()
 	check(snapshot.planned >= 1 and snapshot.planned <= 3 and snapshot.schedule.size() == snapshot.planned, "wave start samples and fixes total and schedule")

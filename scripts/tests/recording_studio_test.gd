@@ -145,7 +145,7 @@ func _run() -> void:
 	check(session.battle.wave_manager.current_gold == 0 and session.battle.wave_manager.finance_system.principal == 1000, "F6 restores original config rather than mutated bank state")
 	await studio.return_to_studio()
 	config.character = "character_capitalist"
-	config.wave = 20
+	config.wave = 12
 	config.gold = 321
 	config.principal = 777
 	config.sanity_delta = -20
@@ -155,7 +155,7 @@ func _run() -> void:
 	await studio._start(config)
 	check(session.battle.player.character_id == "character_capitalist", "selected character initialized")
 	check(session.battle.player.get_relic_ids().size() >= 5, "capitalist innate relics retained")
-	check(session.battle.wave_manager.current_wave_index == 19, "final wave starts directly")
+	check(session.battle.wave_manager.current_wave_index == 11, "final wave starts directly")
 	check(session.battle.wave_manager.current_gold == 321 and session.battle.wave_manager.finance_system.principal == 777, "configured balances supersede character acquisition gifts")
 	check(session.battle.player.get_stat("humanity") == 80 and session.battle.player.get_stat("divinity") == 30, "sanity and erosion adjustments reach real player stats")
 	session.flow.present_battle_result(false, {"reason": "test", "gold": 321})

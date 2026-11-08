@@ -2,7 +2,8 @@ extends RefCounted
 ## Six-fold crystal growth shared by the ice field and frost under slowed feet.
 
 const PIXEL = preload("res://scripts/effects/pixel_effect_draw.gd")
-const GROUND_FLATTEN := 0.55
+const ATTACK = preload("res://scripts/battle/attack_footprint.gd")
+const GROUND_FLATTEN := ATTACK.ELLIPSE_RATIO
 const OPACITY := 0.58
 
 

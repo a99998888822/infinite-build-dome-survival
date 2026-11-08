@@ -241,9 +241,9 @@ const STAT_DEFINITIONS: Dictionary = {
 		"default": 0,
 		"min": -99999,
 		"max": 99999,
-		"is_integer": true,
+		"is_integer": false,
 		"is_percent": false,
-		"description": "血包拾取后的固定生命恢复量加成，可为负，不影响血包掉落概率。"
+		"description": "血包拾取后的固定生命恢复量加成，可为负，精确到 0.5；最终恢复量按基础值加该加成后向下取整，不影响血包掉落概率。"
 	},
 	"luck": {
 		"display_name": "幸运",

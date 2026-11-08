@@ -3,11 +3,28 @@ class_name RunSettlement
 ## Frozen receipt: both presentation and persistent award use this single calculation.
 
 const CONFIG_PATH := "res://data_config/run_settlement.json"
+const COMPENSATION_DEFAULTS := {"max_points": 200.0, "points_per_kill": 4.0, "falloff_waves": 10.0}
 
 
 static func configuration() -> Dictionary:
 	var data: Variant = JSON.parse_string(FileAccess.get_file_as_string(CONFIG_PATH))
 	return data if data is Dictionary else {}
+
+
+static func defeat_compensation(config: Dictionary, kills: int, waves: int, outcome: String) -> int:
+	# Early expeditions pay little from the four counters alone. A capped, per-kill
+	# compensation fades out as waves complete, so late clears keep their total.
+	if outcome != "defeat":
+		return 0
+	var formula: Dictionary = config.get("formula", {})
+	var settings: Dictionary = formula.get("defeat_compensation", {})
+	var maximum := float(settings.get("max_points", COMPENSATION_DEFAULTS["max_points"]))
+	var per_kill := float(settings.get("points_per_kill", COMPENSATION_DEFAULTS["points_per_kill"]))
+	var falloff := maxf(1.0, float(settings.get("falloff_waves", COMPENSATION_DEFAULTS["falloff_waves"])))
+	if maximum <= 0.0 or per_kill <= 0.0:
+		return 0
+	var earned := minf(maximum, float(maxi(0, kills)) * per_kill)
+	return roundi(earned * clampf(1.0 - float(maxi(0, waves)) / falloff, 0.0, 1.0))
 
 
 static func build(statistics: Dictionary, victory: bool, difficulty_id: String = BattleDifficulty.DEFAULT_ID, retreated: bool = false) -> Dictionary:
@@ -33,9 +50,13 @@ static func build(statistics: Dictionary, victory: bool, difficulty_id: String =
 	report["reward_multiplier"] = float(report.difficulty_multiplier) * float(report.outcome_multiplier)
 	var difficulty_base := float(report.base_camp_currency) * float(report.difficulty_multiplier)
 	report["difficulty_bonus"] = roundi(difficulty_base) - int(report.base_camp_currency)
-	report["camp_currency"] = roundi(float(report.base_camp_currency) * float(report.reward_multiplier))
+	# The compensation never scales with difficulty, so a fast hard-mode death
+	# cannot be farmed for triple consolation points.
+	var compensation := defeat_compensation(config, values[0], values[2], outcome)
+	report["compensation"] = compensation
+	report["camp_currency"] = roundi(float(report.base_camp_currency) * float(report.reward_multiplier)) + compensation
 	# Retreat is exactly half of the payable defeat receipt, rounded down to coins.
-	report["defeat_camp_currency"] = roundi(difficulty_base * float(outcomes.defeat))
+	report["defeat_camp_currency"] = roundi(difficulty_base * float(outcomes.defeat)) + compensation
 	report["retreat_multiplier"] = float(outcomes.retreat_vs_defeat)
 	if retreated:
 		report.camp_currency = floori(int(report.defeat_camp_currency) * float(report.retreat_multiplier))

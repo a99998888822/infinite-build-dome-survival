@@ -6,6 +6,7 @@ const ELEMENT_REACTION_RESOLVER_SCRIPT = preload("res://scripts/effects/element_
 const PIXEL = preload("res://scripts/effects/pixel_effect_draw.gd")
 const BAKED = preload("res://scripts/effects/selected_spell_visual.gd")
 const FOOTPRINT = preload("res://scripts/effects/spell_footprint.gd")
+const VISUAL_BUDGET = preload("res://scripts/effects/effect_visual_budget.gd")
 const DEFAULT_RADIUS: float = 33.0
 const DEFAULT_DURATION: float = 0.85
 const DEFAULT_DAMAGE_MULTIPLIER: float = 0.45
@@ -39,7 +40,7 @@ static func spawn(
 	effect._visual_detail = PIXEL.register(effect, "water")
 	effect._weapon = weapon
 	effect._damage_event = damage_event
-	effect._context = EFFECT_PARAMETER_RESOLVER_SCRIPT.build_weapon_context(weapon, "water", {
+	effect._context = EFFECT_PARAMETER_RESOLVER_SCRIPT.build_cached_weapon_context(weapon, "water", {
 		"radius": DEFAULT_RADIUS,
 		"duration": DEFAULT_DURATION,
 		"damage_multiplier": DEFAULT_DAMAGE_MULTIPLIER,
@@ -56,6 +57,10 @@ static func spawn(
 	effect._phase = randf_range(0.0, TAU)
 	# Apply contact synchronously so the following slot observes the wet state.
 	effect._apply_wave()
+	# Several full/reduced waves already cover this local patch in the current
+	# 100ms window. Discard only the redundant playback, after all contacts/RNG.
+	if VISUAL_BUDGET.claim_visual(parent, "water_wave", hit_position) == VISUAL_BUDGET.Tier.SUPPRESSED:
+		effect.queue_free()
 
 
 func _ready() -> void:
@@ -115,4 +120,4 @@ func _draw() -> void:
 	BAKED.draw(self,"water_r02",_elapsed*DEFAULT_DURATION/maxf(_duration,0.001),Vector2.ONE*(_radius/75.3984))
 
 func get_terminal_footprint_axes() -> Vector2:
-	return FOOTPRINT.axes(_radius, FOOTPRINT.WATER_FLATTEN)
+	return FOOTPRINT.axes(_radius)

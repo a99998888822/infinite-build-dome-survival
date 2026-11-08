@@ -86,7 +86,7 @@ static func spawn(parent: Node, hit_position: Vector2, first_body: Node, weapon:
 	effect._direction = direction.normalized() if not direction.is_zero_approx() else Vector2.RIGHT
 	effect._audio_impact = AudioManager.current_combat_audio()
 	# Each attachment owns a chain; global modifiers still apply to every chain.
-	effect._context = EFFECT_PARAMETER_RESOLVER_SCRIPT.build_weapon_context(weapon, "lightning", {
+	effect._context = EFFECT_PARAMETER_RESOLVER_SCRIPT.build_cached_weapon_context(weapon, "lightning", {
 		"damage": maxf(damage_event.get_elemental_base_damage() * 0.55, 1.0),
 		"chain_count": DEFAULT_CHAIN_COUNT,
 		"chain_interval": DEFAULT_CHAIN_INTERVAL,
@@ -192,6 +192,7 @@ func _strike_ground(ground_position: Vector2) -> void:
 	_consume_ground_visual_rng()
 	var tier := preload("res://scripts/effects/effect_visual_budget.gd").claim_visual(_parent_root,"ground_strike",ground_position)
 	_baked_strike = BAKED_STRIKE.new()
+	_baked_strike.tier = tier
 	add_child(_baked_strike)
 	_baked_strike.position = to_local(ground_position)
 	_baked_strike.setup(strike_height,_ground_strike_damage_radius,

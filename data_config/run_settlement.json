@@ -1,5 +1,6 @@
 {
-  "formula": {"kills_per_coin": 10, "gold_per_coin": 20, "coins_per_wave": 20, "interest_per_coin": 50, "interest_cap_per_wave": 20},
+  "formula": {"kills_per_coin": 10, "gold_per_coin": 20, "coins_per_wave": 20, "interest_per_coin": 50, "interest_cap_per_wave": 20,
+    "defeat_compensation": {"max_points": 200, "points_per_kill": 4, "falloff_waves": 10}},
   "difficulty_multipliers": {"1": 1.0, "2": 2.0, "3": 3.0},
   "outcome_multipliers": {"defeat": 1.2, "victory": 2.5, "retreat_vs_defeat": 0.5},
   "presentation": {"stage_times": [0.55, 1.35, 2.15, 2.95, 3.85], "count_seconds": 0.6, "voice_time": 4.6, "voice_volume_db": -4, "cue_volume_db": -6},

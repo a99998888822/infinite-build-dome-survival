@@ -314,7 +314,7 @@
   {
     "id": "relic_medical_cutback",
     "display_name": "医疗削减方案",
-    "description": "获得时：本金 +150；利率 +2%；回血 -0.25；血包恢复量 -1；最多持有1件",
+    "description": "获得时：本金 +150；利率 +2%；回血 -0.25；血包恢复量 -0.5；最多持有1件",
     "icon": "res://assets/ui/icons/relics/relic_medical_cutback.png",
     "rarity": "epic",
     "max_stack": 1,
@@ -350,7 +350,7 @@
         "target_scope": "player",
         "stat": "health_pack_heal_plus",
         "operation": "add_flat",
-        "value": -1,
+        "value": -0.5,
         "duration": -1
       }
     ],
@@ -607,14 +607,14 @@
   {
     "id": "relic_worn_hemostatic_cloth",
     "display_name": "磨损的止血布条",
-    "description": "最大生命值 +4；血包恢复量 +1",
+    "description": "最大生命值 +4；血包恢复量 +0.5",
     "icon": "res://assets/ui/icons/relics/relic_worn_hemostatic_cloth.png",
     "rarity": "common",
     "max_stack": 0,
     "tags": ["survival"],
     "effects": [
       {"id": "mod_relic_worn_hemostatic_cloth_max_hp", "source_type": "relic", "source_id": "relic_worn_hemostatic_cloth", "target_scope": "player", "stat": "max_hp", "operation": "add_flat", "value": 4, "duration": -1},
-      {"id": "mod_relic_worn_hemostatic_cloth_health_pack_heal_plus", "source_type": "relic", "source_id": "relic_worn_hemostatic_cloth", "target_scope": "player", "stat": "health_pack_heal_plus", "operation": "add_flat", "value": 1, "duration": -1}
+      {"id": "mod_relic_worn_hemostatic_cloth_health_pack_heal_plus", "source_type": "relic", "source_id": "relic_worn_hemostatic_cloth", "target_scope": "player", "stat": "health_pack_heal_plus", "operation": "add_flat", "value": 0.5, "duration": -1}
     ],
     "runtime_effects": []
   },
@@ -1928,14 +1928,14 @@
   {
     "id": "relic_crimson_coagulation_vial",
     "display_name": "绯红凝血瓶",
-    "description": "每秒回血 +0.1；血包恢复量 +1",
+    "description": "每秒回血 +0.1；血包恢复量 +0.5",
     "icon": "res://assets/ui/icons/relics/relic_crimson_coagulation_vial.png",
     "rarity": "rare",
     "max_stack": 0,
     "tags": ["survival", "reward"],
     "effects": [
       {"id": "mod_relic_crimson_coagulation_vial_hp_regen", "source_type": "relic", "source_id": "relic_crimson_coagulation_vial", "target_scope": "player", "stat": "hp_regen", "operation": "add_flat", "value": 0.1, "duration": -1},
-      {"id": "mod_relic_crimson_coagulation_vial_health_pack_heal_plus", "source_type": "relic", "source_id": "relic_crimson_coagulation_vial", "target_scope": "player", "stat": "health_pack_heal_plus", "operation": "add_flat", "value": 1, "duration": -1}
+      {"id": "mod_relic_crimson_coagulation_vial_health_pack_heal_plus", "source_type": "relic", "source_id": "relic_crimson_coagulation_vial", "target_scope": "player", "stat": "health_pack_heal_plus", "operation": "add_flat", "value": 0.5, "duration": -1}
     ],
     "runtime_effects": []
   },

@@ -333,9 +333,8 @@ func _validate_weapon_runtime_fields(record: Dictionary, path: String) -> void:
 		if not "pierce" in record.get("unsupported_effects", []):
 			errors.append("%s must reject pierce for contact sweeps." % path)
 	if str(record.get("projectile_behavior", "")) == "ritual_domain":
-		_validate_non_negative_int(record, "domain_minor_axis", path)
-		if str(record.get("attack_kind", "")) != "element" or float(record.get("domain_minor_axis", 0)) <= 0 or float(record.get("attack_range", 0)) <= 0:
-			errors.append("%s requires elemental damage and positive ellipse axes." % path)
+		if str(record.get("attack_kind", "")) != "element" or float(record.get("attack_range", 0)) <= 0:
+			errors.append("%s requires elemental damage and a positive domain major axis." % path)
 	if str(record.get("projectile_behavior", "")) == "coin":
 		for field in ["player_damage_coefficient", "principal_damage_coefficient"]:
 			var value: Variant = record.get(field)

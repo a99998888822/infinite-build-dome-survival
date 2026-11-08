@@ -172,6 +172,8 @@ func initialize_from_character(target_character_id: String, outgame_modifiers: A
 	_configured_revive_count = 0
 	remaining_revives = 0
 	modifier_stack.set_base_stats(data.get("base_stats", {}))
+	if MobileProfile.is_mobile() and character_id == "character_void_hunter":
+		modifier_stack.set_base_stat("move_speed", float(data.get("base_stats", {}).get("move_speed", 0.0)) + 15.0)
 	_apply_modifier_list(data.get("passive_modifiers", []))
 	_apply_modifier_list(outgame_modifiers)
 

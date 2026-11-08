@@ -213,7 +213,7 @@ func _test_live_waves() -> void:
 		var base := 480.0 * pow(1.24, 3) if is_elite else 24.0 + 200.0 * 3.0 / 19.0
 		check(enemy.current_hp == roundi(base * 2.26 * (1.05 if is_elite else 1.1)), "full spawn HP applies wave, erosion and adaptation exactly once")
 		check(enemy.get_stat("move_speed") == (104 if is_elite else 52), "adaptation does not change movement speed")
-		check(enemy.get_stat("melee_damage") == roundi((6.21 if is_elite else 4.05) * 1.045 * 1.51), "adaptation does not change damage")
+		check(enemy.get_stat("melee_damage") == roundi((6.21 if is_elite else 4.05) * 1.045 * 1.51 * BattleDifficulty.early_damage_scale(manager.current_wave_index)), "adaptation does not change damage")
 		enemy.free()
 	var exposed := manager.enemy_pressure.snapshot()
 	exposed.wave_bonus_percent.normal = 999

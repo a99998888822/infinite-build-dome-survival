@@ -447,6 +447,7 @@ ui.settlement.base_conversion_hint,右列为基础天赋点,The right column sho
 ui.settlement.camp_coins_earned,本次获得天赋点,Talent Points Earned
 ui.settlement.camp_title,天赋点结算,Talent Point Settlement
 ui.settlement.conversion,基础 %s ×%d%% = %s,Base %s ×%d%% = %s
+ui.settlement.conversion_compensation,基础 %s ×%d%% + 阵亡补偿 %s = %s,Base %s ×%d%% + defeat compensation %s = %s
 ui.settlement.conversion_hint,右列为各项折算的天赋点,Right column: converted Talent Points
 ui.settlement.counting,正在清点…,Counting…
 ui.settlement.death_wave,第%d波 阵亡,Fell on Wave %d

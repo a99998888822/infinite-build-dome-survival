@@ -3,6 +3,9 @@ class_name MobilityWeaponRuntime
 ## A cast owns motion, contacts and sprite lifetimes. No floating weapon body.
 const SLASH_SECONDS := 10.0 / 48.0
 const TAKEOFF_ANIMATION_SPEED := 6.0
+## The landing disc judged slightly larger than its warning: crowd overlap at the
+## painted edge still counts, while the painted ellipse keeps its authored size.
+const DASH_HIT_FORGIVENESS := 1.1
 const GROUND = preload("res://scripts/effects/ground_projection_r05.gd")
 const CANNON_JET = preload("res://scripts/effects/cannon_jet_flame.gd")
 var live_source: WeaponInstance
@@ -145,18 +148,16 @@ func _impact(point: Vector2) -> void:
 		# The atlas reaches 82 px including sparks: 1.1x stays inside the 96 px hit circle.
 		visual_scale = weapon.get_hit_radius() / 96.0 * 1.1
 	# Project slash and star shockwave frames onto the shared ground plane.
-	# Star impact follows its projected warning. Dash keeps its approved body query.
+	# Star impact follows its projected warning; the dash landing disc is projected too.
 	var visual_axes := GROUND.projected_axes()
 	MobilityAtlasEffect.spawn(self, weapon, "star_shockwave" if shock else "dash_circle", point, 0, visual_axes * visual_scale)
 	# Copy only matching contacts before native damage/reactions mutate the registry.
 	var victims: Array[EnemyController] = []
-	var shape: Shape2D
-	if shock:
-		shape = AttackFootprint.projected_disk(weapon.get_hit_radius())
-	else:
-		var circle := CircleShape2D.new()
-		circle.radius = weapon.get_hit_radius()
-		shape = circle
+	# Both landings clear the ground as projected discs, matching their warnings.
+	var hit_radius := weapon.get_hit_radius()
+	if not shock:
+		hit_radius *= DASH_HIT_FORGIVENESS
+	var shape: Shape2D = AttackFootprint.projected_disk(hit_radius)
 	var query := PhysicsShapeQueryParameters2D.new()
 	query.shape = shape
 	query.transform = Transform2D(0.0, point)

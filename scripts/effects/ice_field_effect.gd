@@ -122,7 +122,7 @@ func _damage_enemies() -> void:
 	AudioManager.end_combat_audio()
 
 func get_terminal_footprint_axes() -> Vector2:
-	return FOOTPRINT.axes(_radius, FOOTPRINT.ICE_FLATTEN)
+	return FOOTPRINT.axes(_radius)
 
 func _draw() -> void:
 	# Transparent crystal patterns provide the only ground visual, without a disk.

@@ -3,6 +3,7 @@ extends "res://scripts/tests/pixel_combat_effect_test.gd"
 const R = preload("res://scripts/effects/element_reaction_resolver.gd")
 const PARAMS = preload("res://scripts/effects/effect_parameter_resolver.gd")
 const CUE = preload("res://scripts/effects/element_reaction_visual.gd")
+const FOOTPRINT = preload("res://scripts/effects/spell_footprint.gd")
 
 
 func element(enemy: EnemyController, id: String) -> Dictionary:
@@ -261,7 +262,7 @@ func _test_projected_frost_coverage() -> void:
 	var body_half_size := bounds.size * 0.5
 	var body_offset := bounds.get_center()
 	var positions := [Vector2(51.2 + body_half_size.x - 1.0, 0), Vector2(51.2 + body_half_size.x + 1.0, 0),
-		Vector2(0, 28.16 + body_half_size.y - 1.0), Vector2(0, 28.16 + body_half_size.y + 1.0), Vector2(0, 60)]
+		Vector2(0, FOOTPRINT.axes(51.2).y + body_half_size.y - 1.0), Vector2(0, FOOTPRINT.axes(51.2).y + body_half_size.y + 1.0), Vector2(0, 60)]
 	for index in positions.size(): enemies[index].position = positions[index] - body_offset
 	await frames()
 	IceFieldEffect.spawn(host, Vector2.ZERO, weapon, event)
@@ -276,7 +277,7 @@ func _test_projected_frost_coverage() -> void:
 	field.expand_from_wind(1.35)
 	check(enemies[1].current_hp == 9975 and enemies[3].current_hp == 9975, "wind expands both ellipse axes and reaches newly covered bodies")
 	check(enemies[0].current_hp == 9975 and enemies[2].current_hp == 9975, "projected expansion does not repeat damage")
-	var outside_expanded_edge := Vector2(0, 51.2 * 1.5 * 0.55 + body_half_size.y + 2.0)
+	var outside_expanded_edge := Vector2(0, FOOTPRINT.axes(51.2 * 1.5).y + body_half_size.y + 2.0)
 	await setup([Vector2(75, 0) - body_offset, outside_expanded_edge - body_offset])
 	equip(["scroll_ice"])
 	weapon.runtime_stats.damage_area_size = 100.0

@@ -956,9 +956,17 @@ func _build_wave_enemy_modifiers(enemy_type: String = "normal") -> Array[Diction
 	var modifiers: Array[Dictionary] = []
 	var wave_step := float(maxi(current_wave_index, 0))
 	var hp_multiplier := 1.0 + float(_difficulty.normal_hp_growth) * wave_step if enemy_type == "normal" else pow(1.0 + float(_difficulty.hp_growth), wave_step)
+	if enemy_type in ["elite", "boss"]:
+		hp_multiplier *= BattleDifficulty.EARLY_ELITE_HP_SCALE[clampi(current_wave_index, 0, BattleDifficulty.EARLY_ELITE_HP_SCALE.size() - 1)]
 	modifiers.append(_build_wave_modifier("max_hp", Modifier.OPERATION_MULTIPLY, hp_multiplier))
+	# Opening waves ramp damage back to its unchanged late-game value.
+	var early_damage := BattleDifficulty.early_damage_scale(current_wave_index)
 	for stat in ["melee_damage", "ranged_damage", "element_damage"]:
 		modifiers.append(_build_wave_modifier(stat, Modifier.OPERATION_ADD_PERCENT, float(_difficulty.damage_growth) * wave_step))
+		if early_damage < 1.0:
+			var early := _build_wave_modifier(stat, Modifier.OPERATION_MULTIPLY, early_damage)
+			early["id"] = "wave_%d_%s_early" % [current_wave_index + 1, stat]
+			modifiers.append(early)
 	modifiers.append(_build_wave_modifier("move_speed", Modifier.OPERATION_ADD_PERCENT, float(_difficulty.speed_growth) * wave_step))
 	modifiers.append(_build_wave_modifier("armor", Modifier.OPERATION_ADD_FLAT, float(_difficulty.armor_growth) * wave_step))
 	return modifiers

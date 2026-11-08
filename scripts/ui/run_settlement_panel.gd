@@ -263,6 +263,8 @@ func seek(seconds: float) -> void:
 	if _progress(4) >= 1:
 		if str(report.get("outcome", "")) == "retreat":
 			_conversion.text = L10n.text("ui.settlement.retreat_conversion") % [_number(int(report.defeat_camp_currency)), roundi(float(report.retreat_multiplier) * 100.0), _number(int(report.camp_currency))]
+		elif int(report.get("compensation", 0)) > 0:
+			_conversion.text = L10n.text("ui.settlement.conversion_compensation") % [_number(int(report.get("base_camp_currency", report.camp_currency))), roundi(float(report.get("reward_multiplier", report.get("difficulty_multiplier", 1.0))) * 100.0), _number(int(report.compensation)), _number(int(report.camp_currency))]
 		else:
 			_conversion.text = L10n.text("ui.settlement.conversion") % [_number(int(report.get("base_camp_currency", report.camp_currency))), roundi(float(report.get("reward_multiplier", report.get("difficulty_multiplier", 1.0))) * 100.0), _number(int(report.camp_currency))]
 	if bool(report.interest_capped) and _progress(3) >= 1:

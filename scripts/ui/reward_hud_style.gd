@@ -48,13 +48,10 @@ static func weapon_slot_theme() -> Theme:
 	return theme
 
 
-static func _weapon_slot_skin(warm: bool) -> StyleBoxTexture:
-	var box := StyleBoxTexture.new()
-	box.texture = WEAPON_SLOT_HOVER if warm else WEAPON_SLOT
-	for side in [SIDE_LEFT, SIDE_TOP, SIDE_RIGHT, SIDE_BOTTOM]:
-		box.set_texture_margin(side, 3)
-		box.set_content_margin(side, 8)
-	return box
+static func _weapon_slot_skin(warm: bool) -> StyleBox:
+	# Same iron slot art as the finance frames: its four-pixel native border stays
+	# closed at every window scale instead of thinning to a dropped hairline.
+	return FinanceFrameSkin.box("slot_selected" if warm else "slot", 8)
 
 
 static func apply_button(button: Button, padding := Vector4(10, 0, 10, 0), warm := false) -> void:

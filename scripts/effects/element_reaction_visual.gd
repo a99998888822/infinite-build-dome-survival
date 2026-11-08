@@ -1,6 +1,7 @@
 extends Node2D
 const BAKED = preload("res://scripts/effects/baked_pixel_frames.gd")
 const BLOCKS = preload("res://scripts/effects/reaction_block_visual.gd")
+const ATTACK = preload("res://scripts/battle/attack_footprint.gd")
 
 ## Short, render-only reaction cues. They never own damage or status timing.
 const PIXEL = preload("res://scripts/effects/pixel_effect_draw.gd")
@@ -20,6 +21,9 @@ const SHARD_ATLASES: Array[Texture2D] = [
 const GROUP := "element_reaction_cues"
 const MAX_CUES := 96
 const STEAM_SCALE := 0.6
+## The baked frost front was authored at this vertical/horizontal ratio; the draw
+## pass lifts it to the battlefield tilt so the ground ring matches the plane.
+const FROST_FRONT_ART_FLATTEN := 0.526
 var kind := ""
 var elapsed := 0.0
 var duration := 0.6
@@ -108,7 +112,8 @@ func _draw() -> void:
 		var growth := smoothstep(0,0.65,clampf(elapsed/duration,0,1))
 		var radius := lerpf(float(options.get("from_radius",51.2)),float(options.get("radius",69.12)),growth)
 		var radius_scale := radius / lerpf(51.2,69.12,growth)
-		BAKED.draw_aligned(self,"frost_front_d1",int(elapsed/duration*43.2),Vector2.ONE*radius_scale,Color.WHITE,Transform2D.IDENTITY,1.0)
+		var tilt_fix := ATTACK.ELLIPSE_RATIO / FROST_FRONT_ART_FLATTEN
+		BAKED.draw_aligned(self,"frost_front_d1",int(elapsed/duration*43.2),Vector2(radius_scale,radius_scale*tilt_fix),Color.WHITE,Transform2D.IDENTITY,1.0)
 		return
 	if kind in ["freeze", "thaw"]:
 		_draw_shard_animation()

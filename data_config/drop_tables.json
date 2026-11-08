@@ -72,8 +72,8 @@
       },
       {
         "type": "health_pack",
-        "amount": 3,
-        "chance_percent": 8
+        "amount": 2,
+        "chance_percent": 4
       },
       {
         "type": "augmentation",
@@ -228,7 +228,7 @@
       {
         "type": "health_pack",
         "amount": 1,
-        "chance_percent": 20
+        "chance_percent": 10
       },
       {
         "type": "augmentation",

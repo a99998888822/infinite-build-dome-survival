@@ -28,7 +28,7 @@ void fragment() {
     float density = -1.0;
     float hot = 0.0;
     float radius = mix(18.0, reach, 1.0 - pow(1.0 - min(phase / 0.80, 1.0), 1.5));
-    float release = 1.0 - smoothstep(0.60, 1.0, phase);
+    float release = 1.0 - smoothstep(0.52, 1.0, phase);
     float width = mix(40.0, 22.0, phase) * max(release, 0.01);
     if (!fragmented) {
         // Large connected color regions, with only broad angular variation.
@@ -61,11 +61,12 @@ void fragment() {
         c = vec4(0.46, 0.18, 0.12, 1.0);
         if (density > 0.15) c = vec4(0.75, 0.29, 0.13, 1.0);
         if (hot > 0.38) c = vec4(0.94, 0.59, 0.22, 1.0);
-        if (hot > 0.78 && phase < 0.68) c = vec4(1.0, 0.86, 0.48, 1.0);
+        if (hot > 0.86 && phase < 0.52) c = vec4(1.0, 0.86, 0.48, 1.0);
     }
     // The entire colored band retracts. No noise holes or scattered color flecks.
     if (age < 0.0 || age >= lifetime) c.a = 0.0;
     bool foreground = screen_p.y > 0.0 && density > 0.0 && density < 0.27;
     if ((render_part == 1 && foreground) || (render_part == 2 && !foreground)) c.a = 0.0;
+    if (render_part == 2) c.a *= 0.66;
     COLOR = c;
 }

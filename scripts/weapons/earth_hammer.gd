@@ -4,6 +4,7 @@ class_name EarthHammer
 signal node_created(index: int, point: Vector2)
 const HAMMER := preload("res://assets/sprites/weapons/earth_hammer/earth_hammer.png")
 const BLOCK_VFX = preload("res://scripts/effects/weapon_block_vfx.gd")
+const APPROVED_VFX = preload("res://scripts/effects/approved_weapon_vfx.gd")
 const CRACKS := preload("res://assets/sprites/weapons/effects/block_vfx/hammer_crack.png")
 const HAMMER_VISUAL_SCALE := 2.2
 # Convex outline of the opaque contact pose in the 64px atlas (frame 8).
@@ -259,26 +260,8 @@ func _draw() -> void:
 
 
 func _draw_ground_cracks() -> void:
-	BLOCK_VFX.ALIGNED.begin(crack_layer)
 	if cancelled:
 		return
 	for node in nodes:
-		var elapsed := age - float(node.at)
-		if elapsed < 0 or elapsed > 1.25:
-			continue
-		var frame := 0 if elapsed < 0.065 else 1 if elapsed < 0.12 else 2 if elapsed < 0.22 else 3 if elapsed < 0.45 else 4 if elapsed < 0.85 else 5
-		var direction: Vector2 = node.direction
-		var point: Vector2 = node.point
-		var child := bool(node.child)
-		var pivot := Vector2(0 if child else 48, 48)
-		var dimensions := Vector2(float(node.length) / 96.0, 0.90) if child else Vector2(spacing / 96.0, 1.30)
-		dimensions *= weapon.get_projectile_visual_scale()
-		# Clip the artwork, not the node positions or damage cells. This also
-		# prevents enlarged strips from growing backwards through the caster.
-		var crop := clampf(pivot.x + (crack_clearance - point.dot(direction)) / maxf(dimensions.x, 0.001), 0, 96)
-		if crop >= 96:
-			continue
-		var rect := Rect2(Vector2(crop, 0) - pivot, Vector2(96 - crop, 96))
-		var region := Rect2(frame * 96 + crop, 0, 96 - crop, 96)
-		BLOCK_VFX.ALIGNED.draw(crack_layer,crack_texture,rect,region,Color(1,1,1,minf(1,(1.25-elapsed)*3)),Transform2D(direction.angle(),dimensions,0,point))
+		APPROVED_VFX.rock(crack_layer,node.point,node.direction,age-float(node.at),float(node.length),bool(node.child),weapon.get_projectile_visual_scale(),crack_clearance)
 	crack_layer.draw_set_transform(Vector2.ZERO)

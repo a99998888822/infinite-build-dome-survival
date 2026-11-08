@@ -123,16 +123,16 @@ func _test_health_pickup_and_spawn_relics() -> void:
 	check(_collect_health_pack(p) == 3, "ordinary health pack restores its authored amount only once")
 	p.add_relic("relic_worn_hemostatic_cloth")
 	p.current_hp = 1
-	check(_collect_health_pack(p) == 4, "cloth increases actual pickup healing without altering base pack data")
+	check(_collect_health_pack(p) == 3, "half a cloth is not enough to round a pack up")
 	p.add_relic("relic_worn_hemostatic_cloth")
 	p.current_hp = 1
-	check(_collect_health_pack(p) == 5, "two cloths stack through actual health pickup collection")
+	check(_collect_health_pack(p) == 4, "two cloths stack into one whole extra health")
 	p.add_relic("relic_medical_cutback")
 	p.current_hp = 1
-	check(_collect_health_pack(p) == 4, "medical cutback subtracts one from the same pickup bonus")
+	check(_collect_health_pack(p) == 3, "medical cutback subtracts half a point from the same pickup bonus")
 	p.relic_system.remove_relic("relic_worn_hemostatic_cloth")
 	p.current_hp = 1
-	check(_collect_health_pack(p) == 3, "removing one cloth removes exactly one healing bonus")
+	check(_collect_health_pack(p) == 3, "removing one cloth leaves one whole point of healing")
 	p.current_hp = int(p.get_stat("max_hp")) - 1
 	check(_collect_health_pack(p) == 1, "boosted health packs still respect maximum health")
 	p.free()
@@ -158,7 +158,7 @@ func _test_new_attribute_relics() -> void:
 	var p := make_player()
 	check(p.add_relic("relic_crimson_coagulation_vial"), "acquire coagulation vial")
 	p.current_hp = 1
-	check(_collect_health_pack(p) == 4, "vial adds one actual pickup healing")
+	check(_collect_health_pack(p) == 3, "half a vial alone does not raise the settled heal")
 	check(p.add_relic("relic_crimson_coagulation_vial"), "vial accepts a second copy")
 	check(is_equal_approx(p.get_stat("hp_regen"), 0.2), "two vials grant two tenths health per second")
 	p.current_hp = 1
@@ -166,12 +166,12 @@ func _test_new_attribute_relics() -> void:
 	check(p.current_hp == 3, "two vials regenerate two actual health over ten seconds")
 	p.add_relic("relic_worn_hemostatic_cloth")
 	p.current_hp = 1
-	check(_collect_health_pack(p) == 6, "two vials and cloth stack their actual pickup healing")
+	check(_collect_health_pack(p) == 4, "two vials and cloth stack into one and a half points of healing")
 	p.add_relic("relic_vitality_potion")
 	check(is_equal_approx(p.get_stat("hp_regen"), 0.45), "two vials stack with other positive regeneration")
 	p.relic_system.remove_relic("relic_crimson_coagulation_vial")
 	p.current_hp = 1
-	check(_collect_health_pack(p) == 5, "removing one vial retains the other vial and cloth healing")
+	check(_collect_health_pack(p) == 4, "removing one vial keeps the whole point from the other vial and cloth")
 	check(is_equal_approx(p.get_stat("hp_regen"), 0.35), "removing one vial retains the other regeneration sources")
 	p.relic_system.remove_relic("relic_crimson_coagulation_vial")
 	check(is_equal_approx(p.get_stat("hp_regen"), 0.25), "removing both vials retains the original regeneration source")

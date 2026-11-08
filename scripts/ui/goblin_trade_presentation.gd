@@ -226,6 +226,9 @@ func configure_challenge(wave: int, icon: String) -> void:
 	_title.text = L10n.text("ui.challenge.wave_title") % wave
 	accept_text = L10n.text("ui.challenge.accept_and_start")
 	decline_text = L10n.text("ui.challenge.start_normal")
+	# The taller decision row uses the full-size button frame, not the 16px chip.
+	FinanceFrameSkin.button(_yes, true, false, false)
+	FinanceFrameSkin.button(_no, false, false, false)
 	ItemIconArt.bind_texture(_seal, FinanceUIStyle.item_icon(icon))
 	FinanceUIStyle.label(_body, 27, FinanceUIStyle.TEXT)
 

@@ -7,9 +7,21 @@ const PLASMA = preload("res://scripts/effects/plasma_ball_visual.gd")
 const ATLAS = preload("res://scripts/effects/aligned_atlas.gd")
 const COOLDOWN = preload("res://shaders/ui/weapon_cooldown.gdshader")
 const FURNACE_SABER = preload("res://scripts/effects/candidate_weapon_art.gd")
-const KINDS: Array[String] = ["lamp", "cannon", "plasma", "cooldown", "furnace", "saber"]
+const APPROVED = preload("res://scripts/effects/approved_weapon_vfx.gd")
+const KINDS: Array[String] = ["lamp", "cannon", "plasma", "cooldown", "furnace", "saber", "approved_weapons"]
 
 static func prepare(parent: Node2D, kind: String) -> void:
+	if kind == "approved_weapons":
+		# Submit every atlas under the entry curtain, including weapons acquired later.
+		for key in APPROVED.FRAMES.TEXTURES:
+			var sprite := Sprite2D.new()
+			sprite.texture = APPROVED.FRAMES.TEXTURES[key]
+			sprite.region_enabled = true
+			var definition: Dictionary = APPROVED.FRAMES.DEFINITIONS[key]
+			sprite.region_rect = Rect2(Vector2.ZERO, Vector2(definition.size[0], definition.size[1]))
+			sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+			parent.add_child(sprite)
+		return
 	if kind == "furnace" or kind == "saber":
 		var effect: Node2D
 		if kind == "furnace":

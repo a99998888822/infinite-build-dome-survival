@@ -361,7 +361,8 @@ func validate_production() -> void:
 	manager._wave_erosion_pressure = manager.calculate_enemy_erosion_pressure(0)
 	var cold := manager.spawn_enemy("enemy_underworld_wolf",Vector2(-120,0)) as UnderworldWolf
 	cold.set_physics_process(false)
-	check(cold.current_hp == 576 and cold.get_stat("ranged_damage") == 3 and cold.get_stat("element_damage") == 8,"normal difficulty scales tripled HP and both skill damage stats")
+	var opening_damage := BattleDifficulty.early_damage_scale(manager.current_wave_index)
+	check(cold.current_hp == 576 and cold.get_stat("ranged_damage") == roundi(2.7 * opening_damage) and cold.get_stat("element_damage") == roundi(8.1 * opening_damage),"normal difficulty scales tripled HP and both skill damage stats")
 	manager.current_wave_index = 4
 	manager._wave_erosion_pressure = manager.calculate_enemy_erosion_pressure(100)
 	var hot := manager.spawn_enemy("enemy_underworld_wolf",Vector2(-120,0)) as UnderworldWolf

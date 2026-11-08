@@ -68,6 +68,8 @@ var pattern_damage_scale := 1.0
 var pattern_size_scale := 1.0
 var pattern_radial := false
 var pattern_merged := false
+## Level-up reach bonus; kept per instance so one upgrade never edits shared data.
+var bonus_attack_range := 0.0
 var grenade_blast_radius: float = 0.0
 var _attack_hit_sfx_played: bool = false
 var _projectile_hit_sfx_played: Dictionary = {}
@@ -152,6 +154,7 @@ func make_cast_copy() -> WeaponInstance:
 	copy.pattern_size_scale = pattern_size_scale
 	copy.pattern_radial = pattern_radial
 	copy.pattern_merged = pattern_merged
+	copy.bonus_attack_range = bonus_attack_range
 	copy.begin_attack()
 	return copy
 
@@ -186,6 +189,7 @@ func make_bounce_copy(point: Vector2) -> WeaponInstance:
 	copy.pattern_damage_scale = pattern_damage_scale
 	copy.pattern_size_scale = pattern_size_scale
 	copy.pattern_merged = pattern_merged
+	copy.bonus_attack_range = bonus_attack_range
 	copy.is_bounce_attack = true
 	copy.source_instance_id = source_instance_id
 	copy._cast_stats = _cast_stats.duplicate()
@@ -577,7 +581,7 @@ func get_base_attack_range() -> float:
 	var base_range := float(weapon_data.get("attack_range", weapon_data.get("hit_radius", 0)))
 	if is_earth_hammer():
 		base_range = float(weapon_data.ground_first_offset) + (get_ground_node_count() - 1) * float(weapon_data.ground_node_spacing)
-	return base_range
+	return base_range + bonus_attack_range
 
 
 func get_attack_range() -> float:
@@ -660,7 +664,6 @@ func is_return_ready() -> bool:
 
 func get_mobility_axes() -> Vector2:
 	var reach := StatDefinitions.calculate_attack_radius(get_base_attack_range(), get_stat("area_size"))
-	if is_saber(): return Vector2.ONE * reach
 	return Vector2(reach, reach * AttackFootprint.ELLIPSE_RATIO)
 
 
@@ -720,7 +723,10 @@ func get_damage_stat_id() -> String:
 
 
 func get_domain_axes() -> Vector2:
-	return Vector2(get_attack_range(), StatDefinitions.calculate_attack_radius(float(weapon_data.get("domain_minor_axis", 145)), get_stat("area_size")))
+	# The domain is a ground footprint: its minor axis follows the battlefield
+	# tilt so the drawn seal and the contact ellipse stay on the same plane.
+	var major := get_attack_range()
+	return Vector2(major, major * AttackFootprint.ELLIPSE_RATIO)
 
 
 func get_principal_damage_bonus() -> float:
@@ -844,6 +850,8 @@ func _apply_level_upgrades(target_level: int) -> void:
 			active_cooldown_ms = maxi(150, active_cooldown_ms + value)
 		elif str(upgrade.get("field", "")) == "grenade_blast_radius":
 			grenade_blast_radius = maxf(1.0, grenade_blast_radius + value)
+		elif str(upgrade.get("field", "")) == "attack_range":
+			bonus_attack_range += float(value)
 
 
 func _build_damage_event(damage_kind: String, force_critical: bool, roll_critical: bool = true) -> DamageEvent:

@@ -150,14 +150,15 @@ func _draw_pattern_unit(unit: WeaponInstance, aim: Vector2) -> void:
 
 func _orbit_band(at: Vector2, radius: float, half_width: float) -> void:
 	_shape_transform = Transform2D.IDENTITY
-	draw_arc(at, radius, 0, TAU, 128, STYLE.fill_color(available), maxf(2, half_width * 2))
-	_outline(_arc_points(at, Vector2.ONE * (radius + half_width)), true, 0.7)
+	# A ground orbit ring is an ellipse on screen; only the stroke keeps its width.
+	draw_polyline(_arc_points(at, Vector2(1.0, FOOTPRINT.ELLIPSE_RATIO) * radius), STYLE.fill_color(available), maxf(2, half_width * 2))
+	_outline(_arc_points(at, Vector2(1.0, FOOTPRINT.ELLIPSE_RATIO) * (radius + half_width)), true, 0.7)
 	if radius > half_width:
-		_outline(_arc_points(at, Vector2.ONE * (radius - half_width)), true, 0.7)
+		_outline(_arc_points(at, Vector2(1.0, FOOTPRINT.ELLIPSE_RATIO) * (radius - half_width)), true, 0.7)
 
 func _body_marker(at: Vector2, radius: float) -> void:
 	_shape_transform = Transform2D.IDENTITY
-	_range_ellipse(at, Vector2.ONE * maxf(5.0, radius), true)
+	_range_ellipse(at, Vector2(1.0, FOOTPRINT.ELLIPSE_RATIO) * maxf(5.0, radius), true)
 
 func _draw_orbit() -> void:
 	var main := pattern_units[0]
@@ -168,7 +169,7 @@ func _draw_orbit() -> void:
 	if pattern.satellite:
 		var center := pattern.orbit_position(0, 0, weapon)
 		_body_marker(center, main.get_hit_radius())
-		_outline(_arc_points(center, Vector2.ONE * pattern.get_satellite_radius(weapon)), true)
+		_outline(_arc_points(center, Vector2(1.0, FOOTPRINT.ELLIPSE_RATIO) * pattern.get_satellite_radius(weapon)), true)
 		for i in range(1, pattern_units.size()):
 			_body_marker(center + pattern.satellite_position(i, 0, weapon), pattern_units[i].get_hit_radius())
 	else:
@@ -192,7 +193,7 @@ func _draw_satellites(aim: Vector2) -> void:
 		_outline(PackedVector2Array([Vector2(clearance, -extent), Vector2(reach, -extent)]), false, 0.5)
 		_outline(PackedVector2Array([Vector2(clearance, extent), Vector2(reach, extent)]), false, 0.5)
 	_shape_transform = Transform2D.IDENTITY
-	_outline(_arc_points(center, Vector2.ONE * radius), true)
+	_outline(_arc_points(center, Vector2(1.0, FOOTPRINT.ELLIPSE_RATIO) * radius), true)
 	_body_marker(center, main.get_hit_radius())
 	for i in range(1, pattern_units.size()):
 		_body_marker(center + pattern.satellite_position(i, 0, weapon), pattern_units[i].get_hit_radius())
@@ -209,7 +210,7 @@ func _draw_pattern_grenades() -> void:
 		_range_ellipse(point, Vector2(1.0, FOOTPRINT.ELLIPSE_RATIO) * pattern_units[i].get_grenade_blast_radius(), true)
 		_outline(PackedVector2Array([Vector2.ZERO, point]), false, 0.45)
 	if pattern.satellite:
-		_outline(_arc_points(main_landing, Vector2.ONE * pattern.get_satellite_radius(weapon)), true)
+		_outline(_arc_points(main_landing, Vector2(1.0, FOOTPRINT.ELLIPSE_RATIO) * pattern.get_satellite_radius(weapon)), true)
 
 
 func arrow_points(reach: float, width: float) -> PackedVector2Array:

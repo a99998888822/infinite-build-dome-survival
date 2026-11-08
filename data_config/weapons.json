@@ -87,7 +87,7 @@
   },
   {
     "id": "weapon_iron_grenade_cannon",
-    "release_locked": true,
+    "release_locked": false,
     "shop_weight": 80,
     "combat_tags": ["投射物", "范围"],
     "shop_description": "抛射榴弹炮，延迟后在落点爆炸",
@@ -144,7 +144,6 @@
     "active_cooldown_ms": 3500,
     "attack_interval_ms": 800,
     "attack_range": 300,
-    "domain_minor_axis": 242,
     "hit_radius": 0,
     "projectile_speed": 0,
     "spread_angle": 0,
@@ -161,7 +160,7 @@
   },
   {
     "id": "weapon_rentier_purse",
-    "release_locked": true,
+    "release_locked": false,
     "shop_weight": 90,
     "combat_tags": ["远程", "投射物"],
     "shop_description": "向瞄准方向扇形散射金币，受到远程伤害和本金双加成",
@@ -196,7 +195,7 @@
   },
   {
     "id": "weapon_copper_lamp",
-    "release_locked": true,
+    "release_locked": false,
     "shop_weight": 90,
     "combat_tags": ["扇形", "范围"],
     "shop_description": "最近的敌人持续喷射火流",
@@ -280,7 +279,7 @@
   },
   {
     "id": "weapon_camp_dagger",
-    "release_locked": true,
+    "release_locked": false,
     "shop_weight": 100,
     "combat_tags": ["近战", "扇形", "范围"],
     "shop_description": "正反手交替斩击",
@@ -439,7 +438,7 @@
   },
   {
     "id": "weapon_star_tome",
-    "release_locked": true,
+    "release_locked": false,
     "shop_weight": 80,
     "display_name": "移星秘典",
     "description": "闪现到鼠标位置，震开落点周围敌人并造成伤害。起点留下印记，再次施放返回。",
@@ -609,8 +608,13 @@
     "level_upgrades": {
       "2": {
         "rarity": "uncommon",
-        "description": "近战基础伤害 [color=#7FD88F]+5[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]\n附魔槽 [color=#7FD88F]+1[/color]",
+        "description": "近战基础伤害 [color=#7FD88F]+5[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]\n附魔槽 [color=#7FD88F]+1[/color]\n攻击范围 [color=#7FD88F]+30[/color]",
         "effects": [
+          {
+            "field": "attack_range",
+            "value": 30
+          },
+
           {
             "stat": "melee_damage",
             "value": 5
@@ -627,8 +631,13 @@
       },
       "3": {
         "rarity": "rare",
-        "description": "近战基础伤害 [color=#7FD88F]+5[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]",
+        "description": "近战基础伤害 [color=#7FD88F]+5[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]\n攻击范围 [color=#7FD88F]+30[/color]",
         "effects": [
+          {
+            "field": "attack_range",
+            "value": 30
+          },
+
           {
             "stat": "melee_damage",
             "value": 5
@@ -641,8 +650,13 @@
       },
       "4": {
         "rarity": "epic",
-        "description": "近战基础伤害 [color=#7FD88F]+5[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]\n附魔槽 [color=#7FD88F]+1[/color]",
+        "description": "近战基础伤害 [color=#7FD88F]+5[/color]\n基础冷却 [color=#7FD88F]-0.1s[/color]\n附魔槽 [color=#7FD88F]+1[/color]\n攻击范围 [color=#7FD88F]+30[/color]",
         "effects": [
+          {
+            "field": "attack_range",
+            "value": 30
+          },
+
           {
             "stat": "melee_damage",
             "value": 5
@@ -659,8 +673,13 @@
       },
       "5": {
         "rarity": "mythic",
-        "description": "近战基础伤害 [color=#7FD88F]+7[/color]\n刀光次数 [color=#7FD88F]+1[/color]",
+        "description": "近战基础伤害 [color=#7FD88F]+7[/color]\n刀光次数 [color=#7FD88F]+1[/color]\n攻击范围 [color=#7FD88F]+30[/color]",
         "effects": [
+          {
+            "field": "attack_range",
+            "value": 30
+          },
+
           {
             "stat": "melee_damage",
             "value": 7

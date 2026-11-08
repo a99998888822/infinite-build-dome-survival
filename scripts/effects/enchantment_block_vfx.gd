@@ -2,6 +2,7 @@ extends Node2D
 ## Broad palette bands, shared with the lamp's pixel/noise language.
 ## This node is only needed for the detached, short-lived shockwave visual.
 const SHADER = preload("res://shaders/effects/enchantment_blocks.gdshader")
+const FOOTPRINT = preload("res://scripts/battle/attack_footprint.gd")
 static var _noise: Texture2D
 var radius := 55.2
 var elapsed := 0.0
@@ -13,29 +14,34 @@ static func paint(
 	canvas: CanvasItem, kind: int, bounds: Rect2, reach: float,
 	age: float, progress: float, quality := 2
 ) -> void:
-	var shader_material: ShaderMaterial
-	if not canvas.has_meta("enchantment_block_material"):
-		if _noise == null:
-			var noise := FastNoiseLite.new()
-			noise.seed = 4102026
-			noise.noise_type = FastNoiseLite.TYPE_SIMPLEX_SMOOTH
-			noise.frequency = 0.035
-			noise.fractal_type = FastNoiseLite.FRACTAL_NONE
-			_noise = ImageTexture.create_from_image(noise.get_seamless_image(128, 128))
-		shader_material = ShaderMaterial.new()
-		shader_material.shader = SHADER
-		shader_material.set_shader_parameter("flow_noise", _noise)
-		canvas.material = shader_material
-		canvas.set_meta("enchantment_block_material", shader_material)
-		canvas.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-	else:
-		shader_material = canvas.get_meta("enchantment_block_material")
+	var shader_material := material_for(canvas)
 	shader_material.set_shader_parameter("kind", kind)
+	shader_material.set_shader_parameter("projection_ratio", FOOTPRINT.ELLIPSE_RATIO)
 	shader_material.set_shader_parameter("reach", reach)
 	shader_material.set_shader_parameter("effect_time", age)
 	shader_material.set_shader_parameter("progress", clampf(progress, 0, 1))
 	shader_material.set_shader_parameter("detail", quality)
 	canvas.draw_rect(bounds, Color.WHITE)
+
+
+static func material_for(canvas: CanvasItem) -> ShaderMaterial:
+	if canvas.has_meta("enchantment_block_material"):
+		return canvas.get_meta("enchantment_block_material")
+	if _noise == null:
+		var noise := FastNoiseLite.new()
+		noise.seed = 4102026
+		noise.noise_type = FastNoiseLite.TYPE_SIMPLEX_SMOOTH
+		noise.frequency = 0.035
+		noise.fractal_type = FastNoiseLite.FRACTAL_NONE
+		_noise = ImageTexture.create_from_image(noise.get_seamless_image(128, 128))
+	var shader_material := ShaderMaterial.new()
+	shader_material.shader = SHADER
+	shader_material.set_shader_parameter("flow_noise", _noise)
+	shader_material.set_shader_parameter("projection_ratio", FOOTPRINT.ELLIPSE_RATIO)
+	canvas.material = shader_material
+	canvas.set_meta("enchantment_block_material", shader_material)
+	canvas.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	return shader_material
 
 
 static func spawn_shockwave(parent: Node, point: Vector2, reach: float, tier: int) -> Node2D:
@@ -46,6 +52,9 @@ static func spawn_shockwave(parent: Node, point: Vector2, reach: float, tier: in
 	parent.add_child(effect)
 	effect.global_position = point
 	effect.add_to_group("enchantment_block_shockwaves")
+	# Own the shared ground material before the first frame so the tilt is fixed
+	# for captures, pooled reviews and headless checks alike.
+	material_for(effect)
 	return effect
 
 

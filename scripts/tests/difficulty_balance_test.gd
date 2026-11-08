@@ -64,11 +64,14 @@ func _test_selection_and_slots() -> void:
 		check(enemy.get_stat("max_hp") == [24, 29, 31][index] and enemy.get_stat("move_speed") == [51, 61, 66][index], "active difficulty controls actual enemy HP and speed: " + id)
 		var before := player.current_hp
 		enemy._process_contact_damage()
-		check(before - player.current_hp == [4, 5, 5][index], "actual rounded contact damage in tier " + id)
+		# Wave one pays the reduced opening damage defined by the difficulty curve.
+		var early := BattleDifficulty.early_damage_scale(0)
+		check(before - player.current_hp == [roundi(4.05 * early), roundi(4.86 * early), roundi(5.265 * early)][index], "actual rounded contact damage in tier " + id)
 		for stat in ["melee_damage", "ranged_damage", "element_damage", "armor"]:
 			enemy.modifier_stack.set_base_stat(stat, 100.0)
 			var base := 100.0 if stat == "armor" else 45.0
-			check(enemy.get_stat(stat) == roundi(base * [1.0, 1.2, 1.3][index]), "actual enemy multiplier: " + id + " " + stat)
+			var scale := 1.0 if stat == "armor" else early
+			check(enemy.get_stat(stat) == roundi(base * [1.0, 1.2, 1.3][index] * scale), "actual enemy multiplier: " + id + " " + stat)
 		enemy.free()
 		check(manager.calculate_enemy_spawn_count(6) == [1, 2, 2][index] and manager.calculate_enemy_spawn_count(4) == [1, 1, 2][index], "active combat smaller groups: " + id)
 		check(is_equal_approx(manager.calculate_spawn_interval(1200), [3240.0, 2880.0, 2520.0][index] / 2.15), "first-wave supply is 2.15 times the previous rate: " + id)
@@ -80,6 +83,14 @@ func _test_selection_and_slots() -> void:
 		manager.current_wave_index = 1
 		manager._initialize_elite_schedule()
 		check(is_equal_approx(manager._elite_expected_count, [1.0, 1.15, 1.3][index]) and manager._elite_planned_count >= 1, "every tier guarantees elites from wave two")
+		for wave_index in [1, 2, 3, 4, 5, 11]:
+			manager.current_wave_index = wave_index
+			var hp_scale: float = [0.65, 0.75, 0.85, 0.95, 1.0, 1.0][[1, 2, 3, 4, 5, 11].find(wave_index)]
+			for elite_id in ["enemy_elite_rusher", "enemy_underworld_wolf"]:
+				var elite := manager.spawn_enemy(elite_id, Vector2(3000, 0))
+				var base_hp := float(DataRegistry.get_record("enemies", elite_id).base_stats.max_hp)
+				check(elite.current_hp == roundi(base_hp * 0.8 * [1.0, 1.2, 1.3][index] * pow(1.24, wave_index) * hp_scale), "opening elite HP tapers back to unchanged late HP: " + id + " " + elite_id + " " + str(wave_index))
+				elite.free()
 		manager.current_wave_index = 9
 		manager._initialize_elite_schedule()
 		check(is_equal_approx(manager._elite_expected_count, [1.25, 1.4375, 1.625][index]), "difficulty scales the increased elite expectation")

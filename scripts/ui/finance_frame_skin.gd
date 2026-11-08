@@ -21,6 +21,7 @@ static func box(kind: String = "panel", margin: int = 0, shade: Color = Color.WH
 	style.inner_rule = kind == "dialog"
 	style.bottom_rail = kind == "tab_selected"
 	style.rule_color = PALETTE.WARM_ACTIVE if warm else PALETTE.LINE_IDLE
+	style.edge_color = PALETTE.WARM.BORDER if warm else PALETTE.BORDER
 	for side in [SIDE_LEFT, SIDE_TOP, SIDE_RIGHT, SIDE_BOTTOM]:
 		style.set_texture_margin(side, 2 if small else (3 if recessed else (6 if framed else 4)))
 		style.set_native_margin(side, 2 if small else (4 if recessed else (8 if framed else 5)))

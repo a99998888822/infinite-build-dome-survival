@@ -35,6 +35,7 @@ var _plasma_tick_timer: float = 0.0
 var _plasma_tick_count: int = 0
 var _plasma_contact_hold_left: float = 0.0
 var _plasma_visual: Node2D = null
+var _wood_arrow_visual: Node2D = null
 var _sorted_visual: Node2D = null
 var _hit_shape: CircleShape2D = null
 var _deferred_contacts: Dictionary = {}
@@ -95,6 +96,12 @@ func initialize(
 		_plasma_visual = PLASMA_VISUAL_SCRIPT.new()
 		_sorted_visual.add_child(_plasma_visual)
 		_plasma_visual.initialize(weapon, projectile_id)
+	elif weapon.weapon_id == "weapon_void_blade":
+		_wood_arrow_visual = preload("res://scripts/effects/wood_arrow_visual.gd").new()
+		_wood_arrow_visual.rotation = direction.angle()
+		_wood_arrow_visual.scale = Vector2.ONE * visual_scale * weapon.get_projectile_visual_scale()
+		add_child(_wood_arrow_visual)
+		_wood_arrow_visual.advance(0.0)
 	elif texture != null:
 		var sprite := Sprite2D.new()
 		sprite.texture = texture
@@ -103,7 +110,7 @@ func initialize(
 		sprite.rotation = direction.angle()
 		add_child(sprite)
 
-	if _split_depth == 0 and not _is_plasma_projectile():
+	if _split_depth == 0 and not _is_plasma_projectile() and _wood_arrow_visual == null:
 		var trail_context := EFFECT_PARAMETER_RESOLVER_SCRIPT.build_weapon_context(weapon, "projectile_trail")
 		_trail_emitter = PARTICLE_WORLD_SCRIPT.create_emitter(self, "projectile_trail", trail_context, {
 			"motion_type": "attached",
@@ -123,6 +130,9 @@ func _physics_process(delta: float) -> void:
 		return
 	if bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)):
 		return
+	if _wood_arrow_visual != null:
+		_wood_arrow_visual.rotation = direction.angle()
+		_wood_arrow_visual.advance(delta)
 	var pending := _deferred_contacts.keys()
 	_deferred_contacts.clear()
 	for id in pending:

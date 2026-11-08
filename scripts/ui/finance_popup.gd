@@ -386,7 +386,8 @@ func _build() -> void:
 	amount_input.placeholder_text = "ui.bank.amount_placeholder"
 	amount_input.max_length = 12
 	amount_input.virtual_keyboard_type = LineEdit.KEYBOARD_TYPE_NUMBER
-	amount_input.add_theme_font_size_override("font_size", 20 if MobileProfile.is_mobile() else 12)
+	amount_input.add_theme_font_size_override("font_size", 22 if MobileProfile.is_mobile() else 20)
+	amount_input.custom_minimum_size.y = 34
 	amount_input.add_theme_stylebox_override("normal", FinanceFrameSkin.box("input", 6))
 	amount_input.add_theme_stylebox_override("read_only", FinanceFrameSkin.box("input", 6))
 	var input_focus := StyleBoxFlat.new()
@@ -1018,6 +1019,8 @@ func _input(event: InputEvent) -> void:
 			return
 	if event is InputEventMouseMotion and get_viewport_rect().has_point(event.position):
 		# Use the pointer event that opens the tooltip, in viewport coordinates.
+		_tooltip_mouse_position = event.position
+	if MobileProfile.is_mobile() and event is InputEventScreenTouch and event.pressed:
 		_tooltip_mouse_position = event.position
 	if event is InputEventKey and not event.echo and event.is_action_pressed("ui_cancel") and handle_back_request():
 		get_viewport().set_input_as_handled()

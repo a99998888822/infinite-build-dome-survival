@@ -74,11 +74,12 @@ func get_satellite_radius(source: WeaponInstance) -> float:
 	return maxf(42.0, source.get_hit_radius() * (float(units[0].size) + 1.0) + 12.0)
 
 func orbit_position(index: int, seconds: float, source: WeaponInstance) -> Vector2:
-	return Vector2.from_angle(TAU * index / maxi(units.size(), 1) + seconds * TAU / source.get_active_cooldown_seconds()) * source.get_attack_range()
+	# Orbit bodies sweep a circle on the ground plane, so the offset is projected.
+	return AttackFootprint.project(Vector2.from_angle(TAU * index / maxi(units.size(), 1) + seconds * TAU / source.get_active_cooldown_seconds()) * source.get_attack_range())
 
 func satellite_position(index: int, seconds: float, source: WeaponInstance) -> Vector2:
 	var phase := TAU * (index - 1) / maxi(units.size() - 1, 1)
-	return Vector2.from_angle(phase + seconds * TAU / maxf(0.45, source.get_active_cooldown_seconds() * 0.3)) * get_satellite_radius(source)
+	return AttackFootprint.project(Vector2.from_angle(phase + seconds * TAU / maxf(0.45, source.get_active_cooldown_seconds() * 0.3)) * get_satellite_radius(source))
 
 func grenade_landing(unit: WeaponInstance, index: int, pointer: Vector2) -> Vector2:
 	if radial: pointer = pointer.rotated(TAU * index / units.size())

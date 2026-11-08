@@ -3,7 +3,7 @@ class_name HealthPack
 
 signal collected(pickup: HealthPack, heal_amount: int)
 
-const DEFAULT_AMOUNT: int = 3
+const DEFAULT_AMOUNT: int = 2
 const DEFAULT_ATTRACT_SPEED: float = 360.0
 
 @export var amount: int = DEFAULT_AMOUNT
@@ -54,7 +54,9 @@ func collect() -> void:
 	var healed_amount := 0
 	if target_player != null and amount > 0:
 		var heal_plus := target_player.get_stat("health_pack_heal_plus")
-		var adjusted_amount := maxi(0, amount + int(roundf(heal_plus)))
+		# Relic bonuses are half points, so the settled heal floors instead of
+		# letting one cloth silently round a pack back up.
+		var adjusted_amount := maxi(0, floori(float(amount) + heal_plus))
 		healed_amount = target_player.heal(adjusted_amount)
 	collected.emit(self, healed_amount)
 	queue_free()

@@ -133,7 +133,7 @@ static func targeting_dimensions(source: WeaponInstance) -> Vector3:
 	if source.is_ritual_tome(): axes = source.get_domain_axes()
 	elif source.is_grenade(): axes = grenade_range_axes(source)
 	elif source.is_copper_lamp() or source.is_camp_dagger(): axes = Vector2(reach, reach * ELLIPSE_RATIO)
-	elif source.is_meteor_flail(): axes = Vector2(reach, reach * ELLIPSE_RATIO) + Vector2.ONE * source.get_hit_radius()
+	elif source.is_meteor_flail(): axes = Vector2(1.0, ELLIPSE_RATIO) * (reach + source.get_hit_radius())
 	else:
 		if source.has_combat_tag(L10n.text("stat.category.projectiles")):
 			reach += source.get_hit_radius()

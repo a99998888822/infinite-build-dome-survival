@@ -35,7 +35,7 @@ func _make_manager(player: PlayerController) -> WaveManager:
 	add_child(manager)
 	manager.set_process(false)
 	manager.initialize(player)
-	manager.current_wave_index = 13
+	manager.current_wave_index = 9
 	manager.start_next_wave()
 	return manager
 
@@ -81,8 +81,8 @@ func _test_spawns_and_damage() -> void:
 		var hot := _spawn(hot_manager, id)
 		var extreme := _spawn(extreme_manager, id)
 		hot_enemies.append(hot)
-		# Wave 15: ordinary linear HP; independent elite base retains compounded HP.
-		var wave_hp := 480.0 * pow(1.24, 14) if hot is EliteRusher else 24.0 + 200.0 * 14.0 / 19.0
+		# Final wave: ordinary linear HP; independent elite base retains compounded HP.
+		var wave_hp := 480.0 * pow(1.24, 10) if hot is EliteRusher else 24.0 + 200.0 * 10.0 / 19.0
 		check(cold.get_stat("max_hp") == roundi(wave_hp) and hot.get_stat("max_hp") == roundi(wave_hp * 4.78), "%s HP combines difficulty, wave and erosion once" % id)
 		check(absf(hot.get_stat("armor") - cold.get_stat("armor") * 2.35) <= 1.0, "%s armor combines rank and erosion once" % id)
 		check(hot.current_hp == int(hot.get_stat("max_hp")), "%s spawns with full scaled health" % id)
@@ -92,8 +92,8 @@ func _test_spawns_and_damage() -> void:
 			cold.modifier_stack.set_base_stat(stat, 100.0)
 			hot.modifier_stack.set_base_stat(stat, 100.0)
 			extreme.modifier_stack.set_base_stat(stat, 100.0)
-			check(hot.get_stat(stat) == roundi(45.0 * 1.21 * 2.23) and cold.get_stat(stat) == roundi(45.0 * 1.21), "%s also scales %s with slow wave damage growth" % [id, stat])
-			check(extreme.get_stat(stat) == roundi(45.0 * 1.21 * 3.73), "%s erosion 200 continues scaling %s" % [id, stat])
+			check(hot.get_stat(stat) == roundi(45.0 * 1.15 * 2.23) and cold.get_stat(stat) == roundi(45.0 * 1.15), "%s also scales %s with slow wave damage growth" % [id, stat])
+			check(extreme.get_stat(stat) == roundi(45.0 * 1.15 * 3.73), "%s erosion 200 continues scaling %s" % [id, stat])
 		if hot is EliteRusher:
 			cold._process_special_behavior(0.75)
 			hot._process_special_behavior(0.75)
@@ -112,7 +112,7 @@ func _test_spawns_and_damage() -> void:
 		check(hot.take_damage(100) < cold.take_damage(100), "%s actual incoming damage uses increased armor" % id)
 	var normal := hot_enemies[0]
 	var elite := hot_enemies[1]
-	check(elite.get_stat("max_hp") == roundi(480.0 * pow(1.24, 14) * 4.78), "erosion preserves tripled independently scaled elite HP")
+	check(elite.get_stat("max_hp") == roundi(480.0 * pow(1.24, 10) * 4.78), "erosion preserves tripled independently scaled elite HP")
 	var frozen := hot_manager.get_enemy_erosion_snapshot()
 	var original_hp := normal.current_hp
 	hot_player.modifier_stack.set_base_stat("divinity", 0.0)
@@ -196,12 +196,12 @@ func _test_expanded_elite_cap() -> void:
 	manager.set_process(false)
 	for index in BattleDifficulty.IDS.size():
 		manager.initialize(player, BattleDifficulty.IDS[index])
-		manager.current_wave_index = 18
+		manager.current_wave_index = 10
 		manager.start_next_wave()
-		var expected: float = [5.0, 5.75, 6.5][index]
-		check(is_equal_approx(manager._elite_expected_count, expected), "late-wave quotas no longer truncate at three in tier %d" % (index + 1))
+		var expected: float = [3.0, 3.45, 3.9][index]
+		check(is_equal_approx(manager._elite_expected_count, expected), "late-wave quotas keep their erosion and tier scaling in tier %d" % (index + 1))
 		check(manager._elite_planned_count >= floori(expected) and manager._elite_planned_count <= ceili(expected), "higher quota retains adjacent-integer sampling")
-	# Exercise the actual ceiling, beyond expectations reached by the current 20 waves.
+	# Exercise the actual ceiling, beyond expectations reached by the twelve waves.
 	manager._difficulty.elite_count = 10.0
 	manager._initialize_elite_schedule()
 	check(manager._elite_expected_count == 9 and manager._elite_planned_count == 9 and manager._elite_spawn_schedule.size() == 9, "difficulty multiplication still respects the nine-elite cap")

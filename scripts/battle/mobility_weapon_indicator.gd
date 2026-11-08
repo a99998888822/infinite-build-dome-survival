@@ -97,7 +97,6 @@ func ellipse(at: Vector2, axes: Vector2, filled: bool, strength: float = 1.0) ->
 
 func get_movement_axes() -> Vector2:
 	var reach := movement_distance if kind == Kind.RECOIL_GUN else StatDefinitions.calculate_attack_radius(movement_distance, attack_range_bonus)
-	if kind == Kind.SABER: return Vector2.ONE * reach
 	return Vector2(reach, reach * FOOTPRINT.ELLIPSE_RATIO)
 
 
@@ -114,6 +113,12 @@ func get_landing_offset() -> Vector2:
 
 func get_impact_radius() -> float:
 	return StatDefinitions.calculate_damage_area_radius(impact_radius, damage_area_bonus) * impact_scale
+
+
+func get_landing_impact_axes() -> Vector2:
+	# Landing damage is a disc lying on the ground, so it takes the same tilt as
+	# every other battlefield footprint instead of reading as a screen circle.
+	return GROUND.projected_axes() * get_impact_radius()
 
 
 func dashed(from: Vector2, to: Vector2, strength: float = 0.8) -> void:
@@ -168,7 +173,7 @@ func _draw() -> void:
 			ellipse(Vector2.ZERO, get_movement_axes(), false, 0.70)
 			dashed(direction * minf(clearance, landing.length()), landing)
 			arrowhead(landing, direction)
-			ellipse(landing, Vector2.ONE * get_impact_radius(), true)
+			ellipse(landing, get_landing_impact_axes(), true)
 		Kind.RECOIL_GUN:
 			if shot_shape_suppressed:
 				var retreat := get_landing_offset()

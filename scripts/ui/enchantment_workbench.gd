@@ -200,8 +200,8 @@ func refresh() -> void:
 			_slots.add_child(slot)
 			slot.configure_slot(index, item)
 			slot.slot_drop_requested.connect(_drop_into_slot)
-			slot.item_tooltip_requested.connect(func(_anchor, content): tooltip_requested.emit(content))
-			slot.item_tooltip_hidden.connect(func(): tooltip_hidden.emit())
+			slot.item_tooltip_requested.connect(_show_item_hover_tooltip)
+			slot.item_tooltip_hidden.connect(_hide_item_hover_tooltip)
 			if item.is_empty():
 				slot.pressed.connect(func(): _operate("attach", selected_weapon_id, selected_item_id))
 			else:
@@ -295,6 +295,11 @@ func _stop_weapon_scroll() -> void:
 
 
 func _input(event: InputEvent) -> void:
+	if MobileProfile.is_mobile() and is_visible_in_tree():
+		# Dismiss before GUI dispatch; a card's release selects it and opens its details.
+		if (event is InputEventScreenTouch and event.pressed) or \
+				(event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed):
+			tooltip_hidden.emit()
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and not event.pressed:
 		_stop_weapon_scroll()
 
@@ -341,6 +346,12 @@ func _select_item(id: String) -> void:
 	selected_item_id = id
 	_update_selection()
 	tooltip_hidden.emit()
+	if MobileProfile.is_mobile() and not selected_item_id.is_empty():
+		for container in [_inventory, _slots]:
+			for child in container.get_children():
+				if child is ItemInventoryCard and str(child.item_instance.get("item_instance_id", "")) == selected_item_id:
+					tooltip_requested.emit(child._build_tooltip())
+					return
 
 
 func _update_selection() -> void:
@@ -451,9 +462,19 @@ func _item_card(item: Dictionary, parent: Control) -> ItemInventoryCard:
 	var card := EnchantmentInventoryCard.new()
 	parent.add_child(card)
 	card.configure(item, true)
-	card.item_tooltip_requested.connect(func(_anchor, content): tooltip_requested.emit(content))
-	card.item_tooltip_hidden.connect(func(): tooltip_hidden.emit())
+	card.item_tooltip_requested.connect(_show_item_hover_tooltip)
+	card.item_tooltip_hidden.connect(_hide_item_hover_tooltip)
 	return card
+
+
+func _show_item_hover_tooltip(_anchor: ItemInventoryCard, content: String) -> void:
+	if not MobileProfile.is_mobile():
+		tooltip_requested.emit(content)
+
+
+func _hide_item_hover_tooltip() -> void:
+	if not MobileProfile.is_mobile():
+		tooltip_hidden.emit()
 
 
 func _button(caption: String, parent: Control) -> Button:

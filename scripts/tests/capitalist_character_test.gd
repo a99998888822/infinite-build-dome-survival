@@ -59,7 +59,7 @@ func _test_new_runs() -> void:
 		manager.initialize(p)
 		check(bank.principal == 500 and manager.current_gold == 0, "four acquisitions grant exactly 500 principal and zero cash")
 		check(p.get_relic_ids().size() == 4 and p.grant_starting_relics() and bank.principal == 500, "starting grants are idempotent")
-		var expected := {"max_hp": 39, "hp_regen": -0.25, "armor": -5, "damage_percent": -30, "attack_speed": -12, "currency_gain_percent": -50, "load_capacity": 80, "move_speed": 120, "pickup_radius": 180, "humanity": 100, "divinity": 0, "luck": 0, "health_pack_heal_plus": -1, "shop_price_percent": -10}
+		var expected := {"max_hp": 39, "hp_regen": -0.25, "armor": -5, "damage_percent": -30, "attack_speed": -12, "currency_gain_percent": -50, "load_capacity": 80, "move_speed": 120, "pickup_radius": 180, "humanity": 100, "divinity": 0, "luck": 0, "health_pack_heal_plus": -0.5, "shop_price_percent": -10}
 		for stat_id in expected:
 			check(is_equal_approx(p.get_stat(stat_id), float(expected[stat_id])), "effective starting stat " + stat_id)
 		check(p.current_hp == 39 and bank.get_interest_rate() == 13, "full starting HP and thirteen percent interest")

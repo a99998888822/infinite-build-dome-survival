@@ -32,7 +32,7 @@ func _run() -> void:
 	GameGlobal.set_runtime_flag("review_visual_adaptive", false)
 	for bonus in [0.0,100.0]:
 		var multiplier: float = 1.0 + bonus * 0.005
-		var axes := Vector2(75.3984,49.762944) * multiplier
+		var axes := FOOTPRINT.axes(75.3984) * multiplier
 		await fixture("scroll_water", axes, bonus)
 		var water := spawn_effect("water_wave") as WaterWaveEffect
 		check_hits("water " + str(bonus))
@@ -77,7 +77,7 @@ func _run() -> void:
 		check(merged == fire and fire._radius >= radius*1.35, "merge does not shrink expanded fire")
 		check_ground(fire,fire.get_terminal_footprint_axes(),"merged fire")
 
-		axes = Vector2(51.2,28.16)*multiplier
+		axes = FOOTPRINT.axes(51.2)*multiplier
 		await fixture("scroll_ice",axes,bonus)
 		weapon._attached_item_instances[0]["effect_ids"] = ["ice"]
 		IceFieldEffect.spawn(host,Vector2.ZERO,weapon,event)

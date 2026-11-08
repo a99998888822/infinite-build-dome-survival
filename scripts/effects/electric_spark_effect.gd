@@ -45,7 +45,7 @@ static func spawn(parent: Node, hit_position: Vector2, weapon: WeaponInstance, d
 	effect._damage_event = damage_event
 	effect._hit_position = hit_position
 	effect._attachment_item_id = attachment_item_id
-	effect._context = EFFECT_PARAMETER_RESOLVER_SCRIPT.build_weapon_context(weapon, "electric_spark", {
+	effect._context = EFFECT_PARAMETER_RESOLVER_SCRIPT.build_cached_weapon_context(weapon, "electric_spark", {
 		"radius": DEFAULT_RADIUS,
 		"strike_height": DEFAULT_STRIKE_HEIGHT,
 	}, attachment_item_id)

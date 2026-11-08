@@ -1,11 +1,9 @@
 extends RefCounted
 
 const EFFECT_CONTEXT_SCRIPT = preload("res://scripts/effects/effect_context.gd")
-static var _cached_inputs: Array = []
-static var _cached_context: RefCounted
 static var _cached_frame := -1
-static var _cached_weapon_id := 0
-static var _cached_all_modifiers: Array = []
+static var _entries: Dictionary = {}
+const MAX_FRAME_CONTEXTS := 64
 
 
 static func build_weapon_context(weapon: Variant, effect_id: String, base_parameters: Dictionary = {}, attachment_item_id: String = "") -> RefCounted:
@@ -16,38 +14,45 @@ static func build_weapon_context(weapon: Variant, effect_id: String, base_parame
 # including modifiers and attachment order, so a damage callback can change them.
 static func build_cached_weapon_context(weapon: Variant, effect_id: String, base_parameters: Dictionary = {}, attachment_item_id: String = "") -> RefCounted:
 	var frame := Engine.get_process_frames()
-	if frame == _cached_frame and _matches_cached_weapon(weapon, effect_id, base_parameters, attachment_item_id):
-		return _cached_context
-	var inputs := _capture_inputs(weapon, effect_id, base_parameters, attachment_item_id)
-	if frame != _cached_frame or inputs != _cached_inputs:
-		_cached_inputs = inputs
+	if frame != _cached_frame:
+		_entries.clear()
 		_cached_frame = frame
-		_cached_context = _build_context(inputs)
+	# Independent slots prevent alternating water/spark/reaction contacts from
+	# evicting each other. Entries never keep weapon objects alive across frames.
+	var key := str(weapon.get_instance_id() if weapon != null else 0) + ":" + effect_id + "\u001f" + attachment_item_id
+	var entry: Dictionary = _entries.get(key, {})
+	if not entry.is_empty() and _matches_cached_weapon(weapon, effect_id, base_parameters, attachment_item_id, entry):
+		return entry.context
+	var inputs := _capture_inputs(weapon, effect_id, base_parameters, attachment_item_id)
+	if not entry.is_empty() and inputs == entry.inputs:
+		return entry.context
+	entry = {"inputs": inputs, "context": _build_context(inputs), "weapon_id": 0, "modifiers": []}
 	# Only the concrete weapon's getters have the known backing data below.
 	# Custom providers/subclasses keep the original getter-based path.
-	_cached_weapon_id = 0
-	_cached_all_modifiers = []
 	if weapon != null and weapon.get_script() != null and weapon.get_script().resource_path == "res://scripts/weapons/weapon_instance.gd":
-		_cached_weapon_id = weapon.get_instance_id()
-		_cached_all_modifiers = weapon.effect_modifiers.duplicate(true)
-	return _cached_context
+		entry.weapon_id = weapon.get_instance_id()
+		entry.modifiers = weapon.effect_modifiers.duplicate(true)
+	if _entries.size() >= MAX_FRAME_CONTEXTS: _entries.clear()
+	_entries[key] = entry
+	return entry.context
 
 
-static func _matches_cached_weapon(weapon: Variant, effect_id: String, base_parameters: Dictionary, attachment_item_id: String) -> bool:
-	if _cached_weapon_id == 0 or weapon == null or weapon.get_instance_id() != _cached_weapon_id: return false
-	if _cached_inputs[0] != effect_id or _cached_inputs[1] != base_parameters or _cached_inputs[2] != attachment_item_id: return false
+static func _matches_cached_weapon(weapon: Variant, effect_id: String, base_parameters: Dictionary, attachment_item_id: String, entry: Dictionary) -> bool:
+	if entry.weapon_id == 0 or weapon == null or weapon.get_instance_id() != entry.weapon_id: return false
+	var inputs: Array = entry.inputs
+	if inputs[0] != effect_id or inputs[1] != base_parameters or inputs[2] != attachment_item_id: return false
 	# Read live stats in the original order. Compare nested values against the
 	# detached snapshot, so direct edits inside a damage callback are visible too.
-	var stats: Array = _cached_inputs[3]
+	var stats: Array = inputs[3]
 	if _get_weapon_stat(weapon, "projectile_count", 1.0) != stats[0]: return false
 	if _get_weapon_stat(weapon, "area_size", 0.0) != stats[1]: return false
 	if _get_weapon_stat(weapon, "damage_area_size", 0.0) != stats[2]: return false
 	if _get_weapon_stat(weapon, "control_power", 0.0) != stats[3]: return false
-	return weapon._attached_item_instances == _cached_inputs[4] \
-		and str(weapon.weapon_id) == _cached_inputs[5] \
-		and weapon.weapon_data.get("tags", []) == _cached_inputs[6] \
-		and weapon.get_rarity_color() == _cached_inputs[7] \
-		and weapon.effect_modifiers == _cached_all_modifiers
+	return weapon._attached_item_instances == inputs[4] \
+		and str(weapon.weapon_id) == inputs[5] \
+		and weapon.weapon_data.get("tags", []) == inputs[6] \
+		and weapon.get_rarity_color() == inputs[7] \
+		and weapon.effect_modifiers == entry.modifiers
 
 
 static func _capture_inputs(weapon: Variant, effect_id: String, base_parameters: Dictionary, attachment_item_id: String) -> Array:
