@@ -859,6 +859,8 @@ func _configure_visual_body(visuals: Dictionary) -> void:
 
 func _sync_camera(delta: float = 0.0) -> void:
 	if camera_2d != null:
+		if not camera_2d.is_current():
+			return
 		# The phone profile lifts the whole canvas, camera included, so the hero
 		# grows together with the interface instead of shrinking beside it.
 		# Viewport-relative composition also survives zoom, resizing and blink drag.

@@ -212,6 +212,12 @@ func _fit_description() -> void:
 			return
 	# Keep very long descriptions readable. The virtual grid reserves more row
 	# height only if shrinking to the minimum still cannot show the complete text.
+	if MobileProfile.is_mobile():
+		# A narrow phone card must not inflate the entire virtual shelf from a
+		# transient wrapped-text measurement. Keep its body scrollable instead.
+		_description.scroll_active = true
+		_description.mouse_filter = Control.MOUSE_FILTER_PASS
+		return
 	# Derive the height from intrinsic content. Pooled cards may still have the
 	# previous row's allocated height; adding to that makes repeated binds grow
 	# an entire shelf even when the description has not changed.

@@ -290,6 +290,8 @@ func _die(_source_id: String = "") -> void:
 	if is_instance_valid(_telegraph): _telegraph.queue_redraw()
 	died.emit(self, get_drop_table_id(), global_position)
 	sprite.modulate = _base_sprite_modulate
+	if has_meta("final_execution"):
+		return # The final-hit presentation retains this pose and frees it once.
 	# No death poses were supplied. Keep the current approved pose and fade it.
 	var tween := create_tween()
 	tween.tween_property(sprite, "modulate:a", 0.0, DEATH_FADE_SECONDS)

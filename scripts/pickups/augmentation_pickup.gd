@@ -14,6 +14,7 @@ var augmentation_id: String = ""
 var amount: int = 1
 var target_player: PlayerController = null
 var collected_once: bool = false
+var force_collecting: bool = false
 var _display_color: Color = Color.WHITE
 var _age: float = 0.0
 var _icon_sprite: Sprite2D = null
@@ -38,6 +39,7 @@ func initialize(target_augmentation_id: String, pickup_amount: int = 1) -> void:
 	augmentation_id = target_augmentation_id
 	amount = maxi(pickup_amount, 1)
 	collected_once = false
+	force_collecting = false
 	var data := DataRegistry.get_record("augmentations", augmentation_id)
 	_display_color = RARITY_COLORS.get(str(data.get("rarity", "common")), Color.WHITE)
 	_update_icon(str(data.get("icon", "")))
@@ -48,6 +50,11 @@ func set_target_player(player: PlayerController) -> void:
 	target_player = player
 
 
+func start_wave_end_collection(player: PlayerController) -> void:
+	target_player = player
+	force_collecting = true
+
+
 func _physics_process(delta: float) -> void:
 	if bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)):
 		return
@@ -55,10 +62,11 @@ func _physics_process(delta: float) -> void:
 	queue_redraw()
 	if target_player == null or collected_once:
 		return
-	var pickup_radius := target_player.get_stat("pickup_radius")
+	var pickup_radius := INF if force_collecting else target_player.get_stat("pickup_radius")
 	if global_position.distance_to(target_player.global_position) > pickup_radius:
 		return
-	global_position = global_position.move_toward(target_player.global_position, attract_speed * delta)
+	var speed := ExpOrb.WAVE_END_ATTRACT_SPEED if force_collecting else attract_speed
+	global_position = global_position.move_toward(target_player.global_position, speed * delta)
 	if global_position.distance_to(target_player.global_position) <= 16.0:
 		collect()
 

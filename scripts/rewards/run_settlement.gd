@@ -44,22 +44,19 @@ static func build(statistics: Dictionary, victory: bool, difficulty_id: String =
 	report["difficulty_multiplier"] = float(config.difficulty_multipliers.get(report.difficulty_id, 1.0))
 	report["base_camp_currency"] = parts[0] + parts[1] + parts[2] + parts[3]
 	var outcomes: Dictionary = config.outcome_multipliers
-	var outcome := "victory" if victory and not retreated else "defeat"
-	report["outcome"] = "retreat" if retreated else outcome
+	var outcome := "retreat" if retreated else ("victory" if victory else "defeat")
+	report["outcome"] = outcome
 	report["outcome_multiplier"] = float(outcomes[outcome])
 	report["reward_multiplier"] = float(report.difficulty_multiplier) * float(report.outcome_multiplier)
 	var difficulty_base := float(report.base_camp_currency) * float(report.difficulty_multiplier)
 	report["difficulty_bonus"] = roundi(difficulty_base) - int(report.base_camp_currency)
 	# The compensation never scales with difficulty, so a fast hard-mode death
-	# cannot be farmed for triple consolation points.
-	var compensation := defeat_compensation(config, values[0], values[2], outcome)
+	# cannot be farmed for multiplied consolation points.
+	var compensation := defeat_compensation(config, values[0], values[2], "defeat" if retreated else outcome)
+	if retreated:
+		compensation = roundi(compensation * float(config.retreat_compensation_multiplier))
 	report["compensation"] = compensation
 	report["camp_currency"] = roundi(float(report.base_camp_currency) * float(report.reward_multiplier)) + compensation
-	# Retreat is exactly half of the payable defeat receipt, rounded down to coins.
-	report["defeat_camp_currency"] = roundi(difficulty_base * float(outcomes.defeat)) + compensation
-	report["retreat_multiplier"] = float(outcomes.retreat_vs_defeat)
-	if retreated:
-		report.camp_currency = floori(int(report.defeat_camp_currency) * float(report.retreat_multiplier))
 	report["interest_capped"] = raw_interest >= interest_cap and raw_interest > 0
 	report["victory"] = victory and not retreated
 	report["reaction"] = ""

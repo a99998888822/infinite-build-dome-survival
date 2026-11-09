@@ -186,7 +186,7 @@ func present(data: Dictionary) -> void:
 	if ids.is_empty():
 		_label(_monster_list, "ui.settlement.no_kills", 23, MUTED)
 	var rates: Dictionary = _config.formula
-	var tips := [L10n.text("ui.settlement.kills_tooltip") % int(rates.kills_per_coin),
+	var tips := [L10n.text("ui.settlement.kills_tooltip") % str(rates.kills_per_coin),
 		L10n.text("ui.settlement.gold_tooltip") % int(rates.gold_per_coin),
 		L10n.text("ui.settlement.waves_tooltip") % int(rates.coins_per_wave),
 		L10n.text("ui.settlement.interest_tooltip") % [int(rates.interest_per_coin), int(rates.interest_cap_per_wave)]]
@@ -227,7 +227,7 @@ func _refresh_language() -> void:
 	for monster in _monster_nodes:
 		monster.label.text = L10n.source(DataRegistry.get_record("enemies", str(monster.id)).get("display_name", monster.id))
 	var rates: Dictionary = _config.formula
-	var tips := [L10n.text("ui.settlement.kills_tooltip") % int(rates.kills_per_coin),
+	var tips := [L10n.text("ui.settlement.kills_tooltip") % str(rates.kills_per_coin),
 		L10n.text("ui.settlement.gold_tooltip") % int(rates.gold_per_coin),
 		L10n.text("ui.settlement.waves_tooltip") % int(rates.coins_per_wave),
 		L10n.text("ui.settlement.interest_tooltip") % [int(rates.interest_per_coin), int(rates.interest_cap_per_wave)]]
@@ -243,7 +243,7 @@ func _refresh_result_heading() -> void:
 	var wave := int(report.get("end_wave", int(report.get("waves", 0)) + 1))
 	_subtitle.text = L10n.text("ui.settlement.retreat_wave") % wave if retreat else (L10n.text("ui.settlement.victory") if bool(report.victory) else L10n.text("ui.settlement.death_wave") % wave)
 	_subtitle.text += L10n.text("ui.settlement.difficulty_suffix") % str(report.get("difficulty_id", BattleDifficulty.DEFAULT_ID))
-	_heading.text = L10n.text("ui.settlement.retreat_multiplier") % roundi(float(report.get("retreat_multiplier", 0.5)) * 100.0) if retreat else L10n.text("ui.settlement.multiplier") % roundi(float(report.get("reward_multiplier", report.get("difficulty_multiplier", 1.0))) * 100.0)
+	_heading.text = L10n.text("ui.settlement.retreat_multiplier" if retreat else "ui.settlement.multiplier") % roundi(float(report.get("reward_multiplier", report.get("difficulty_multiplier", 1.0))) * 100.0)
 
 
 func seek(seconds: float) -> void:
@@ -261,12 +261,7 @@ func seek(seconds: float) -> void:
 	_status.text = ("ui.settlement.saved" if bool(report.get("paid", false)) else "ui.settlement.save_failed") if _progress(4) >= 1 else "ui.settlement.counting"
 	_conversion.text = "ui.settlement.base_conversion_hint"
 	if _progress(4) >= 1:
-		if str(report.get("outcome", "")) == "retreat":
-			_conversion.text = L10n.text("ui.settlement.retreat_conversion") % [_number(int(report.defeat_camp_currency)), roundi(float(report.retreat_multiplier) * 100.0), _number(int(report.camp_currency))]
-		elif int(report.get("compensation", 0)) > 0:
-			_conversion.text = L10n.text("ui.settlement.conversion_compensation") % [_number(int(report.get("base_camp_currency", report.camp_currency))), roundi(float(report.get("reward_multiplier", report.get("difficulty_multiplier", 1.0))) * 100.0), _number(int(report.compensation)), _number(int(report.camp_currency))]
-		else:
-			_conversion.text = L10n.text("ui.settlement.conversion") % [_number(int(report.get("base_camp_currency", report.camp_currency))), roundi(float(report.get("reward_multiplier", report.get("difficulty_multiplier", 1.0))) * 100.0), _number(int(report.camp_currency))]
+		_conversion.text = _number(int(report.camp_currency))
 	if bool(report.interest_capped) and _progress(3) >= 1:
 		_conversion.text += L10n.text("ui.settlement.interest_cap_suffix")
 	var voice_time := float(_config.presentation.voice_time)

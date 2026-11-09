@@ -1,0 +1,122 @@
+{
+  "source": "C:\\Users\\octopus\\Downloads\\Game_experience_orb__#2-1794153179237.mp3",
+  "source_range_seconds": [
+    0,
+    0.4
+  ],
+  "note": "Direct source trim with edge fades; no source separation. Playback-rate pitch shift.",
+  "interval_seconds": 0.3,
+  "stages": [
+    {
+      "file": "stage_01.wav",
+      "stage": 1,
+      "semitones": 0,
+      "gain_db": 0,
+      "duration_seconds": 0.4,
+      "peak_dbfs": -2.289753258228302
+    },
+    {
+      "file": "stage_02.wav",
+      "stage": 2,
+      "semitones": 2,
+      "gain_db": 0,
+      "duration_seconds": 0.35634920634920636,
+      "peak_dbfs": -2.2715607285499573
+    },
+    {
+      "file": "stage_03.wav",
+      "stage": 3,
+      "semitones": 4,
+      "gain_db": 0,
+      "duration_seconds": 0.31750566893424037,
+      "peak_dbfs": -2.283787429332733
+    },
+    {
+      "file": "stage_04.wav",
+      "stage": 4,
+      "semitones": 5,
+      "gain_db": 0,
+      "duration_seconds": 0.29968253968253966,
+      "peak_dbfs": -2.2685399651527405
+    },
+    {
+      "file": "stage_05.wav",
+      "stage": 5,
+      "semitones": 7,
+      "gain_db": 0,
+      "duration_seconds": 0.266984126984127,
+      "peak_dbfs": -2.3150625824928284
+    },
+    {
+      "file": "stage_06.wav",
+      "stage": 6,
+      "semitones": 9,
+      "gain_db": 0,
+      "duration_seconds": 0.23784580498866212,
+      "peak_dbfs": -2.3178577423095703
+    },
+    {
+      "file": "stage_07.wav",
+      "stage": 7,
+      "semitones": 11,
+      "gain_db": 0,
+      "duration_seconds": 0.2119047619047619,
+      "peak_dbfs": -2.2839370369911194
+    },
+    {
+      "file": "stage_08.wav",
+      "stage": 8,
+      "semitones": 11,
+      "gain_db": 1,
+      "duration_seconds": 0.2119047619047619,
+      "peak_dbfs": -1.283937245607376
+    },
+    {
+      "file": "stage_09.wav",
+      "stage": 9,
+      "semitones": 11,
+      "gain_db": 2,
+      "duration_seconds": 0.2119047619047619,
+      "peak_dbfs": -0.28393708169460297
+    }
+  ],
+  "production_files": [
+    {
+      "file": "exp_orb_collect_01.wav",
+      "sha256": "7981cfbe78a5701b23651da688efd5023a74bf82dd6925f8c9d7d10ff0e16e11"
+    },
+    {
+      "file": "exp_orb_collect_02.wav",
+      "sha256": "8871ffb717eeed46bedeae7aa3c68518d3257db56323c58b5b7f665badd1a02b"
+    },
+    {
+      "file": "exp_orb_collect_03.wav",
+      "sha256": "5509c7a45d67d581f8dfb84fe16a7981b8444bb3fca8cc1de0d0cdcc024614a6"
+    },
+    {
+      "file": "exp_orb_collect_04.wav",
+      "sha256": "75533702b39180f7ee4b4d833eb99e0dab38f230a01d0ce2257063a83b9c74f2"
+    },
+    {
+      "file": "exp_orb_collect_05.wav",
+      "sha256": "698fbbf703bd0c03af6ddff58c4c60cdbc7d2a4be58cb8fcbad404596b780dab"
+    },
+    {
+      "file": "exp_orb_collect_06.wav",
+      "sha256": "a7aba3bbb5ea7e4defd51a80fe304b49a4b97ebb5038dc658dd6db7f55610794"
+    },
+    {
+      "file": "exp_orb_collect_07.wav",
+      "sha256": "74db5cdf30b16c49914dd4e709bb48687d775b9c5fc1b9d3ad1a8e6948e47f1c"
+    },
+    {
+      "file": "exp_orb_collect_08.wav",
+      "sha256": "e532ab2962cefc4136fa37d522e39ae1106c5293389b231fee4dc820ed35c42c"
+    },
+    {
+      "file": "exp_orb_collect_09.wav",
+      "sha256": "f2c87e5dcf4eae00c994c2b3e3ed0cacb46d812425e9781b3ba8844f0f1e2a4e"
+    }
+  ],
+  "source_sha256": "8d33c7db0cfa34d30064c952a061e158cc2a57b51e76af5016f9373b4de1bebc"
+}

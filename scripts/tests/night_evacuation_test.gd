@@ -177,7 +177,7 @@ func run() -> void:
 	await move_foot(evacuation.ring_center)
 	evacuation.try_enter_shelter()
 	await frames(20)
-	check(flow.current_state==MainFlowCoordinator.STATE_BATTLE_RESULT and flow.battle_resolved,"final wave shelter triggers victory instead of finance")
+	check(not evacuation.is_active() and flow.current_state==MainFlowCoordinator.STATE_BATTLE_RESULT and flow.battle_resolved,"empty final wave completes without extraction or finance")
 	if review: await capture_review()
 	flow.enter_start_page()
 	await frames(8)

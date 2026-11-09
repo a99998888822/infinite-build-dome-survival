@@ -456,8 +456,8 @@ ui.settlement.defeat,冒险结束,Expedition Over
 ui.settlement.retreat,主动撤离,Expedition Withdrawn
 ui.settlement.retreat_wave,第%d波 撤离,Withdrew on Wave %d
 ui.settlement.retreat_multiplier,撤离结算 ×%d%%,Withdrawal ×%d%%
-ui.settlement.retreat_conversion,失败结算 %s ×%d%% = %s,Defeat reward %s ×%d%% = %s
-ui.settlement.retreat_hint,结束本次冒险，按失败奖励的50%结算天赋点（向下取整）。,End this expedition and receive 50% of its defeat reward in Talent Points (rounded down).
+ui.settlement.retreat_conversion,基础 %s ×%d%% + 双倍战败补偿 %s = %s,Base %s ×%d%% + double defeat compensation %s = %s
+ui.settlement.retreat_hint,结束本次冒险并结算已获得的天赋点。,End this expedition and collect the Talent Points earned.
 ui.settlement.difficulty_suffix, · 难度 %s, · Difficulty %s
 ui.settlement.gold_earned,赚取金币,Gold Earned
 ui.settlement.gold_tooltip,每 %d 战斗金币折算 1 天赋点；消费与存款不减少累计收入。,Every %d gold earned in combat earns 1 Talent Point. Spending and deposits do not reduce this total.
@@ -465,7 +465,7 @@ ui.settlement.interest_cap_suffix, · 利息贡献已达上限, · Interest cont
 ui.settlement.interest_earned,赚取利息,Interest Earned
 ui.settlement.interest_tooltip,每 %d 实际利息折算 1 天赋点，上限为每个已完成波次 %d 点。,"Every %d interest received earns 1 Talent Point, capped at %d points per completed wave."
 ui.settlement.kill_records,击杀记录,Kill Record
-ui.settlement.kills_tooltip,每 %d 只敌人折算 1 天赋点。,Every %d enemies defeated earns 1 Talent Point.
+ui.settlement.kills_tooltip,每 %s 只敌人折算 1 天赋点。,Every %s enemies defeated earns 1 Talent Point.
 ui.settlement.multiplier,结算 ×%d%%,Reward ×%d%%
 ui.settlement.no_kills,本次未击败敌人,No enemies defeated this run
 ui.settlement.save_failed,保存失败，返回时重试,Save failed; retrying when you return

@@ -19,6 +19,13 @@ const COMBAT_DETAIL_VOICES: int = 8
 # between music and effects stays put when the mix is nudged.
 const BGM_PLAYBACK_GAIN_DB: float = 2.0
 const SFX_PLAYBACK_GAIN_DB: float = 2.0
+const EXP_ORB_INTERVAL_MS: int = 300
+const EXP_ORB_RESET_MS: int = 500
+# Nine approved renders: seven pitches, then +1/+2 dB at the final pitch.
+const EXP_ORB_GAIN_DB: float = -23.0 # Quiet pickup feedback; preserve the nine-stage relative gains.
+var _exp_orb_last_pickup_ms: int = -10000
+var _exp_orb_last_step_ms: int = -10000
+var _exp_orb_stage: int = 0
 const VOLUME_SETTING_BY_BUS: Dictionary = {
 	"Master": "master_volume",
 	"BGM": "bgm_volume",
@@ -104,6 +111,7 @@ func _process(delta: float) -> void:
 	if bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)):
 		# Discard short tails on opening a panel; never replay stale impacts.
 		stop_combat_sfx()
+		reset_exp_orb_sfx()
 		return
 	_combat_clock_ms += delta * 1000.0
 	flush_combat_audio()
@@ -223,7 +231,32 @@ func stop_bgm() -> void:
 
 
 func play_exp_orb_collect_sfx() -> bool:
-	return play_sfx_path("res://assets/audio/sfx/pickups/sfx_exp_orb_collect.ogg", 35, "exp_orb_collect")
+	return _play_exp_orb_collect_at(Time.get_ticks_msec())
+
+
+func reset_exp_orb_sfx() -> void:
+	_exp_orb_last_pickup_ms = -10000
+	_exp_orb_last_step_ms = -10000
+	_exp_orb_stage = 0
+
+
+func _play_exp_orb_collect_at(now_ms: int) -> bool:
+	if bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)):
+		reset_exp_orb_sfx()
+		return false
+	if now_ms - _exp_orb_last_pickup_ms >= EXP_ORB_RESET_MS:
+		reset_exp_orb_sfx()
+	# Even merged pickups keep the collection chain alive.
+	_exp_orb_last_pickup_ms = now_ms
+	if now_ms - _exp_orb_last_step_ms < EXP_ORB_INTERVAL_MS:
+		return false
+	var next_stage := mini(_exp_orb_stage + 1, 9)
+	var path := "res://assets/audio/sfx/pickups/exp_orb_collect_%02d.wav" % next_stage
+	if not play_sfx_path(path, 0, "exp_orb_collect", EXP_ORB_GAIN_DB):
+		return false
+	_exp_orb_stage = next_stage
+	_exp_orb_last_step_ms = now_ms
+	return true
 
 
 func play_wave_end_sfx() -> bool:

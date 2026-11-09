@@ -107,6 +107,16 @@ func _run() -> void:
 			clipped.append("%s(%s)" % [label.name, label.text.left(12)])
 	check(clipped.is_empty(), "no label overflows its box: " + ", ".join(clipped))
 	await capture("03_shop")
+	var hud := game.find_child("HUD", true, false) as BattleHud
+	check(not hud._finance_economy_back.get_global_rect().intersects(hud.encyclopedia_button.get_global_rect()), "finance balance frame clears ESC button")
+	var initial_height := popup.shop_grid._card_height
+	for iteration in 6:
+		popup.shop_grid.refresh_availability()
+		await frames(4)
+	check(is_equal_approx(initial_height, popup.shop_grid._card_height) and popup.shop_grid._card_height <= 320, "phone shelf height stays bounded across repeated binds")
+	for card in popup.shop_grid._pool:
+		if card.visible:
+			check(card.size.y <= 320 and card.buy_button.size.y <= 80, "shop card and purchase button remain compact")
 
 	# The enchantment tab shares the popup; its workbench has to fit as well.
 	popup._select_tab("enchant")

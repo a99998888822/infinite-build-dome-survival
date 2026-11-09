@@ -733,9 +733,11 @@ func _refresh_wave_display() -> void:
 			wave_panel.tooltip_text = wave_label.tooltip_text.strip_edges()
 	if wave_timer_label != null:
 		if _wave_manager.cleanup_active:
-			wave_label.text = "ui.hud.final_cleanup"
+			wave_label.text = L10n.text("ui.hud.enemies_remaining") % _wave_manager.get_living_enemy_count()
 		var awaiting_first_wave := _flow.current_state == MainFlowCoordinator.STATE_COMBAT_GUIDE and _flow.current_wave_index < 0
 		wave_timer_label.text = "—" if awaiting_first_wave else "%ds" % ceili(time_left)
+		if _wave_manager.cleanup_active and _wave_manager.is_final_wave():
+			wave_timer_label.text = "—"
 		if time_left > 0.0 and time_left <= 10.0:
 			wave_timer_label.add_theme_color_override("font_color", Color(0.92, 0.25, 0.22, 1.0))
 			var warning_pulse := 0.92 + 0.08 * sin(Time.get_ticks_msec() / 160.0)
@@ -917,7 +919,8 @@ func _apply_combat_layout() -> void:
 		if MobileProfile.is_mobile():
 			# Align to the frame's open position even while the drawer is closed.
 			economy_left = viewport_width - DRAWER_SKIN.MOBILE_DISPLAY_WIDTH
-			economy_width = maxf(actions_left - TOP_BAR_GAP - economy_left, 0.0)
+			# Reserve the backing's extra right edge as well as the content.
+			economy_width = maxf(actions_left - TOP_BAR_GAP - economy_left - (20.0 if finance_scene else 0.0), 0.0)
 		var economy_size := Vector2(economy_width, 70.0 if finance_scene else 73.333333)
 		economy_panel.anchor_left = 0.0
 		economy_panel.anchor_top = 0.0
@@ -933,6 +936,7 @@ func _apply_combat_layout() -> void:
 			# The open parchment drawer starts at y=90 and covers the old button
 			# below the balances. Reserve a separate slot to its left in both states.
 			quick_shop_button.position.x = economy_left - quick_shop_button.size.x - 12.0
+			quick_shop_button.position.y = economy_panel.position.y + (economy_size.y - quick_shop_button.size.y) * 0.5
 	if exp_panel != null:
 		if MobileProfile.is_mobile():
 			exp_panel.anchor_left = 0.28

@@ -301,7 +301,7 @@ func finish_current_wave() -> void:
 func request_shared_reward_shop_popup(level: int, source: String = "wave_manager") -> void:
 	if current_mode != MODE_BATTLE or battle_resolved or level <= 0:
 		return
-	if current_state == STATE_WAVE_END_ABSORB:
+	if current_state == STATE_WAVE_END_ABSORB or _final_kill_active():
 		if not _pending_level_up_levels.has(level):
 			_pending_level_up_levels.append(level)
 		return
@@ -357,9 +357,14 @@ func _on_relic_choice_requested(reward_id: String) -> void:
 	if reward_id == _active_relic_choice or _pending_relic_choices.has(reward_id):
 		return
 	_pending_relic_choices.append(reward_id)
+	if _final_kill_active(): return
 	if current_state in [STATE_WAVE_COMBAT, STATE_BATTLE_PREPARE] and not _transaction_busy:
 		_resume_state_after_modal = current_state
 		_open_next_relic_choice()
+
+
+func _final_kill_active() -> bool:
+	return is_instance_valid(_bound_wave_manager) and is_instance_valid(_bound_wave_manager.final_kill_sequence) and _bound_wave_manager.final_kill_sequence.active
 
 
 func _open_next_relic_choice() -> bool:

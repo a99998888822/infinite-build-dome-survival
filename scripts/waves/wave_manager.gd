@@ -39,6 +39,7 @@ var cleanup_active := false
 var cleanup_time_left := 0.0
 var evacuation: Node
 var _wave_finish_queued := false
+var final_kill_sequence: Node
 var difficulty_id: String = BattleDifficulty.DEFAULT_ID
 var _difficulty: Dictionary = BattleDifficulty.get_profile(BattleDifficulty.DEFAULT_ID)
 var player_level: int = DEFAULT_PLAYER_LEVEL
@@ -93,6 +94,9 @@ var _pending_relic_choices: Dictionary = {}
 
 
 func _ready() -> void:
+	final_kill_sequence = preload("res://scripts/battle/final_kill_sequence.gd").new()
+	add_child(final_kill_sequence)
+	final_kill_sequence.manager = self
 	if enemy_root == null:
 		enemy_root = get_node_or_null("EnemyRoot")
 	if pickup_root == null:
@@ -106,6 +110,8 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
+	if is_instance_valid(final_kill_sequence) and final_kill_sequence.active:
+		return # Keep drops and wave-end modals behind the final-hit presentation.
 	_process_pending_rewards(delta)
 	if not running:
 		return
@@ -117,7 +123,7 @@ func _process(delta: float) -> void:
 	var active_delta := maxf(0.0,delta if evacuating else minf(delta, cleanup_time_left if cleanup_active else wave_time_left))
 	enemy_pressure.advance(active_delta)
 	wave_challenges.advance_enemy_lifetimes(active_delta)
-	if cleanup_active and not evacuating:
+	if cleanup_active and not evacuating and not is_final_wave():
 		cleanup_time_left = maxf(0.0, cleanup_time_left - delta)
 	elif not evacuating:
 		wave_time_left = maxf(0.0, wave_time_left - delta)
@@ -135,7 +141,7 @@ func _process(delta: float) -> void:
 		evacuation.advance(delta)
 		return
 	if wave_time_left <= 0.0:
-		if is_instance_valid(evacuation):
+		if is_instance_valid(evacuation) and not is_final_wave():
 			evacuation.begin()
 			return
 		if not cleanup_active:
@@ -145,10 +151,29 @@ func _process(delta: float) -> void:
 			if get_living_enemy_count() > 0:
 				cleanup_active = true
 				cleanup_time_left = CLEANUP_SECONDS
-		if not cleanup_active or cleanup_time_left <= 0.0 or get_living_enemy_count() == 0:
+		if is_instance_valid(final_kill_sequence) and final_kill_sequence.active:
+			return
+		if not cleanup_active or (not is_final_wave() and cleanup_time_left <= 0.0) or get_living_enemy_count() == 0:
 			if not _wave_finish_queued:
 				_wave_finish_queued = true
 				_finish_elapsed_wave.call_deferred()
+
+
+func is_final_wave() -> bool:
+	return current_wave_index >= 0 and current_wave_index == DataRegistry.get_table("waves").size() - 1
+
+
+func _try_final_hit(enemy: EnemyController, damage: int) -> bool:
+	if not running or wave_time_left > 0.0 or not is_final_wave() or _wave_finish_queued or run_statistics.frozen:
+		return false
+	if player == null or not player.is_alive() or bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)):
+		return false
+	if get_living_enemy_count() != 1 or final_kill_sequence.active:
+		return false
+	var boss := str(enemy.enemy_data.get("enemy_type", "normal")) in ["elite", "boss"]
+	if boss and enemy.current_hp - damage >= 100:
+		return false
+	return final_kill_sequence.begin(enemy)
 
 
 func get_living_enemy_count() -> int:
@@ -175,6 +200,7 @@ func _finish_elapsed_wave() -> void:
 
 
 func initialize(target_player: PlayerController, selected_difficulty: String = BattleDifficulty.DEFAULT_ID) -> void:
+	if is_instance_valid(final_kill_sequence): final_kill_sequence.cancel()
 	if is_instance_valid(evacuation): evacuation.reset()
 	cleanup_active = false
 	cleanup_time_left = 0.0
@@ -312,6 +338,8 @@ func start_next_wave() -> bool:
 func finish_current_wave() -> void:
 	if not running:
 		return
+	if is_instance_valid(final_kill_sequence) and final_kill_sequence.active:
+		return
 	goblin_trades.finish_combat(int(_difficulty.enemy_limit))
 	var evacuated: bool = is_instance_valid(evacuation) and evacuation.extraction_pending
 	wave_challenges.finish_combat(goblin_trades.pressure_snapshot, not evacuated and cleanup_active and cleanup_time_left <= 0.0, get_living_enemy_count())
@@ -329,12 +357,13 @@ func finish_current_wave() -> void:
 	_finishing_wave_id = str(current_wave.get("id", ""))
 	wave_end_absorb_started.emit(_finishing_wave_id)
 	collect_all_relic_pickups()
-	collect_all_augmentation_pickups()
 	clear_battle_entities()
 	_start_wave_end_exp_absorb()
 
 
 func spawn_enemy(enemy_id: String, position: Vector2 = Vector2.ZERO, debt_target := false) -> EnemyController:
+	if running and is_final_wave() and wave_time_left <= 0.0:
+		return null
 	var evacuation_spawn: bool = is_instance_valid(evacuation) and evacuation.allows_spawn(position)
 	if _wave_finish_queued or not _finishing_wave_id.is_empty() or ((cleanup_active or (running and wave_time_left <= 0.0)) and not evacuation_spawn):
 		return null
@@ -364,6 +393,7 @@ func spawn_enemy(enemy_id: String, position: Vector2 = Vector2.ZERO, debt_target
 		enemy.queue_free()
 		return null
 	enemy.died.connect(_on_enemy_died)
+	enemy.final_hit_resolver = _try_final_hit
 	wave_challenges.record_enemy_spawn(enemy.get_instance_id())
 	enemy.damage_received.connect(_on_enemy_damage_received)
 	enemy.damage_received.connect(_on_enemy_pressure_damage.bind(enemy, current_wave_index + 1))
@@ -466,6 +496,7 @@ func clear_enemies() -> void:
 
 
 func clear_battle_entities() -> void:
+	if is_instance_valid(final_kill_sequence): final_kill_sequence.cancel()
 	CombatHitFeedback.clear()
 	if is_instance_valid(challenge_vault):
 		challenge_vault.queue_free()
@@ -506,9 +537,19 @@ func collect_exp_orbs_in_root(root: Node) -> void:
 
 func _start_wave_end_exp_absorb() -> void:
 	var exp_orbs: Array[ExpOrb] = []
+	var pickups: Array[Node] = []
 	if pickup_root != null:
 		_collect_exp_orbs_recursive(pickup_root, exp_orbs)
+		_collect_reward_pickups_recursive(pickup_root, pickups)
 	_pending_wave_end_absorb_count = 0
+	for pickup in pickups:
+		if not pickup is AugmentationPickup or not pickup.is_inside_tree() or pickup.is_queued_for_deletion() or pickup.collected_once:
+			continue
+		_pending_wave_end_absorb_count += 1
+		var absorbed_callable := Callable(self, "_on_wave_end_augmentation_absorbed")
+		if not pickup.collected.is_connected(absorbed_callable):
+			pickup.collected.connect(absorbed_callable)
+		pickup.start_wave_end_collection(player)
 	for orb in exp_orbs:
 		if not is_instance_valid(orb) or not orb.is_inside_tree() or orb.is_queued_for_deletion() or orb.collected_once:
 			continue
@@ -522,6 +563,14 @@ func _start_wave_end_exp_absorb() -> void:
 
 
 func _on_wave_end_exp_orb_absorbed(_orb: ExpOrb, _exp_amount: int, _gold_amount: int) -> void:
+	_on_wave_end_pickup_absorbed()
+
+
+func _on_wave_end_augmentation_absorbed(_pickup: AugmentationPickup, _item_instance_id: String) -> void:
+	_on_wave_end_pickup_absorbed()
+
+
+func _on_wave_end_pickup_absorbed() -> void:
 	if _pending_wave_end_absorb_count <= 0:
 		return
 	_pending_wave_end_absorb_count -= 1

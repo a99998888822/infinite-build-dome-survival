@@ -51,6 +51,7 @@ var enemy_data: Dictionary = {}
 var modifier_stack: ModifierStack = ModifierStack.new()
 var current_hp: int = 0
 var alive: bool = true
+var final_hit_resolver: Callable
 var has_contact_damaged: bool = false
 var target_player: PlayerController = null
 var challenge_target: Node2D = null
@@ -664,6 +665,8 @@ func take_damage(
 		_light_freeze_reacted = false
 	var pre_light_damage := maxi(1, int(roundi(float(raw_damage) * damage_taken_percent / 100.0)))
 	var final_damage := maxi(1, int(roundi(float(pre_light_damage) * light_multiplier)))
+	if final_hit_resolver.is_valid() and final_hit_resolver.call(self, final_damage):
+		final_damage = maxi(final_damage, current_hp)
 	current_hp = maxi(current_hp - final_damage, 0)
 	_show_hit_visual()
 	# One notification after mitigation, shared by direct hits, effects and burn ticks.
@@ -758,6 +761,9 @@ func _capture_base_sprite_modulate() -> void:
 func fade_out_and_free() -> void:
 	if not is_inside_tree():
 		return
+	if has_meta("final_execution"):
+		set_physics_process(false)
+		return # The final-hit presentation owns this corpse until its real-time end.
 	_reset_super_armor()
 	if sprite == null:
 		queue_free()

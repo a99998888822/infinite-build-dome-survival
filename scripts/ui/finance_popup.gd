@@ -731,6 +731,13 @@ func _apply_quick_mode() -> void:
 	var actor := portrait.get_rect()
 	var width := minf(300, maxf(112, actor.size.x))
 	_place(_away_sign, Rect2(actor.get_center() - Vector2(width / 2, 40), Vector2(width, 100)))
+	if MobileProfile.is_mobile():
+		# The portrait is wider than the phone's banker column; its centre puts
+		# the hanging sign into the shop. Fit the sign to the reserved column.
+		var left := _scene_bank_back.position.x if _scene_wide else _bank_header.position.x
+		var right := _shop.position.x - 16.0
+		_away_sign.size.x = minf(width, maxf(112.0, right - left))
+		_away_sign.position.x = left
 
 
 func _select_tab(tab: String) -> void:
