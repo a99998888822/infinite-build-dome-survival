@@ -79,7 +79,9 @@ func _run() -> void:
 	seed._process(0.05)
 	check(seed.position != seed_position, "seed retains its ballistic movement")
 	seed._process(0.06)
-	check(seed.is_queued_for_deletion(), "landed seed is released")
+	# Landed sparks are parked for reuse instead of freed, so their flame visual and
+	# batch slot survive; they must stop drawing and stop simulating.
+	check(seed._parked and not seed.visible and not seed.is_processing(), "landed seed is parked for reuse")
 	var landed := false
 	for child in host.get_children():
 		if child is FirePatch and child.global_position == Vector2(240, 0): landed = true

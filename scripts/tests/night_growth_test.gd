@@ -51,10 +51,10 @@ func run() -> void:
 		check(enemy.current_hp==int(enemy.get_stat("max_hp")),"fresh enemy starts at its grown max HP")
 		if sample[0]<=50.0:
 			check(is_equal_approx(enemy.get_chase_speed(),result.speed),"no speed growth through night 50")
-		elif sample[0]<80.0:
-			check(enemy.get_chase_speed()>float(result.speed) and enemy.get_chase_speed()<player.get_stat("move_speed")*0.95,"speed rises gradually before night 80")
+		elif sample[0]<110.0:
+			check(enemy.get_chase_speed()>float(result.speed) and enemy.get_chase_speed()<player.get_stat("move_speed")-15.0,"speed rises gradually before night 110")
 		else:
-			check(is_equal_approx(enemy.get_chase_speed(),player.get_stat("move_speed")*0.95),"speed reaches 95 percent at night 80 and stays capped")
+			check(is_equal_approx(enemy.get_chase_speed(),player.get_stat("move_speed")-15.0),"speed reaches player minus 15 at night 110 and stays capped")
 		timeline.append({"night_seconds":sample[0],"hp":enemy.current_hp,"attack":enemy.get_stat("melee_damage"),"speed":enemy.get_chase_speed()})
 		if first == null:
 			first = enemy
@@ -95,10 +95,10 @@ func verify_speed_cap() -> void:
 	var hunter := spawn_probe(600.0,"enemy_elite_rusher").enemy as EliteRusher
 	check(enemy != null and hunter != null,"ordinary and hunter samples exist for speed checks")
 	if enemy == null or hunter == null: return
-	var cap := player.get_stat("move_speed")*0.95
+	var cap := player.get_stat("move_speed")-15.0
 	check(is_equal_approx(enemy.get_chase_speed(),cap) and is_equal_approx(hunter.get_chase_speed(),cap),"long-night ordinary and hunter speed share player cap")
 	player.modifier_stack.add_modifier_from_dictionary({"id":"night_test_slow","source_type":"test","source_id":"night_test","target_scope":"player","stat":"move_speed","operation":"multiply","value":0.4,"duration":-1,"stack_rule":"unique"})
-	cap = player.get_stat("move_speed")*0.95
+	cap = maxf(enemy.night_speed_base,player.get_stat("move_speed")-15.0)
 	enemy.velocity = Vector2.RIGHT*1000.0
 	enemy._process_chase()
 	check(enemy.get_stat("move_speed")<=cap and enemy.velocity.length()<=cap+0.001,"player slow immediately caps stat and existing chase momentum")
@@ -118,6 +118,17 @@ func verify_speed_cap() -> void:
 	check(is_equal_approx(hunter.global_position.distance_to(before), skill_step),"night hunter keeps its telegraphed skill travel while chase remains capped")
 	player._invincibility_timer = 0.0
 	player.modifier_stack.remove_by_source("test","night_test")
+	var fast := spawn_probe(600.0).enemy as EnemyController
+	fast.modifier_stack.remove_by_source("evacuation", "night")
+	fast.night_speed_player_ratio = 0.0
+	fast.enemy_data = fast.enemy_data.duplicate(true)
+	fast.enemy_data.base_stats.move_speed = 1000.0
+	fast.modifier_stack.add_modifier_from_dictionary({"id":"fast_test","source_type":"test","source_id":"fast","target_scope":"enemy","stat":"move_speed","operation":"multiply","value":100.0,"duration":-1,"stack_rule":"unique"})
+	var original_speed := fast.get_chase_speed()
+	evacuation.apply_pressure(fast)
+	check(is_equal_approx(fast.get_chase_speed(),original_speed),"already fast enemies retain their pre-night chase speed")
+	evacuation.elapsed = 27.0
+	check(is_equal_approx(evacuation.reward_multiplier(),0.5),"night rewards halve by second 27")
 	clear_probe_enemies()
 	await frames()
 

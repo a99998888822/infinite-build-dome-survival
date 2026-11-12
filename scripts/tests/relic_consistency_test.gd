@@ -365,11 +365,11 @@ func _test_interest() -> void:
 			correct = correct and not bool(result.blocked) and int(result.gain) > 0
 		check(correct, "contract always preserves normal periodic and annuity interest deposit=%d" % deposited)
 		check(is_equal_approx(float(results[0].interest_rate), 6.0 if deposited < 50 else 12.0), "contract grants six rate points only at the deposit threshold")
-		check(is_equal_approx(bank.interest_rate_bonus, 0.6), "tome grows once per successful settlement deposit=%d" % deposited)
+		check(is_equal_approx(bank.interest_rate_bonus, 0.2), "tome grows at most once per wave deposit=%d" % deposited)
 		check(p.get_stat("damage_percent") == 6 and p.get_stat("humanity") == 97, "all positive settlements apply frenzy growth and cost deposit=%d" % deposited)
 		if deposited == 0:
 			var manual := bank.trigger_manual_interest()
-			check(manual.gain > 0 and not manual.blocked and is_equal_approx(bank.interest_rate_bonus, 0.8), "manual positive interest also grows tome")
+			check(manual.gain > 0 and not manual.blocked and is_equal_approx(bank.interest_rate_bonus, 0.2), "a manual settlement in the same wave cannot grow the tome again")
 		p.free()
 	var p := make_player()
 	var bank := make_finance(p)

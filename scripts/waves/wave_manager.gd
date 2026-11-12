@@ -119,6 +119,9 @@ func _process(delta: float) -> void:
 		return
 	if player == null or not player.is_alive() or run_statistics.frozen:
 		return
+	# Survival time only accrues inside an active combat wave; the early returns
+	# above already exclude pauses, settlements and the result screen.
+	run_statistics.record_survival(delta)
 	var evacuating: bool = is_instance_valid(evacuation) and evacuation.is_active()
 	var active_delta := maxf(0.0,delta if evacuating else minf(delta, cleanup_time_left if cleanup_active else wave_time_left))
 	enemy_pressure.advance(active_delta)
@@ -396,6 +399,7 @@ func spawn_enemy(enemy_id: String, position: Vector2 = Vector2.ZERO, debt_target
 	enemy.final_hit_resolver = _try_final_hit
 	wave_challenges.record_enemy_spawn(enemy.get_instance_id())
 	enemy.damage_received.connect(_on_enemy_damage_received)
+	enemy.damage_received.connect(_on_enemy_damage_counted)
 	enemy.damage_received.connect(_on_enemy_pressure_damage.bind(enemy, current_wave_index + 1))
 	if is_instance_valid(challenge_vault) and challenge_vault.alive and str(enemy_data.get("enemy_type", "normal")) != "elite" and enemy.get_stat("melee_damage") > 0:
 		_vault_attacker_counter += 1
@@ -447,6 +451,14 @@ func _on_enemy_damage_received(source_id: String, damage: int) -> void:
 		return
 	weapon_damage_this_wave[source_id] = int(weapon_damage_this_wave.get(source_id, 0)) + damage
 	weapon_damage_changed.emit()
+
+
+func _on_enemy_damage_counted(_source_id: String, damage: int) -> void:
+	# Every source counts here (weapons, burn, reactions); overkill was already
+	# clipped by the enemy before the signal.
+	if not running or damage <= 0:
+		return
+	run_statistics.record_damage(damage)
 
 
 func spawn_exp_orb(amount: int, position: Vector2) -> ExpOrb:

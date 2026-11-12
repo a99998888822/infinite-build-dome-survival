@@ -101,6 +101,7 @@ func build_drop_actions(drop_table_id: String, player: PlayerController = null) 
 
 		var base_chance := clampf(float(entry.get("chance_percent", 100.0)), 0.0, 100.0)
 		var adjusted_chance := clampf(base_chance * (1.0 + drop_rate_bonus / 100.0), 0.0, 100.0)
+		if drop_type == "health_pack": adjusted_chance = base_chance
 		var is_elite_relic := is_elite_table and drop_type == "relic"
 		if adjusted_chance <= 0.0 or (not is_elite_relic and not _roll_drop_chance(adjusted_chance)):
 			continue

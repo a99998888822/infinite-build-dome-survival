@@ -9,6 +9,7 @@ const BOLT = preload("res://scripts/effects/lightning_pixel_bolt.gd")
 const REFLECTION = preload("res://scripts/effects/light_reflection_effect.gd")
 const HIT_RENDER_WARMUP = preload("res://scripts/effects/combat_hit_render_warmup.gd")
 const WEAPON_RENDER_WARMUP = preload("res://scripts/effects/weapon_render_warmup.gd")
+const ENCHANT_WARMUP = preload("res://scripts/effects/enchantment_render_warmup.gd")
 var active := false
 var curtain: ColorRect
 var caption: Label
@@ -132,6 +133,9 @@ func _enter(ticket: int, character: String, modifiers: Array, difficulty: String
 	if is_instance_valid(_modal_sample):
 		_flow._bound_wave_manager.evacuation.visual.prepare_render_warmup(_samples, _modal_sample)
 	HIT_RENDER_WARMUP.prepare(_samples, loadout.weapon_instances, player.sprite.texture)
+	# Fire, water, reaction and patch families compile here instead of on the
+	# player's first enchanted hit, which used to cost one ~60 ms frame.
+	ENCHANT_WARMUP.prepare(_samples)
 	# Draw real materials below the opaque curtain. Hidden/offscreen nodes do not
 	# compile the first-use GPU variants. These samples have no gameplay bodies.
 	for layout: Dictionary in player.get_combat_frame_layouts():

@@ -46,10 +46,10 @@
   {
     "id": "relic_dividend_check",
     "display_name": "分红支票",
-    "description": "每次结算利息的时候有20%的概率翻倍",
+    "description": "每次结算利息时，每张支票独立有10%的概率让这次结算翻倍（命中几次多翻几倍），最多持有8张",
     "icon": "res://assets/ui/icons/relics/relic_dividend_check.png",
     "rarity": "uncommon",
-    "max_stack": 0,
+    "max_stack": 8,
     "tags": [
       "finance"
     ],
@@ -58,7 +58,7 @@
       {
         "trigger": "interest_settle",
         "effect": "dividend_double",
-        "double_chance_percent": 20
+        "double_chance_percent": 10
       }
     ]
   },
@@ -212,10 +212,10 @@
   {
     "id": "relic_compound_interest_tome",
     "display_name": "复利宝典",
-    "description": "利率 +1 个百分点；每次收到正数利息后，利率再 +0.2 个百分点",
+    "description": "利率 +1 个百分点；每波最多触发一次，收到正数利息后利率再 +0.2 个百分点（最多持有8本）",
     "icon": "res://assets/ui/icons/relics/relic_compound_interest_tome.png",
     "rarity": "epic",
-    "max_stack": 0,
+    "max_stack": 8,
     "tags": [
       "finance"
     ],

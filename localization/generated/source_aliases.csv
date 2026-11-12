@@ -49,7 +49,6 @@ Fast-kill adaptation this wave: normal enemy HP +%d%%; miniboss HP +%d%%."
   ·  左键瞄准，再次左键施放,  ·  左键瞄准，再次左键施放,"  ·  Left-click to aim, again to cast"
   ·  按技能设置自动施放  ·  数字键操作手动技能  ·  右键 / Esc 取消瞄准,  ·  按技能设置自动施放  ·  数字键操作手动技能  ·  右键 / Esc 取消瞄准,  ·  Per-skill auto-cast  ·  Number keys for manual skills  ·  Right-click / Esc cancels aim
   ·  滚轮切换武器,  ·  滚轮切换武器,  ·  Wheel to switch weapons
- · 利息贡献已达上限, · 利息贡献已达上限, · Interest contribution capped
  · 各技能独立自动／手动, · 各技能独立自动／手动, · Per-skill Auto/Manual
  · 强化, · 强化, · Enhanced
  · 挑战, · 挑战, · Challenge
@@ -130,7 +129,7 @@ WASD / 方向键移动,WASD / 方向键移动,WASD / arrows to move
 ✓ 已选择,✓ 已选择,✓ Selected
 ✦ %s：+%d 金币（利率 %.1f%%）,✦ %s：+%d 金币（利率 %.1f%%）,✦ %s: +%d gold (rate %.1f%%)
 ⬅ 返回,⬅ 返回,⬅ Back
-、,、," / "
+、,、, / 
 一次性还清 %d 金币,一次性还清 %d 金币,Repay all: %d gold
 一次攻击产生的投射物数量。,一次攻击产生的投射物数量。,Number of projectiles produced by one attack.
 上一步,上一步,Previous
@@ -186,6 +185,8 @@ They return on your next visit."
 伤害专精,伤害专精,Damage
 伤害加成,伤害加成,Damage Bonus
 伤害升级,伤害升级,Damage
+伤害总量,伤害总量,Damage Dealt
+伤害总量占 %d%% 权重，参考 %d 点；只统计实际扣除的血量，溢出伤害不计。,伤害总量占 %d%% 权重，参考 %d 点；只统计实际扣除的血量，溢出伤害不计。,Damage dealt carries %d%% of the budget; reference %d removed hit points. Overkill is ignored.
 伤害次数 [color=#7FD88F]+1[/color],伤害次数 [color=#7FD88F]+1[/color],Damage ticks [color=#7FD88F]+1[/color]
 伤害范围,伤害范围,Damage Area
 伤害范围 +15，元素伤害 +1。,伤害范围 +15，元素伤害 +1。,Damage Area +15; Elemental Damage +1.
@@ -320,6 +321,7 @@ Base resale value %d; Sanity loss %d."
 出售附魔,出售附魔,Sell Enchantment
 出售附魔(%d),出售附魔(%d),Sell Enchantment (%d)
 出征档案,出征档案,Expedition File
+击杀占 %d%% 权重，参考 %d 只；超出参考后仍按对数缓慢增长。,击杀占 %d%% 权重，参考 %d 只；超出参考后仍按对数缓慢增长。,"Kills carry %d%% of the budget; reference %d defeated, still growing logarithmically beyond it."
 击杀敌人时10%概率额外掉落1经验球，拾取获得基础经验2和基础金币2,击杀敌人时10%概率额外掉落1经验球，拾取获得基础经验2和基础金币2,Kills have a 10% chance to drop an extra experience orb worth 2 base XP and 2 base gold.
 击杀记录,击杀记录,Kill Record
 击退力度,击退力度,Knockback Force
@@ -341,11 +343,12 @@ Base resale value %d; Sanity loss %d."
 利息结算,利息结算,Interest Settlement
 利息自动加入随身金币，本金保持不变。,利息自动加入随身金币，本金保持不变。,Interest is added to carried gold; principal is unchanged.
 利率,利率,Interest Rate
+利率 %s%% · 预计利息 %d,利率 %s%% · 预计利息 %d,Rate %s%% · Est. interest %d
 利率 + 1.5%,利率 + 1.5%,Interest Rate +1.5%
 利率 + 2 个百分点；每满 5 侵蚀度再提供利率 + 0.2 个百分点；每波开始时侵蚀度 + 3；每局最多持有 1 件,利率 + 2 个百分点；每满 5 侵蚀度再提供利率 + 0.2 个百分点；每波开始时侵蚀度 + 3；每局最多持有 1 件,"Interest Rate +2 percentage points, plus another +0.2 per full 5 Corruption. Corruption +3 at each wave start. Stack limit: 1 per run."
 利率 + 4 个百分点；每波结束理智值 - 1；每局最多持有 1 件,利率 + 4 个百分点；每波结束理智值 - 1；每局最多持有 1 件,Interest Rate +4 percentage points; Sanity −1 at each wave end. Stack limit: 1 per run.
 利率 + 5%；每波开始自动注入你当前持有金币 10% 的免费本金,利率 + 5%；每波开始自动注入你当前持有金币 10% 的免费本金,"Interest Rate +5%. At each wave start, gain free Principal equal to 10% of your current gold."
-利率 +1 个百分点；每次收到正数利息后，利率再 +0.2 个百分点,利率 +1 个百分点；每次收到正数利息后，利率再 +0.2 个百分点,Interest Rate +1 percentage point. Each positive interest payment received grants another +0.2 percentage points.
+利率 +1 个百分点；每波最多触发一次，收到正数利息后利率再 +0.2 个百分点（最多持有8本）,利率 +1 个百分点；每波最多触发一次，收到正数利息后利率再 +0.2 个百分点（最多持有8本）,"Interest Rate +1 percentage point. At most once per wave, each positive interest payment grants another +0.2 percentage points. Up to 8 copies."
 利率+3%，每回合理智-1。,利率+3%，每回合理智-1。,Interest Rate +3%. Sanity −1 each wave.
 利率训练,利率训练,Interest Rate Training
 利率：%s%% → %s%%,利率：%s%% → %s%%,Interest rate: %s%% → %s%%
@@ -362,6 +365,7 @@ Base resale value %d; Sanity loss %d."
 剩余敌人：%d,剩余敌人：%d,Enemies left: %d
 办理后,办理后,After transaction
 办理后本金：%d → %d,办理后本金：%d → %d,Principal after transaction: %d → %d
+加入QQ群 1042673422,加入QQ群 1042673422,Join QQ group 1042673422
 医疗削减方案,医疗削减方案,Medical Cutbacks
 升级 · %d本金,升级 · %d本金,Upgrade · %d principal
 升级不增加最大生命值,升级不增加最大生命值,No Max HP from levels
@@ -373,10 +377,8 @@ Base resale value %d; Sanity loss %d."
 升级已生效,升级已生效,Upgrade applied
 升级已重置,升级已重置,Upgrades reset
 升级建筑（Lv.%d → Lv.%d，%d 天赋点）,升级建筑（Lv.%d → Lv.%d，%d 天赋点）,"Upgrade building (Lv.%d → Lv.%d, %d Talent Points)"
-升级建筑（Lv.%d → Lv.%d，%d 营地币）,升级建筑（Lv.%d → Lv.%d，%d 天赋点）,"Upgrade building (Lv.%d → Lv.%d, %d Talent Points)"
 升级条件已改变,升级条件已改变,Upgrade requirements have changed
 升级至 Lv.%d（%d 天赋点）,升级至 Lv.%d（%d 天赋点）,Upgrade to Lv.%d (%d Talent Points)
-升级至 Lv.%d（%d 营地币）,升级至 Lv.%d（%d 天赋点）,Upgrade to Lv.%d (%d Talent Points)
 升级花费 %d天赋点,升级花费 %d天赋点,Upgrade cost %d talent points
 升级选项,升级选项,Upgrades
 单击显示指示器，再次单击施放,单击显示指示器，再次单击施放,"Click to aim, then click again to cast"
@@ -384,6 +386,7 @@ Base resale value %d; Sanity loss %d."
 卫星,卫星,Satellite
 卷曲展开后瞬间拍地。,卷曲展开后瞬间拍地。,"Uncoils, then slams the ground."
 卸下附魔,卸下附魔,Unequip
+去除屏幕震动,去除屏幕震动,Disable screen shake
 双腔弹匣,双腔弹匣,Twin-Chamber Magazine
 发射缓慢的球状闪电，接触球体的敌人会持续受到灼击，最多5次,发射缓慢的球状闪电，接触球体的敌人会持续受到灼击，最多5次,"Fires a slow lightning orb that repeatedly burns enemies touching it, up to 5 times."
 取出,取出,Withdraw
@@ -401,9 +404,7 @@ Base resale value %d; Sanity loss %d."
 可触发（消耗%d本金）,可触发（消耗%d本金）,Ready (cost: %d principal)
 史诗,史诗,Epic
 右列为各项折算的天赋点,右列为各项折算的天赋点,Right column: converted Talent Points
-右列为各项折算的营地币,右列为各项折算的天赋点,Right column: converted Talent Points
 右列为基础天赋点,右列为基础天赋点,The right column shows base Talent Points
-右列为基础营地币,右列为基础天赋点,The right column shows base Talent Points
 右键地面，移动到目标位置,右键地面，移动到目标位置,Right-click the ground to move
 "右键点击地面，角色会自动走向该位置。按 S 可立即停止移动。
 这里只是示意，无需实际操作，点击「下一步」继续。","右键点击地面，角色会自动走向该位置。按 S 可立即停止移动。
@@ -466,6 +467,8 @@ Photosensitivity: the next hit deals 30% more damage, then consumes the effect."
 地平线星仪,地平线星仪,Horizon Orrery
 场地扩张,场地扩张,Field Expansion
 坤舆秘仪书,坤舆秘仪书,Tome of Earthly Rites
+基础 %s ×%d%% + 双倍战败补偿 %s = %s,基础 %s ×%d%% + 双倍战败补偿 %s = %s,Base %s ×%d%% + double defeat compensation %s = %s
+基础 %s ×%d%% + 阵亡补偿 %s = %s,基础 %s ×%d%% + 阵亡补偿 %s = %s,Base %s ×%d%% + defeat compensation %s = %s
 基础 %s ×%d%% = %s,基础 %s ×%d%% = %s,Base %s ×%d%% = %s
 "基础冷却 [color=#7FD88F]-0.1s[/color]
 伤害范围 [color=#7FD88F]+10[/color]
@@ -501,7 +504,6 @@ Extra projectiles [color=#7FD88F]+1[/color]"
 天赋点：%d,天赋点：%d,Talent Points: %d
 天赋点：%s,天赋点：%s,Talent points: %s
 失控增幅器,失控增幅器,Runaway Amplifier
-失败结算 %s ×%d%% = %s,失败结算 %s ×%d%% = %s,Defeat reward %s ×%d%% = %s
 奖励名称,奖励名称,Reward Name
 存入,存入,Deposit
 存入 %d 金币，本金 %d → %d,存入 %d 金币，本金 %d → %d,Deposited %d gold; principal %d → %d
@@ -509,6 +511,8 @@ Extra projectiles [color=#7FD88F]+1[/color]"
 存入本金,存入本金,Deposit
 存入金额超过金币余额。,存入金额超过金币余额。,Deposit exceeds your gold balance.
 存取已完成。仍可购买、出售和配置附魔。,存取已完成。仍可购买、出售和配置附魔。,"Bank action used. Shopping, selling and enchanting remain available."
+存活时间,存活时间,Survival Time
+存活时间占 %d%% 权重，参考 %d 秒；只统计战斗中的时间。,存活时间占 %d%% 权重，参考 %d 秒；只统计战斗中的时间。,Survival time carries %d%% of the budget; reference %d seconds of active combat.
 守夜长枪,守夜长枪,Nightwatch Spear
 守心铜鉴,守心铜鉴,Heartguard Bronze Mirror
 守魂人面石雕,守魂人面石雕,Soulkeeper's Stone Face
@@ -703,6 +707,7 @@ Choose the controls you prefer. This guide does not change your settings."
 拾取范围训练,拾取范围训练,Pickup Range Training
 拾取金币的百分比加成，不直接加成利息、固定交易奖励或最终天赋点。,拾取金币的百分比加成，不直接加成利息、固定交易奖励或最终天赋点。,"Percentage bonus to gold pickups. Does not directly increase interest, fixed trade rewards, or final Talent Points."
 拾取金币的百分比加成，不直接加成利息、固定交易奖励或最终营地币。,拾取金币的百分比加成，不直接加成利息、固定交易奖励或最终天赋点。,"Percentage bonus to gold pickups. Does not directly increase interest, fixed trade rewards, or final Talent Points."
+持有的武器不能超过负载,持有的武器不能超过负载,Your weapons must fit within the load capacity
 "按 Esc 打开武器栏，点击框体下沿的图标，即可切换该技能的释放方式。
 默认攻击技能自动释放，位移技能手动释放；每个技能的设置独立生效。","按 Esc 打开武器栏，点击框体下沿的图标，即可切换该技能的释放方式。
 默认攻击技能自动释放，位移技能手动释放；每个技能的设置独立生效。","Press Esc and click an icon on a weapon slot's bottom edge to change its cast mode.
@@ -823,7 +828,7 @@ Attacks default to auto; mobility skills default to manual. Each skill's setting
 未持有,未持有,Not owned
 未知,未知,Unknown
 未结算,未结算,Not settled
-未解锁,未解锁,Locked
+未解锁,未解锁,Not unlocked
 本局商店价格-15%，每次购买商品理智-2。,本局商店价格-15%，每次购买商品理智-2。,Shop prices -15% this run; each item purchase costs 2 sanity.
 本局已使用,本局已使用,Used this run
 本局暂无经济记录。,本局暂无经济记录。,No economic activity this run yet.
@@ -836,7 +841,6 @@ Attacks default to auto; mobility skills default to manual. Each skill's setting
 本次未结息,本次未结息,No interest this time
 本次未选,本次未选,Not chosen
 本次获得天赋点,本次获得天赋点,Talent Points Earned
-本次获得营地币,本次获得天赋点,Talent Points Earned
 本波利息 +%d 金币 · 已入随身金币,本波利息 +%d 金币 · 已入随身金币,Interest this wave: +%d gold · Added to carried gold
 本波利息 +%d，足够购买「%s」,本波利息 +%d，足够购买「%s」,"Interest +%d this wave, enough to buy %s"
 本波利率已 +%s 个百分点,本波利率已 +%s 个百分点,Interest rate +%s percentage points this wave
@@ -897,12 +901,6 @@ Upgrade resale: %d"
 死寂护盾徽章,死寂护盾徽章,Deathly Shield Badge
 残破晶石,残破晶石,Broken Crystal
 残缺的占卜骰子,残缺的占卜骰子,Broken Divination Dice
-每 %d 只敌人折算 1 天赋点。,每 %d 只敌人折算 1 天赋点。,Every %d enemies defeated earns 1 Talent Point.
-每 %d 只敌人折算 1 营地币。,每 %d 只敌人折算 1 天赋点。,Every %d enemies defeated earns 1 Talent Point.
-每 %d 实际利息折算 1 天赋点，上限为每个已完成波次 %d 点。,每 %d 实际利息折算 1 天赋点，上限为每个已完成波次 %d 点。,"Every %d interest received earns 1 Talent Point, capped at %d points per completed wave."
-每 %d 实际利息折算 1 营地币，上限为每个已完成波次 %d 币。,每 %d 实际利息折算 1 天赋点，上限为每个已完成波次 %d 点。,"Every %d interest received earns 1 Talent Point, capped at %d points per completed wave."
-每 %d 战斗金币折算 1 天赋点；消费与存款不减少累计收入。,每 %d 战斗金币折算 1 天赋点；消费与存款不减少累计收入。,Every %d gold earned in combat earns 1 Talent Point. Spending and deposits do not reduce this total.
-每 %d 战斗金币折算 1 营地币；消费与存款不减少累计收入。,每 %d 战斗金币折算 1 天赋点；消费与存款不减少累计收入。,Every %d gold earned in combat earns 1 Talent Point. Spending and deposits do not reduce this total.
 "每发基础伤害 [color=#7FD88F]+2[/color]
 基础冷却 [color=#7FD88F]-0.1s[/color]","每发基础伤害 [color=#7FD88F]+2[/color]
 基础冷却 [color=#7FD88F]-0.1s[/color]","Base damage per pellet [color=#7FD88F]+2[/color]
@@ -918,11 +916,9 @@ Enchantment Slots [color=#7FD88F]+1[/color]"
 散弹数量 [color=#7FD88F]+1[/color]","每发基础伤害 [color=#7FD88F]+2[/color]
 散弹数量 [color=#7FD88F]+1[/color]","Base damage per pellet [color=#7FD88F]+2[/color]
 Pellets [color=#7FD88F]+1[/color]"
-每完整度过一波获得 %d 天赋点。,每完整度过一波获得 %d 天赋点。,Each completed wave earns %d Talent Points.
-每完整度过一波获得 %d 营地币。,每完整度过一波获得 %d 天赋点。,Each completed wave earns %d Talent Points.
 每次刷怪的数量增幅；20 表示每组生成数量增加 20%。,每次刷怪的数量增幅；20 表示每组生成数量增加 20%。,Percentage increase in enemies per spawn group. 20 means 20% more.
 每次成功收到利息后，通用伤害 + 2%，理智值 - 1；每局最多持有 1 件,每次成功收到利息后，通用伤害 + 2%，理智值 - 1；每局最多持有 1 件,Each positive interest payment received grants All Damage +2% and Sanity −1. Stack limit: 1 per run.
-每次结算利息的时候有20%的概率翻倍,每次结算利息的时候有20%的概率翻倍,Each interest settlement has a 20% chance to pay double.
+每次结算利息时，每张支票独立有10%的概率让这次结算翻倍（命中几次多翻几倍），最多持有8张,每次结算利息时，每张支票独立有10%的概率让这次结算翻倍（命中几次多翻几倍），最多持有8张,"When interest settles, every ticket independently has a 10% chance to double that payout; each hit stacks another multiplier. Up to 8 copies."
 每波免费刷新：%d → %d,每波免费刷新：%d → %d,Free shop rerolls per wave: %d → %d
 每波初始护盾 + 20；每秒护盾 + 1；每次护盾归零时侵蚀度 + 1,每波初始护盾 + 20；每秒护盾 + 1；每次护盾归零时侵蚀度 + 1,"Starting Shield +20 each wave; Shield Regen/s +1. Each time your shield is depleted, Corruption +1."
 每波初始护盾 +4,每波初始护盾 +4,Starting Shield each wave +4
@@ -969,6 +965,7 @@ Pellets [color=#7FD88F]+1[/color]"
 波末结息,波末结息,Wave-End Interest
 波末结算,波末结算,Wave-End Settlement
 波次,波次,Waves
+波次占 %d%% 权重，参考 %d 波；这是最稳定的一半预算。,波次占 %d%% 权重，参考 %d 波；这是最稳定的一半预算。,Waves carry %d%% of the budget; reference %d completed waves.
 注意，有未装备的附魔法术,注意，有未装备的附魔法术,You have unequipped enchantment spells.
 流星摆锤,流星摆锤,Meteor Flail
 流星锤头挥击前方扇面,流星锤头挥击前方扇面,Swings the flail head in a cone ahead.
@@ -1002,7 +999,6 @@ Pellets [color=#7FD88F]+1[/color]"
 爆伤升级,爆伤升级,Critical damage
 爆炸范围,爆炸范围,Blast Area
 版本 v.0106.261018,版本 v.0106.261018,Version v.0106.261018
-版本：v.0106.260816,版本 v.0106.261018,Version v.0106.261018
 物品,物品,Item
 物品已不存在，请重新选择。,物品已不存在，请重新选择。,This item no longer exists. Select again.
 物品或报价已变化，请重新确认。,物品或报价已变化，请重新确认。,The item or quote changed. Please confirm again.
@@ -1107,8 +1103,7 @@ Pellets [color=#7FD88F]+1[/color]"
 经验获取百分比加成。,经验获取百分比加成。,Percentage bonus to experience gained.
 经验获取训练,经验获取训练,Experience Training
 结息后自动存入本金,结息后自动存入本金,Auto-deposited after interest
-结束本次冒险，按失败奖励的50%结算天赋点（向下取整）。,结束本次冒险，按失败奖励的50%结算天赋点（向下取整）。,End this expedition and receive 50% of its defeat reward in Talent Points (rounded down).
-结束本次冒险，按失败奖励的50%结算营地币（向下取整）。,结束本次冒险，按失败奖励的50%结算天赋点（向下取整）。,End this expedition and receive 50% of its defeat reward in Talent Points (rounded down).
+结束本次冒险并结算已获得的天赋点。,结束本次冒险并结算已获得的天赋点。,End this expedition and collect the Talent Points earned.
 结算 ×%d%%,结算 ×%d%%,Reward ×%d%%
 结霜,结霜,Frost
 统计,统计,Damage
@@ -1141,11 +1136,9 @@ Self-service enchanting"
 获得时：本金 +150；利率 +2 个百分点；最大生命值 -3；护甲 -5；最多持有1件,获得时：本金 +150；利率 +2 个百分点；最大生命值 -3；护甲 -5；最多持有1件,On acquisition: Principal +150. Interest Rate +2 percentage points; Max HP −3; Armor −5. Stack limit: 1 per run.
 获得时：本金 +150；利率 +2%；回血 -0.25；血包恢复量 -1；最多持有1件,获得时：本金 +150；利率 +2%；回血 -0.25；血包恢复量 -1；最多持有1件,On acquisition: Principal +150. Interest Rate +2%; HP Regen/s −0.25; Health Pickup Recovery −1. Stack limit: 1 per run.
 获得时：本金 +（20×当前波次）；最多持有 5 件,获得时：本金 +（20×当前波次）；最多持有 5 件,On acquisition: Principal +(20 × current wave). Stack limit: 5.
-营地币：%d,天赋点：%d,Talent Points: %d
 营地建筑,营地建筑,Camp Buildings
 营地搭建,营地搭建,Camp Building
 营地短刀,营地短刀,Camp Dagger
-营地结算,天赋点结算,Talent Point Settlement
 落雷,落雷,Lightning
 薪酬调整方案,薪酬调整方案,Salary Adjustment
 虚市通行钥匙,虚市通行钥匙,Void Market Key
@@ -1182,7 +1175,6 @@ Self-service enchanting"
 解锁全部稀有遗物,解锁全部稀有遗物,Unlock all rare relics
 解锁属性购买升级,解锁属性购买升级,Unlock purchasable stat upgrades
 解锁营地（%d 天赋点）,解锁营地（%d 天赋点）,Unlock camp (%d Talent Points)
-解锁营地（%d 营地币）,解锁营地（%d 天赋点）,Unlock camp (%d Talent Points)
 讨债挑战：欠款 %d → %d。,讨债挑战：欠款 %d → %d。,Debt challenge: debt %d → %d.
 议事大厅,议事大厅,Council Hall
 设置,设置,Settings
@@ -1226,17 +1218,13 @@ Brackets show the price before Sanity and the Sanity adjustment.
 购买失败  无效的选项,购买失败  无效的选项,Purchase failed: invalid offer
 购买失败  金币不足,购买失败  金币不足,Purchase failed: not enough gold
 购买解锁（%d 天赋点）,购买解锁（%d 天赋点）,Unlock (%d Talent Points)
-购买解锁（%d 营地币）,购买解锁（%d 天赋点）,Unlock (%d Talent Points)
 购买（%d 天赋点）,购买（%d 天赋点）,Buy (%d Talent Points)
-购买（%d 营地币）,购买（%d 天赋点）,Buy (%d Talent Points)
 贷款%s还清：−%d 金币,贷款%s还清：−%d 金币,Loan repaid (%s): −%d gold
 贷款已还清,贷款已还清,Loan repaid
 贷款未还 · 已计复利,贷款未还 · 已计复利,Loan unpaid · Interest compounded
 贷款未还：金币 %d / 应还 %d；复利 +%d，应还 %d 金币,贷款未还：金币 %d / 应还 %d；复利 +%d，应还 %d 金币,Loan unpaid: gold %d / due %d; compound interest +%d; now due %d gold
 贷款自动还清,贷款自动还清,Loan repaid automatically
 资本家,资本家,Capitalist
-赚取利息,赚取利息,Interest Earned
-赚取金币,赚取金币,Gold Earned
 赤铜炉灯,赤铜炉灯,Copper Furnace Lamp
 跳过,跳过,Skip
 跳过指引,跳过指引,Skip guide
@@ -1376,7 +1364,7 @@ Slashes [color=#7FD88F]+1[/color]"
 返回,返回,Back
 返回主界面,返回主界面,Main Menu
 返回主菜单,返回主菜单,Main Menu
-返回战斗,返回战斗,Resume
+返回战斗,返回战斗,Return to battle
 返回设置,返回设置,Back to settings
 返回银行,返回银行,Return to Bank
 还清,还清,Repay

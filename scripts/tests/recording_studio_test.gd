@@ -85,6 +85,24 @@ func _run() -> void:
 	invalid.weapons.append(invalid.weapons[0].duplicate(true))
 	check(not RecordingSession.validate(invalid).is_empty(), "reject duplicate weapons")
 	var config := RecordingSession.default_config()
+	config.player_stats = {"max_hp": 1234, "move_speed": 300, "hp_regen": 2.5, "load_capacity": 500}
+	studio.set_config(config)
+	check(studio.get_config() == config, "stat editor preserves integer and fractional overrides")
+	studio._save_preset()
+	studio.user_presets.clear()
+	studio._load_saved_presets()
+	studio.set_config(studio.user_presets.test_capture)
+	check(studio.get_config().player_stats == config.player_stats, "stat overrides survive preset JSON reload")
+	DirAccess.remove_absolute(studio.storage_path)
+	var legacy := RecordingSession.default_config()
+	legacy.erase("player_stats")
+	studio.set_config(legacy)
+	check(studio.get_config().player_stats.is_empty(), "old presets clear stat overrides")
+	invalid = config.duplicate(true)
+	invalid.player_stats = {"crit_chance": 101}
+	check(not RecordingSession.validate(invalid).is_empty(), "reject out of range stat override")
+	invalid.player_stats = {"hp_regen": "invalid"}
+	check(not RecordingSession.validate(invalid).is_empty(), "reject non numeric stat override")
 	config.countdown = 0
 	config.weapons[0].level = 4
 	config.weapons[0].attachments.append("scroll_ice")
@@ -98,6 +116,10 @@ func _run() -> void:
 		if not studio.busy: break
 	check(not studio.screen.visible, "start button enters scene")
 	var session := studio.session
+	check(session.battle.player.get_stat("max_hp") == 1234 and session.battle.player.current_hp == 1234, "health override applies before restoring full health")
+	check(session.battle.player.get_stat("hp_regen") == 2.5 and session.battle.player.get_stat("move_speed") == 300, "fractional regen and movement overrides reach real player")
+	session.battle.player.add_runtime_modifier({"id": "test_recording_speed", "source_type": "test", "source_id": "speed", "target_scope": "player", "stat": "move_speed", "operation": "add_flat", "value": 50, "duration": -1, "stack_rule": "unique"})
+	check(session.battle.player.get_stat("move_speed") == 300, "later stat bonuses preserve fixed testing value")
 	if session.battle == null:
 		check(false, "battle created: " + studio.status.text)
 		get_tree().quit(1)
@@ -143,6 +165,7 @@ func _run() -> void:
 		await frames(1)
 		if not studio.busy: break
 	check(session.battle.wave_manager.current_gold == 0 and session.battle.wave_manager.finance_system.principal == 1000, "F6 restores original config rather than mutated bank state")
+	check(session.battle.player.get_stat("max_hp") == 1234, "F6 restores stat overrides")
 	await studio.return_to_studio()
 	config.character = "character_capitalist"
 	config.wave = 12

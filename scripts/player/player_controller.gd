@@ -490,6 +490,13 @@ func _apply_damage_flash() -> void:
 	tween.tween_property(sprite, "modulate", Color.WHITE, 0.16)
 
 
+func grant_upgrade_protection() -> void:
+	if not alive: return
+	_invincibility_timer = maxf(_invincibility_timer, 1.5)
+	_revive_blink_active = true
+	_update_revive_blink()
+
+
 func _update_revive_blink() -> void:
 	if not _revive_blink_active:
 		return

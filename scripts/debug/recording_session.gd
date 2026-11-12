@@ -22,7 +22,7 @@ func _process(_delta: float) -> void:
 static func default_config() -> Dictionary:
 	return {"wave": 5, "difficulty": "1", "character": "character_void_hunter",
 		"level": 10, "gold": 200, "principal": 1000, "sanity_delta": 0, "erosion_delta": 0,
-		"countdown": 3, "hud": true, "entry": "combat",
+		"countdown": 3, "hud": true, "entry": "combat", "player_stats": {},
 		"weapons": [{"id": "weapon_nightwatch_spear", "level": 3, "attachments": ["scroll_split", "scroll_fire"]}],
 		"relics": [{"id": "relic_steel_vault", "count": 1}]}
 
@@ -39,6 +39,13 @@ static func presets() -> Dictionary:
 
 
 static func validate(data: Dictionary) -> String:
+	var overrides: Variant = data.get("player_stats", {})
+	if not overrides is Dictionary: return "玩家属性配置无效。"
+	for stat_id in overrides:
+		if not StatDefinitions.has_stat(str(stat_id)) or stat_id == "damage_taken_percent": return "不可覆盖的玩家属性：" + str(stat_id)
+		var value: Variant = overrides[stat_id]
+		if not (value is int or value is float): return "玩家属性应为数值：" + str(stat_id)
+		if not is_finite(float(value)) or StatDefinitions.clamp_stat_value(stat_id, float(value)) != float(value): return "玩家属性超出范围：" + str(stat_id)
 	for key in ["wave", "level", "gold", "principal", "sanity_delta", "erosion_delta", "countdown"]:
 		if not data.has(key) or not (data[key] is int or data[key] is float): return "数值字段无效：" + key
 		if not is_finite(float(data[key])) or float(data[key]) != floorf(float(data[key])): return "请输入整数：" + key
@@ -128,6 +135,7 @@ func prepare(data: Dictionary) -> String:
 	bank._emit_changed()
 	manager.current_gold = int(config.gold)
 	manager.gold_changed.emit(manager.current_gold)
+	_apply_player_stats(player)
 	if not battle.loadout.initialize(player, bank): return "武器总负载超过角色容量，请减少武器或加入负载遗物。"
 	for row in config.weapons:
 		for _level in range(1, int(row.level)):
@@ -146,6 +154,21 @@ func prepare(data: Dictionary) -> String:
 	set_hud_visible(hud_visible)
 	paused = false
 	return ""
+
+
+func _apply_player_stats(player: PlayerController) -> void:
+	# Paired caps pin the final regular value, including relic percentage bonuses.
+	# Install directly: test settings also work with relics blocking stat gains.
+	player.begin_modifier_update()
+	for stat_id in config.get("player_stats", {}):
+		for operation in [Modifier.OPERATION_MIN_CAP, Modifier.OPERATION_MAX_CAP]:
+			player.modifier_stack.add_modifier_from_dictionary({
+				"id": "recording_stat_%s_%s" % [stat_id, operation],
+				"source_type": "recording_stat", "source_id": stat_id,
+				"target_scope": "player", "stat": stat_id, "operation": operation,
+				"value": config.player_stats[stat_id], "duration": -1,
+				"stack_rule": "unique"})
+	player.end_modifier_update()
 
 
 func begin() -> bool:

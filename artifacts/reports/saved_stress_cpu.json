@@ -1,0 +1,5109 @@
+{
+  "config": {
+    "character": "character_void_hunter",
+    "countdown": 0,
+    "difficulty": "1",
+    "entry": "combat",
+    "erosion_delta": 200.0,
+    "gold": 2000.0,
+    "hud": true,
+    "level": 10.0,
+    "player_stats": {
+      "area_size": 100.0,
+      "armor": 100.0,
+      "attack_speed": 100.0,
+      "damage_area_size": 200.0,
+      "damage_percent": 0.0,
+      "divinity": 200.0,
+      "element_damage": 10.0,
+      "enemy_spawn_rate_percent": 200.0,
+      "hp_regen": 10.0,
+      "humanity": 20.0,
+      "max_hp": 1000.0,
+      "move_speed": 300.0,
+      "projectile_count": 3.0,
+      "shield": 2000.0,
+      "shop_offer_count_bonus": 3.0
+    },
+    "principal": 100000.0,
+    "relics": [
+      {
+        "count": 1.0,
+        "id": "relic_steel_vault"
+      }
+    ],
+    "sanity_delta": 0.0,
+    "wave": 10.0,
+    "weapons": [
+      {
+        "attachments": [
+          "scroll_multishot",
+          "scroll_split",
+          "scroll_lightning"
+        ],
+        "id": "weapon_plasma_cannon",
+        "level": 5.0
+      },
+      {
+        "attachments": [
+          "scroll_multishot",
+          "scroll_split",
+          "scroll_fire"
+        ],
+        "id": "weapon_void_blade",
+        "level": 5.0
+      },
+      {
+        "attachments": [
+          "scroll_multishot",
+          "scroll_split",
+          "scroll_water"
+        ],
+        "id": "weapon_rentier_purse",
+        "level": 5.0
+      }
+    ]
+  },
+  "graphical": false,
+  "rows": [
+    {
+      "frames": 900,
+      "max_ms": 88.676,
+      "mean_ms": 8.26139333333334,
+      "observed_new_nodes": {
+        "Sprite2D": 1,
+        "cavern_sunlight_backdrop.gd": 1,
+        "coin_projectile.gd": 48,
+        "effect_visual_budget.gd": 4,
+        "element_reaction_text.gd": 78,
+        "element_reaction_visual.gd": 131,
+        "fire_patch.gd": 10,
+        "fire_seed.gd": 40,
+        "lightning_hit_sprite_burst.gd": 78,
+        "lightning_particle_effect.gd": 416,
+        "particle_light_field.gd": 1,
+        "particle_world.gd": 1,
+        "projectile_instance.gd": 109,
+        "reaction_block_visual.gd": 87,
+        "ritual_coin_hit.gd": 62,
+        "thunder_fire_visual_budget.gd": 1,
+        "water_wave_effect.gd": 42
+      },
+      "over_16_ms": 44,
+      "p95_ms": 16.596,
+      "snapshots": [
+        {
+          "draw_calls": 0.0,
+          "enemies": 0,
+          "frame": 0,
+          "new_nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1
+          },
+          "objects": 1864.0,
+          "physics_ms": 0.139,
+          "process_ms": 219.936
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 0,
+          "frame": 30,
+          "new_nodes": {},
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1
+          },
+          "objects": 2204.0,
+          "physics_ms": 0.139,
+          "process_ms": 219.936
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 0,
+          "frame": 60,
+          "new_nodes": {},
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1
+          },
+          "objects": 2548.0,
+          "physics_ms": 0.139,
+          "process_ms": 219.936
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 0,
+          "frame": 90,
+          "new_nodes": {},
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1
+          },
+          "objects": 2868.0,
+          "physics_ms": 0.139,
+          "process_ms": 219.936
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 27,
+          "frame": 120,
+          "new_nodes": {
+            "coin_projectile.gd": 8,
+            "projectile_instance.gd": 11
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 8,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 11
+          },
+          "objects": 3369.0,
+          "physics_ms": 0.139,
+          "process_ms": 219.936
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 27,
+          "frame": 150,
+          "new_nodes": {
+            "ritual_coin_hit.gd": 4
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 4,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 9,
+            "ritual_coin_hit.gd": 4
+          },
+          "objects": 3364.0,
+          "physics_ms": 5.293,
+          "process_ms": 47.384
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 45,
+          "frame": 180,
+          "new_nodes": {
+            "effect_visual_budget.gd": 2,
+            "element_reaction_visual.gd": 1,
+            "fire_patch.gd": 1,
+            "fire_seed.gd": 4,
+            "ritual_coin_hit.gd": 3,
+            "water_wave_effect.gd": 2
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 3,
+            "effect_visual_budget.gd": 2,
+            "element_reaction_visual.gd": 1,
+            "fire_patch.gd": 1,
+            "fire_seed.gd": 4,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 3,
+            "ritual_coin_hit.gd": 3,
+            "water_wave_effect.gd": 2
+          },
+          "objects": 3513.0,
+          "physics_ms": 5.293,
+          "process_ms": 47.384
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 210,
+          "new_nodes": {
+            "effect_visual_budget.gd": 2,
+            "element_reaction_text.gd": 9,
+            "element_reaction_visual.gd": 6,
+            "lightning_hit_sprite_burst.gd": 4,
+            "lightning_particle_effect.gd": 30,
+            "projectile_instance.gd": 8,
+            "reaction_block_visual.gd": 1,
+            "thunder_fire_visual_budget.gd": 1
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "effect_visual_budget.gd": 4,
+            "element_reaction_text.gd": 9,
+            "element_reaction_visual.gd": 7,
+            "fire_patch.gd": 1,
+            "fire_seed.gd": 4,
+            "lightning_hit_sprite_burst.gd": 4,
+            "lightning_particle_effect.gd": 30,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 11,
+            "reaction_block_visual.gd": 1,
+            "thunder_fire_visual_budget.gd": 1
+          },
+          "objects": 3670.0,
+          "physics_ms": 5.293,
+          "process_ms": 47.384
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 240,
+          "new_nodes": {
+            "element_reaction_text.gd": 17,
+            "fire_seed.gd": 20,
+            "lightning_hit_sprite_burst.gd": 22,
+            "lightning_particle_effect.gd": 48,
+            "reaction_block_visual.gd": 14
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "effect_visual_budget.gd": 4,
+            "element_reaction_text.gd": 26,
+            "element_reaction_visual.gd": 6,
+            "fire_patch.gd": 1,
+            "fire_seed.gd": 24,
+            "lightning_hit_sprite_burst.gd": 26,
+            "lightning_particle_effect.gd": 48,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 2,
+            "reaction_block_visual.gd": 14,
+            "thunder_fire_visual_budget.gd": 1
+          },
+          "objects": 3916.0,
+          "physics_ms": 5.293,
+          "process_ms": 47.384
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 270,
+          "new_nodes": {
+            "coin_projectile.gd": 5,
+            "fire_patch.gd": 2,
+            "projectile_instance.gd": 5,
+            "ritual_coin_hit.gd": 5
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 5,
+            "effect_visual_budget.gd": 4,
+            "element_reaction_text.gd": 26,
+            "fire_patch.gd": 3,
+            "fire_seed.gd": 24,
+            "lightning_hit_sprite_burst.gd": 8,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 6,
+            "ritual_coin_hit.gd": 5,
+            "thunder_fire_visual_budget.gd": 1
+          },
+          "objects": 3738.0,
+          "physics_ms": 17.02,
+          "process_ms": 23.116
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 300,
+          "new_nodes": {
+            "element_reaction_visual.gd": 42,
+            "projectile_instance.gd": 6,
+            "water_wave_effect.gd": 8
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "effect_visual_budget.gd": 4,
+            "element_reaction_text.gd": 26,
+            "element_reaction_visual.gd": 42,
+            "fire_patch.gd": 3,
+            "fire_seed.gd": 24,
+            "lightning_hit_sprite_burst.gd": 8,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 11,
+            "thunder_fire_visual_budget.gd": 1,
+            "water_wave_effect.gd": 8
+          },
+          "objects": 3779.0,
+          "physics_ms": 17.02,
+          "process_ms": 23.116
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 330,
+          "new_nodes": {
+            "element_reaction_text.gd": 8,
+            "element_reaction_visual.gd": 3,
+            "fire_seed.gd": 4,
+            "lightning_hit_sprite_burst.gd": 10,
+            "lightning_particle_effect.gd": 64,
+            "projectile_instance.gd": 5,
+            "reaction_block_visual.gd": 27
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "effect_visual_budget.gd": 4,
+            "element_reaction_text.gd": 34,
+            "element_reaction_visual.gd": 45,
+            "fire_patch.gd": 3,
+            "fire_seed.gd": 28,
+            "lightning_hit_sprite_burst.gd": 18,
+            "lightning_particle_effect.gd": 64,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 8,
+            "reaction_block_visual.gd": 27,
+            "thunder_fire_visual_budget.gd": 1
+          },
+          "objects": 4053.0,
+          "physics_ms": 17.02,
+          "process_ms": 23.116
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 360,
+          "new_nodes": {
+            "element_reaction_text.gd": 44,
+            "fire_patch.gd": 1,
+            "lightning_hit_sprite_burst.gd": 13,
+            "lightning_particle_effect.gd": 66,
+            "reaction_block_visual.gd": 34
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "effect_visual_budget.gd": 4,
+            "element_reaction_text.gd": 78,
+            "element_reaction_visual.gd": 3,
+            "fire_patch.gd": 4,
+            "fire_seed.gd": 28,
+            "lightning_hit_sprite_burst.gd": 31,
+            "lightning_particle_effect.gd": 66,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "reaction_block_visual.gd": 34,
+            "thunder_fire_visual_budget.gd": 1
+          },
+          "objects": 4073.0,
+          "physics_ms": 21.128,
+          "process_ms": 23.842
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 47,
+          "frame": 390,
+          "new_nodes": {
+            "coin_projectile.gd": 2,
+            "element_reaction_visual.gd": 21,
+            "projectile_instance.gd": 11,
+            "ritual_coin_hit.gd": 10,
+            "water_wave_effect.gd": 4
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 2,
+            "effect_visual_budget.gd": 4,
+            "element_reaction_text.gd": 78,
+            "element_reaction_visual.gd": 21,
+            "fire_patch.gd": 4,
+            "fire_seed.gd": 28,
+            "lightning_hit_sprite_burst.gd": 8,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 11,
+            "ritual_coin_hit.gd": 10,
+            "thunder_fire_visual_budget.gd": 1,
+            "water_wave_effect.gd": 4
+          },
+          "objects": 3801.0,
+          "physics_ms": 21.128,
+          "process_ms": 23.842
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 46,
+          "frame": 420,
+          "new_nodes": {
+            "element_reaction_visual.gd": 19,
+            "lightning_hit_sprite_burst.gd": 4,
+            "projectile_instance.gd": 16,
+            "water_wave_effect.gd": 4
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "effect_visual_budget.gd": 4,
+            "element_reaction_text.gd": 78,
+            "element_reaction_visual.gd": 40,
+            "fire_patch.gd": 4,
+            "fire_seed.gd": 28,
+            "lightning_hit_sprite_burst.gd": 12,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 21,
+            "thunder_fire_visual_budget.gd": 1,
+            "water_wave_effect.gd": 8
+          },
+          "objects": 3919.0,
+          "physics_ms": 21.128,
+          "process_ms": 23.842
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 450,
+          "new_nodes": {},
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "effect_visual_budget.gd": 4,
+            "element_reaction_text.gd": 78,
+            "element_reaction_visual.gd": 40,
+            "fire_patch.gd": 4,
+            "fire_seed.gd": 28,
+            "lightning_hit_sprite_burst.gd": 8,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 4,
+            "thunder_fire_visual_budget.gd": 1
+          },
+          "objects": 3835.0,
+          "physics_ms": 21.128,
+          "process_ms": 23.842
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 480,
+          "new_nodes": {
+            "projectile_instance.gd": 6
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "effect_visual_budget.gd": 4,
+            "element_reaction_text.gd": 78,
+            "fire_patch.gd": 4,
+            "fire_seed.gd": 28,
+            "lightning_hit_sprite_burst.gd": 8,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 6,
+            "thunder_fire_visual_budget.gd": 1
+          },
+          "objects": 3786.0,
+          "physics_ms": 21.141,
+          "process_ms": 82.303
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 510,
+          "new_nodes": {
+            "coin_projectile.gd": 7,
+            "element_reaction_visual.gd": 2,
+            "fire_patch.gd": 1,
+            "projectile_instance.gd": 5,
+            "ritual_coin_hit.gd": 3,
+            "water_wave_effect.gd": 2
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 7,
+            "effect_visual_budget.gd": 4,
+            "element_reaction_text.gd": 78,
+            "element_reaction_visual.gd": 2,
+            "fire_patch.gd": 5,
+            "fire_seed.gd": 28,
+            "lightning_hit_sprite_burst.gd": 8,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 9,
+            "ritual_coin_hit.gd": 3,
+            "thunder_fire_visual_budget.gd": 1,
+            "water_wave_effect.gd": 2
+          },
+          "objects": 3847.0,
+          "physics_ms": 21.141,
+          "process_ms": 82.303
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 540,
+          "new_nodes": {
+            "element_reaction_visual.gd": 1,
+            "lightning_particle_effect.gd": 12,
+            "projectile_instance.gd": 4
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 7,
+            "effect_visual_budget.gd": 4,
+            "element_reaction_text.gd": 78,
+            "element_reaction_visual.gd": 3,
+            "fire_patch.gd": 2,
+            "fire_seed.gd": 28,
+            "lightning_hit_sprite_burst.gd": 8,
+            "lightning_particle_effect.gd": 12,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 9,
+            "thunder_fire_visual_budget.gd": 1,
+            "water_wave_effect.gd": 2
+          },
+          "objects": 3878.0,
+          "physics_ms": 21.141,
+          "process_ms": 82.303
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 570,
+          "new_nodes": {
+            "element_reaction_visual.gd": 2,
+            "fire_seed.gd": 6,
+            "lightning_hit_sprite_burst.gd": 9,
+            "lightning_particle_effect.gd": 40,
+            "projectile_instance.gd": 2,
+            "reaction_block_visual.gd": 2
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "effect_visual_budget.gd": 4,
+            "element_reaction_text.gd": 78,
+            "element_reaction_visual.gd": 3,
+            "fire_patch.gd": 2,
+            "fire_seed.gd": 34,
+            "lightning_hit_sprite_burst.gd": 17,
+            "lightning_particle_effect.gd": 40,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 5,
+            "reaction_block_visual.gd": 2,
+            "thunder_fire_visual_budget.gd": 1
+          },
+          "objects": 3977.0,
+          "physics_ms": 21.141,
+          "process_ms": 82.303
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 600,
+          "new_nodes": {
+            "fire_patch.gd": 2,
+            "lightning_particle_effect.gd": 7,
+            "reaction_block_visual.gd": 1
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "effect_visual_budget.gd": 4,
+            "element_reaction_text.gd": 78,
+            "element_reaction_visual.gd": 2,
+            "fire_patch.gd": 4,
+            "fire_seed.gd": 34,
+            "lightning_hit_sprite_burst.gd": 13,
+            "lightning_particle_effect.gd": 7,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 3,
+            "reaction_block_visual.gd": 1,
+            "thunder_fire_visual_budget.gd": 1
+          },
+          "objects": 3870.0,
+          "physics_ms": 10.213,
+          "process_ms": 8.169
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 630,
+          "new_nodes": {
+            "coin_projectile.gd": 4,
+            "element_reaction_visual.gd": 25,
+            "ritual_coin_hit.gd": 18,
+            "water_wave_effect.gd": 11
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 4,
+            "effect_visual_budget.gd": 4,
+            "element_reaction_text.gd": 78,
+            "element_reaction_visual.gd": 27,
+            "fire_patch.gd": 4,
+            "fire_seed.gd": 34,
+            "lightning_hit_sprite_burst.gd": 8,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 3,
+            "ritual_coin_hit.gd": 18,
+            "thunder_fire_visual_budget.gd": 1,
+            "water_wave_effect.gd": 11
+          },
+          "objects": 3824.0,
+          "physics_ms": 10.213,
+          "process_ms": 8.169
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 27,
+          "frame": 660,
+          "new_nodes": {
+            "element_reaction_visual.gd": 4,
+            "lightning_hit_sprite_burst.gd": 6,
+            "lightning_particle_effect.gd": 66,
+            "projectile_instance.gd": 15,
+            "reaction_block_visual.gd": 3,
+            "ritual_coin_hit.gd": 1,
+            "water_wave_effect.gd": 3
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "effect_visual_budget.gd": 4,
+            "element_reaction_text.gd": 78,
+            "element_reaction_visual.gd": 29,
+            "fire_patch.gd": 3,
+            "fire_seed.gd": 34,
+            "lightning_hit_sprite_burst.gd": 14,
+            "lightning_particle_effect.gd": 66,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 18,
+            "reaction_block_visual.gd": 3,
+            "ritual_coin_hit.gd": 1,
+            "thunder_fire_visual_budget.gd": 1,
+            "water_wave_effect.gd": 14
+          },
+          "objects": 3915.0,
+          "physics_ms": 10.213,
+          "process_ms": 8.169
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 690,
+          "new_nodes": {
+            "lightning_particle_effect.gd": 14,
+            "reaction_block_visual.gd": 1
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "effect_visual_budget.gd": 4,
+            "element_reaction_text.gd": 78,
+            "element_reaction_visual.gd": 6,
+            "fire_patch.gd": 3,
+            "fire_seed.gd": 34,
+            "lightning_hit_sprite_burst.gd": 13,
+            "lightning_particle_effect.gd": 16,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "reaction_block_visual.gd": 1,
+            "thunder_fire_visual_budget.gd": 1,
+            "water_wave_effect.gd": 1
+          },
+          "objects": 3808.0,
+          "physics_ms": 28.16,
+          "process_ms": 30.371
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 720,
+          "new_nodes": {},
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "effect_visual_budget.gd": 4,
+            "element_reaction_text.gd": 78,
+            "fire_patch.gd": 2,
+            "fire_seed.gd": 34,
+            "lightning_hit_sprite_burst.gd": 8,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "thunder_fire_visual_budget.gd": 1
+          },
+          "objects": 3734.0,
+          "physics_ms": 28.16,
+          "process_ms": 30.371
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 47,
+          "frame": 750,
+          "new_nodes": {
+            "coin_projectile.gd": 12,
+            "element_reaction_visual.gd": 2,
+            "ritual_coin_hit.gd": 8,
+            "water_wave_effect.gd": 2
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 12,
+            "effect_visual_budget.gd": 4,
+            "element_reaction_text.gd": 78,
+            "element_reaction_visual.gd": 2,
+            "fire_patch.gd": 2,
+            "fire_seed.gd": 34,
+            "lightning_hit_sprite_burst.gd": 8,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "ritual_coin_hit.gd": 8,
+            "thunder_fire_visual_budget.gd": 1,
+            "water_wave_effect.gd": 2
+          },
+          "objects": 3764.0,
+          "physics_ms": 28.16,
+          "process_ms": 30.371
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 40,
+          "frame": 780,
+          "new_nodes": {
+            "fire_patch.gd": 1,
+            "lightning_hit_sprite_burst.gd": 1,
+            "lightning_particle_effect.gd": 46,
+            "projectile_instance.gd": 15,
+            "reaction_block_visual.gd": 3,
+            "ritual_coin_hit.gd": 6,
+            "water_wave_effect.gd": 5
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 5,
+            "effect_visual_budget.gd": 4,
+            "element_reaction_text.gd": 78,
+            "element_reaction_visual.gd": 2,
+            "fire_patch.gd": 3,
+            "fire_seed.gd": 34,
+            "lightning_hit_sprite_burst.gd": 9,
+            "lightning_particle_effect.gd": 46,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 15,
+            "reaction_block_visual.gd": 3,
+            "ritual_coin_hit.gd": 6,
+            "thunder_fire_visual_budget.gd": 1,
+            "water_wave_effect.gd": 7
+          },
+          "objects": 3886.0,
+          "physics_ms": 28.16,
+          "process_ms": 30.371
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 38,
+          "frame": 810,
+          "new_nodes": {
+            "lightning_hit_sprite_burst.gd": 9,
+            "lightning_particle_effect.gd": 23,
+            "reaction_block_visual.gd": 1
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "effect_visual_budget.gd": 4,
+            "element_reaction_text.gd": 78,
+            "fire_patch.gd": 3,
+            "fire_seed.gd": 34,
+            "lightning_hit_sprite_burst.gd": 18,
+            "lightning_particle_effect.gd": 23,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "reaction_block_visual.gd": 1,
+            "thunder_fire_visual_budget.gd": 1,
+            "water_wave_effect.gd": 2
+          },
+          "objects": 3752.0,
+          "physics_ms": 28.16,
+          "process_ms": 30.371
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 840,
+          "new_nodes": {
+            "fire_seed.gd": 6
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "effect_visual_budget.gd": 4,
+            "element_reaction_text.gd": 78,
+            "fire_patch.gd": 3,
+            "fire_seed.gd": 40,
+            "lightning_hit_sprite_burst.gd": 8,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "thunder_fire_visual_budget.gd": 1
+          },
+          "objects": 3727.0,
+          "physics_ms": 27.668,
+          "process_ms": 11.923
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 870,
+          "new_nodes": {
+            "coin_projectile.gd": 10,
+            "element_reaction_visual.gd": 3,
+            "fire_patch.gd": 2,
+            "ritual_coin_hit.gd": 4,
+            "water_wave_effect.gd": 1
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 10,
+            "effect_visual_budget.gd": 4,
+            "element_reaction_text.gd": 78,
+            "element_reaction_visual.gd": 3,
+            "fire_patch.gd": 5,
+            "fire_seed.gd": 40,
+            "lightning_hit_sprite_burst.gd": 8,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "ritual_coin_hit.gd": 4,
+            "thunder_fire_visual_budget.gd": 1,
+            "water_wave_effect.gd": 1
+          },
+          "objects": 3759.0,
+          "physics_ms": 27.668,
+          "process_ms": 11.923
+        }
+      ],
+      "spikes": [
+        {
+          "frame": 119,
+          "ms": 41.905
+        },
+        {
+          "frame": 156,
+          "ms": 30.737
+        },
+        {
+          "frame": 334,
+          "ms": 26.557
+        },
+        {
+          "frame": 341,
+          "ms": 26.709
+        },
+        {
+          "frame": 349,
+          "ms": 25.131
+        },
+        {
+          "frame": 392,
+          "ms": 27.595
+        },
+        {
+          "frame": 395,
+          "ms": 88.676
+        },
+        {
+          "frame": 619,
+          "ms": 30.954
+        },
+        {
+          "frame": 679,
+          "ms": 33.321
+        },
+        {
+          "frame": 743,
+          "ms": 30.295
+        },
+        {
+          "frame": 765,
+          "ms": 25.987
+        }
+      ],
+      "variant": "full"
+    },
+    {
+      "frames": 900,
+      "max_ms": 40.162,
+      "mean_ms": 8.17819666666668,
+      "observed_new_nodes": {
+        "Sprite2D": 1,
+        "cavern_sunlight_backdrop.gd": 1,
+        "coin_projectile.gd": 44,
+        "effect_visual_budget.gd": 2,
+        "element_reaction_visual.gd": 204,
+        "fire_patch.gd": 10,
+        "fire_seed.gd": 32,
+        "particle_light_field.gd": 1,
+        "particle_world.gd": 1,
+        "projectile_instance.gd": 112,
+        "ritual_coin_hit.gd": 84,
+        "water_wave_effect.gd": 70
+      },
+      "over_16_ms": 21,
+      "p95_ms": 14.092,
+      "snapshots": [
+        {
+          "draw_calls": 0.0,
+          "enemies": 0,
+          "frame": 0,
+          "new_nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1
+          },
+          "objects": 1927.0,
+          "physics_ms": 15.013,
+          "process_ms": 262.785
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 0,
+          "frame": 30,
+          "new_nodes": {},
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1
+          },
+          "objects": 2239.0,
+          "physics_ms": 15.013,
+          "process_ms": 262.785
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 0,
+          "frame": 60,
+          "new_nodes": {},
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1
+          },
+          "objects": 2575.0,
+          "physics_ms": 15.013,
+          "process_ms": 262.785
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 0,
+          "frame": 90,
+          "new_nodes": {},
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1
+          },
+          "objects": 2911.0,
+          "physics_ms": 15.013,
+          "process_ms": 262.785
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 27,
+          "frame": 120,
+          "new_nodes": {
+            "coin_projectile.gd": 8,
+            "projectile_instance.gd": 11
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 8,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 11
+          },
+          "objects": 3402.0,
+          "physics_ms": 0.387,
+          "process_ms": 43.708
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 27,
+          "frame": 150,
+          "new_nodes": {
+            "coin_projectile.gd": 2,
+            "effect_visual_budget.gd": 1,
+            "fire_seed.gd": 16,
+            "ritual_coin_hit.gd": 1
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 9,
+            "effect_visual_budget.gd": 1,
+            "fire_seed.gd": 16,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 9,
+            "ritual_coin_hit.gd": 1
+          },
+          "objects": 3478.0,
+          "physics_ms": 0.387,
+          "process_ms": 43.708
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 45,
+          "frame": 180,
+          "new_nodes": {
+            "effect_visual_budget.gd": 1,
+            "element_reaction_visual.gd": 3,
+            "fire_patch.gd": 2,
+            "ritual_coin_hit.gd": 3,
+            "water_wave_effect.gd": 8
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 4,
+            "effect_visual_budget.gd": 2,
+            "element_reaction_visual.gd": 3,
+            "fire_patch.gd": 2,
+            "fire_seed.gd": 16,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 5,
+            "ritual_coin_hit.gd": 3,
+            "water_wave_effect.gd": 8
+          },
+          "objects": 3647.0,
+          "physics_ms": 0.387,
+          "process_ms": 43.708
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 210,
+          "new_nodes": {
+            "element_reaction_visual.gd": 17,
+            "projectile_instance.gd": 12
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "effect_visual_budget.gd": 2,
+            "element_reaction_visual.gd": 20,
+            "fire_patch.gd": 2,
+            "fire_seed.gd": 16,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 17
+          },
+          "objects": 3748.0,
+          "physics_ms": 0.387,
+          "process_ms": 43.708
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 240,
+          "new_nodes": {
+            "element_reaction_visual.gd": 2,
+            "fire_seed.gd": 14,
+            "projectile_instance.gd": 2
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "effect_visual_budget.gd": 2,
+            "element_reaction_visual.gd": 19,
+            "fire_patch.gd": 2,
+            "fire_seed.gd": 30,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 5
+          },
+          "objects": 3729.0,
+          "physics_ms": 20.939,
+          "process_ms": 38.235
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 270,
+          "new_nodes": {
+            "coin_projectile.gd": 4,
+            "element_reaction_visual.gd": 25,
+            "fire_patch.gd": 3,
+            "projectile_instance.gd": 5,
+            "ritual_coin_hit.gd": 12,
+            "water_wave_effect.gd": 8
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 4,
+            "effect_visual_budget.gd": 2,
+            "element_reaction_visual.gd": 27,
+            "fire_patch.gd": 5,
+            "fire_seed.gd": 30,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 6,
+            "ritual_coin_hit.gd": 12,
+            "water_wave_effect.gd": 8
+          },
+          "objects": 3752.0,
+          "physics_ms": 20.939,
+          "process_ms": 38.235
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 300,
+          "new_nodes": {
+            "element_reaction_visual.gd": 40,
+            "projectile_instance.gd": 6,
+            "water_wave_effect.gd": 6
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 1,
+            "effect_visual_budget.gd": 2,
+            "element_reaction_visual.gd": 65,
+            "fire_patch.gd": 5,
+            "fire_seed.gd": 30,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 11,
+            "water_wave_effect.gd": 14
+          },
+          "objects": 3849.0,
+          "physics_ms": 20.939,
+          "process_ms": 38.235
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 47,
+          "frame": 330,
+          "new_nodes": {
+            "element_reaction_visual.gd": 1,
+            "projectile_instance.gd": 8
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "effect_visual_budget.gd": 2,
+            "element_reaction_visual.gd": 66,
+            "fire_patch.gd": 5,
+            "fire_seed.gd": 30,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 14
+          },
+          "objects": 3888.0,
+          "physics_ms": 20.939,
+          "process_ms": 38.235
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 360,
+          "new_nodes": {
+            "element_reaction_visual.gd": 1
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "effect_visual_budget.gd": 2,
+            "element_reaction_visual.gd": 6,
+            "fire_patch.gd": 5,
+            "fire_seed.gd": 30,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 1
+          },
+          "objects": 3771.0,
+          "physics_ms": 21.083,
+          "process_ms": 6.47
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 390,
+          "new_nodes": {
+            "coin_projectile.gd": 3,
+            "element_reaction_visual.gd": 30,
+            "projectile_instance.gd": 11,
+            "ritual_coin_hit.gd": 15,
+            "water_wave_effect.gd": 10
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 3,
+            "effect_visual_budget.gd": 2,
+            "element_reaction_visual.gd": 31,
+            "fire_patch.gd": 4,
+            "fire_seed.gd": 30,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 12,
+            "ritual_coin_hit.gd": 15,
+            "water_wave_effect.gd": 10
+          },
+          "objects": 3785.0,
+          "physics_ms": 21.083,
+          "process_ms": 6.47
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 35,
+          "frame": 420,
+          "new_nodes": {
+            "element_reaction_visual.gd": 13,
+            "projectile_instance.gd": 6
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 3,
+            "effect_visual_budget.gd": 2,
+            "element_reaction_visual.gd": 43,
+            "fire_patch.gd": 4,
+            "fire_seed.gd": 30,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 13,
+            "water_wave_effect.gd": 10
+          },
+          "objects": 3702.0,
+          "physics_ms": 21.083,
+          "process_ms": 6.47
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 47,
+          "frame": 450,
+          "new_nodes": {},
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "effect_visual_budget.gd": 2,
+            "element_reaction_visual.gd": 24,
+            "fire_patch.gd": 3,
+            "fire_seed.gd": 30,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 5
+          },
+          "objects": 3711.0,
+          "physics_ms": 21.083,
+          "process_ms": 6.47
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 44,
+          "frame": 480,
+          "new_nodes": {
+            "element_reaction_visual.gd": 1,
+            "projectile_instance.gd": 4
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "effect_visual_budget.gd": 2,
+            "element_reaction_visual.gd": 1,
+            "fire_patch.gd": 3,
+            "fire_seed.gd": 30,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 8
+          },
+          "objects": 3668.0,
+          "physics_ms": 19.76,
+          "process_ms": 20.935
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 47,
+          "frame": 510,
+          "new_nodes": {
+            "coin_projectile.gd": 4,
+            "element_reaction_visual.gd": 7,
+            "fire_patch.gd": 2,
+            "projectile_instance.gd": 15,
+            "ritual_coin_hit.gd": 18,
+            "water_wave_effect.gd": 11
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 4,
+            "effect_visual_budget.gd": 2,
+            "element_reaction_visual.gd": 8,
+            "fire_patch.gd": 5,
+            "fire_seed.gd": 30,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 20,
+            "ritual_coin_hit.gd": 18,
+            "water_wave_effect.gd": 11
+          },
+          "objects": 3808.0,
+          "physics_ms": 19.76,
+          "process_ms": 20.935
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 47,
+          "frame": 540,
+          "new_nodes": {
+            "element_reaction_visual.gd": 11,
+            "water_wave_effect.gd": 1
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 3,
+            "effect_visual_budget.gd": 2,
+            "element_reaction_visual.gd": 19,
+            "fire_patch.gd": 3,
+            "fire_seed.gd": 30,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 7,
+            "water_wave_effect.gd": 12
+          },
+          "objects": 3740.0,
+          "physics_ms": 19.76,
+          "process_ms": 20.935
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 45,
+          "frame": 570,
+          "new_nodes": {
+            "element_reaction_visual.gd": 3
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "effect_visual_budget.gd": 2,
+            "element_reaction_visual.gd": 16,
+            "fire_patch.gd": 3,
+            "fire_seed.gd": 30,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 3
+          },
+          "objects": 3684.0,
+          "physics_ms": 19.76,
+          "process_ms": 20.935
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 600,
+          "new_nodes": {},
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "effect_visual_budget.gd": 2,
+            "element_reaction_visual.gd": 3,
+            "fire_patch.gd": 3,
+            "fire_seed.gd": 30,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1
+          },
+          "objects": 3681.0,
+          "physics_ms": 22.229,
+          "process_ms": 10.32
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 44,
+          "frame": 630,
+          "new_nodes": {
+            "coin_projectile.gd": 10,
+            "element_reaction_visual.gd": 11,
+            "ritual_coin_hit.gd": 10,
+            "water_wave_effect.gd": 4
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 10,
+            "effect_visual_budget.gd": 2,
+            "element_reaction_visual.gd": 14,
+            "fire_patch.gd": 2,
+            "fire_seed.gd": 30,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "ritual_coin_hit.gd": 10,
+            "water_wave_effect.gd": 4
+          },
+          "objects": 3677.0,
+          "physics_ms": 22.229,
+          "process_ms": 10.32
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 39,
+          "frame": 660,
+          "new_nodes": {
+            "element_reaction_visual.gd": 9,
+            "projectile_instance.gd": 16,
+            "ritual_coin_hit.gd": 3,
+            "water_wave_effect.gd": 6
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 4,
+            "effect_visual_budget.gd": 2,
+            "element_reaction_visual.gd": 20,
+            "fire_patch.gd": 2,
+            "fire_seed.gd": 30,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 16,
+            "ritual_coin_hit.gd": 3,
+            "water_wave_effect.gd": 10
+          },
+          "objects": 3710.0,
+          "physics_ms": 22.229,
+          "process_ms": 10.32
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 690,
+          "new_nodes": {
+            "fire_patch.gd": 1
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "effect_visual_budget.gd": 2,
+            "element_reaction_visual.gd": 13,
+            "fire_patch.gd": 3,
+            "fire_seed.gd": 30,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 16,
+            "water_wave_effect.gd": 1
+          },
+          "objects": 3747.0,
+          "physics_ms": 22.229,
+          "process_ms": 10.32
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 720,
+          "new_nodes": {
+            "element_reaction_visual.gd": 2
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "effect_visual_budget.gd": 2,
+            "element_reaction_visual.gd": 4,
+            "fire_patch.gd": 2,
+            "fire_seed.gd": 30,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 9
+          },
+          "objects": 3706.0,
+          "physics_ms": 19.667,
+          "process_ms": 16.023
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 750,
+          "new_nodes": {
+            "coin_projectile.gd": 5,
+            "element_reaction_visual.gd": 4,
+            "projectile_instance.gd": 1,
+            "ritual_coin_hit.gd": 9,
+            "water_wave_effect.gd": 6
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 5,
+            "effect_visual_budget.gd": 2,
+            "element_reaction_visual.gd": 6,
+            "fire_patch.gd": 2,
+            "fire_seed.gd": 30,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 8,
+            "ritual_coin_hit.gd": 9,
+            "water_wave_effect.gd": 6
+          },
+          "objects": 3752.0,
+          "physics_ms": 19.667,
+          "process_ms": 16.023
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 780,
+          "new_nodes": {
+            "coin_projectile.gd": 2,
+            "element_reaction_visual.gd": 8,
+            "fire_patch.gd": 2,
+            "projectile_instance.gd": 15,
+            "ritual_coin_hit.gd": 3,
+            "water_wave_effect.gd": 4
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 4,
+            "effect_visual_budget.gd": 2,
+            "element_reaction_visual.gd": 12,
+            "fire_patch.gd": 4,
+            "fire_seed.gd": 30,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 23,
+            "ritual_coin_hit.gd": 3,
+            "water_wave_effect.gd": 10
+          },
+          "objects": 3846.0,
+          "physics_ms": 19.667,
+          "process_ms": 16.023
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 810,
+          "new_nodes": {
+            "element_reaction_visual.gd": 6
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 2,
+            "effect_visual_budget.gd": 2,
+            "element_reaction_visual.gd": 18,
+            "fire_patch.gd": 4,
+            "fire_seed.gd": 30,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "water_wave_effect.gd": 2
+          },
+          "objects": 3721.0,
+          "physics_ms": 19.667,
+          "process_ms": 16.023
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 840,
+          "new_nodes": {
+            "element_reaction_visual.gd": 1,
+            "fire_seed.gd": 2
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "effect_visual_budget.gd": 2,
+            "element_reaction_visual.gd": 15,
+            "fire_patch.gd": 4,
+            "fire_seed.gd": 32,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1
+          },
+          "objects": 3727.0,
+          "physics_ms": 17.637,
+          "process_ms": 5.764
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 870,
+          "new_nodes": {
+            "coin_projectile.gd": 6,
+            "element_reaction_visual.gd": 9,
+            "ritual_coin_hit.gd": 10,
+            "water_wave_effect.gd": 6
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 6,
+            "effect_visual_budget.gd": 2,
+            "element_reaction_visual.gd": 10,
+            "fire_patch.gd": 4,
+            "fire_seed.gd": 32,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "ritual_coin_hit.gd": 10,
+            "water_wave_effect.gd": 6
+          },
+          "objects": 3738.0,
+          "physics_ms": 17.637,
+          "process_ms": 5.764
+        }
+      ],
+      "spikes": [
+        {
+          "frame": 119,
+          "ms": 40.162
+        },
+        {
+          "frame": 156,
+          "ms": 31.004
+        },
+        {
+          "frame": 439,
+          "ms": 26.958
+        }
+      ],
+      "variant": "no_lightning"
+    },
+    {
+      "frames": 900,
+      "max_ms": 38.47,
+      "mean_ms": 8.56839555555556,
+      "observed_new_nodes": {
+        "Sprite2D": 1,
+        "cavern_sunlight_backdrop.gd": 1,
+        "coin_projectile.gd": 54,
+        "effect_visual_budget.gd": 3,
+        "element_reaction_text.gd": 44,
+        "lightning_hit_sprite_burst.gd": 91,
+        "lightning_particle_effect.gd": 953,
+        "particle_light_field.gd": 1,
+        "particle_world.gd": 1,
+        "projectile_instance.gd": 108,
+        "ritual_coin_hit.gd": 69,
+        "water_wave_effect.gd": 54
+      },
+      "over_16_ms": 83,
+      "p95_ms": 18.867,
+      "snapshots": [
+        {
+          "draw_calls": 0.0,
+          "enemies": 0,
+          "frame": 0,
+          "new_nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1
+          },
+          "objects": 1862.0,
+          "physics_ms": 21.543,
+          "process_ms": 218.417
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 0,
+          "frame": 30,
+          "new_nodes": {},
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1
+          },
+          "objects": 2210.0,
+          "physics_ms": 21.543,
+          "process_ms": 218.417
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 0,
+          "frame": 60,
+          "new_nodes": {},
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1
+          },
+          "objects": 2546.0,
+          "physics_ms": 21.543,
+          "process_ms": 218.417
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 0,
+          "frame": 90,
+          "new_nodes": {},
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1
+          },
+          "objects": 2826.0,
+          "physics_ms": 21.543,
+          "process_ms": 218.417
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 27,
+          "frame": 120,
+          "new_nodes": {
+            "coin_projectile.gd": 8,
+            "projectile_instance.gd": 11
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 8,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 11
+          },
+          "objects": 3293.0,
+          "physics_ms": 21.543,
+          "process_ms": 218.417
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 27,
+          "frame": 150,
+          "new_nodes": {
+            "coin_projectile.gd": 2,
+            "ritual_coin_hit.gd": 1
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 9,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 9,
+            "ritual_coin_hit.gd": 1
+          },
+          "objects": 3300.0,
+          "physics_ms": 4.892,
+          "process_ms": 42.979
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 45,
+          "frame": 180,
+          "new_nodes": {
+            "effect_visual_budget.gd": 1,
+            "ritual_coin_hit.gd": 3,
+            "water_wave_effect.gd": 8
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 4,
+            "effect_visual_budget.gd": 1,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 5,
+            "ritual_coin_hit.gd": 3,
+            "water_wave_effect.gd": 8
+          },
+          "objects": 3462.0,
+          "physics_ms": 4.892,
+          "process_ms": 42.979
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 210,
+          "new_nodes": {
+            "effect_visual_budget.gd": 2,
+            "element_reaction_text.gd": 42,
+            "lightning_hit_sprite_burst.gd": 19,
+            "lightning_particle_effect.gd": 112,
+            "projectile_instance.gd": 12
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "effect_visual_budget.gd": 3,
+            "element_reaction_text.gd": 42,
+            "lightning_hit_sprite_burst.gd": 19,
+            "lightning_particle_effect.gd": 112,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 17
+          },
+          "objects": 3962.0,
+          "physics_ms": 4.892,
+          "process_ms": 42.979
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 240,
+          "new_nodes": {
+            "element_reaction_text.gd": 2,
+            "lightning_hit_sprite_burst.gd": 9,
+            "lightning_particle_effect.gd": 80
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "effect_visual_budget.gd": 3,
+            "element_reaction_text.gd": 44,
+            "lightning_hit_sprite_burst.gd": 28,
+            "lightning_particle_effect.gd": 80,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 6
+          },
+          "objects": 3919.0,
+          "physics_ms": 21.976,
+          "process_ms": 25.788
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 270,
+          "new_nodes": {
+            "coin_projectile.gd": 7,
+            "projectile_instance.gd": 5,
+            "ritual_coin_hit.gd": 7,
+            "water_wave_effect.gd": 4
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 7,
+            "effect_visual_budget.gd": 3,
+            "element_reaction_text.gd": 44,
+            "lightning_hit_sprite_burst.gd": 8,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 7,
+            "ritual_coin_hit.gd": 7,
+            "water_wave_effect.gd": 4
+          },
+          "objects": 3583.0,
+          "physics_ms": 21.976,
+          "process_ms": 25.788
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 300,
+          "new_nodes": {
+            "projectile_instance.gd": 6,
+            "water_wave_effect.gd": 2
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 5,
+            "effect_visual_budget.gd": 3,
+            "element_reaction_text.gd": 44,
+            "lightning_hit_sprite_burst.gd": 8,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 11,
+            "water_wave_effect.gd": 6
+          },
+          "objects": 3572.0,
+          "physics_ms": 21.976,
+          "process_ms": 25.788
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 330,
+          "new_nodes": {
+            "lightning_hit_sprite_burst.gd": 16,
+            "lightning_particle_effect.gd": 124,
+            "projectile_instance.gd": 6
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "effect_visual_budget.gd": 3,
+            "element_reaction_text.gd": 44,
+            "lightning_hit_sprite_burst.gd": 24,
+            "lightning_particle_effect.gd": 124,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 14
+          },
+          "objects": 4002.0,
+          "physics_ms": 21.976,
+          "process_ms": 25.788
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 360,
+          "new_nodes": {
+            "lightning_hit_sprite_burst.gd": 6,
+            "lightning_particle_effect.gd": 143
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "effect_visual_budget.gd": 3,
+            "element_reaction_text.gd": 44,
+            "lightning_hit_sprite_burst.gd": 27,
+            "lightning_particle_effect.gd": 143,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 2
+          },
+          "objects": 4068.0,
+          "physics_ms": 20.499,
+          "process_ms": 13.66
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 47,
+          "frame": 390,
+          "new_nodes": {
+            "coin_projectile.gd": 7,
+            "projectile_instance.gd": 11,
+            "ritual_coin_hit.gd": 3,
+            "water_wave_effect.gd": 2
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 7,
+            "effect_visual_budget.gd": 3,
+            "element_reaction_text.gd": 44,
+            "lightning_hit_sprite_burst.gd": 8,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 13,
+            "ritual_coin_hit.gd": 3,
+            "water_wave_effect.gd": 2
+          },
+          "objects": 3599.0,
+          "physics_ms": 20.499,
+          "process_ms": 13.66
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 420,
+          "new_nodes": {},
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 7,
+            "effect_visual_budget.gd": 3,
+            "element_reaction_text.gd": 44,
+            "lightning_hit_sprite_burst.gd": 8,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 9,
+            "water_wave_effect.gd": 2
+          },
+          "objects": 3578.0,
+          "physics_ms": 20.499,
+          "process_ms": 13.66
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 450,
+          "new_nodes": {
+            "lightning_hit_sprite_burst.gd": 5,
+            "lightning_particle_effect.gd": 41,
+            "projectile_instance.gd": 2
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "effect_visual_budget.gd": 3,
+            "element_reaction_text.gd": 44,
+            "lightning_hit_sprite_burst.gd": 13,
+            "lightning_particle_effect.gd": 41,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 6
+          },
+          "objects": 3692.0,
+          "physics_ms": 11.678,
+          "process_ms": 14.097
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 480,
+          "new_nodes": {
+            "lightning_particle_effect.gd": 4,
+            "projectile_instance.gd": 6
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "effect_visual_budget.gd": 3,
+            "element_reaction_text.gd": 44,
+            "lightning_hit_sprite_burst.gd": 11,
+            "lightning_particle_effect.gd": 4,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 9
+          },
+          "objects": 3609.0,
+          "physics_ms": 11.678,
+          "process_ms": 14.097
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 510,
+          "new_nodes": {
+            "coin_projectile.gd": 5,
+            "projectile_instance.gd": 5,
+            "ritual_coin_hit.gd": 13,
+            "water_wave_effect.gd": 8
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 5,
+            "effect_visual_budget.gd": 3,
+            "element_reaction_text.gd": 44,
+            "lightning_hit_sprite_burst.gd": 8,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 12,
+            "ritual_coin_hit.gd": 13,
+            "water_wave_effect.gd": 8
+          },
+          "objects": 3649.0,
+          "physics_ms": 11.678,
+          "process_ms": 14.097
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 41,
+          "frame": 540,
+          "new_nodes": {
+            "projectile_instance.gd": 2,
+            "water_wave_effect.gd": 4
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 2,
+            "effect_visual_budget.gd": 3,
+            "element_reaction_text.gd": 44,
+            "lightning_hit_sprite_burst.gd": 8,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 7,
+            "water_wave_effect.gd": 12
+          },
+          "objects": 3534.0,
+          "physics_ms": 11.678,
+          "process_ms": 14.097
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 40,
+          "frame": 570,
+          "new_nodes": {
+            "lightning_hit_sprite_burst.gd": 9,
+            "lightning_particle_effect.gd": 173,
+            "projectile_instance.gd": 12
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "effect_visual_budget.gd": 3,
+            "element_reaction_text.gd": 44,
+            "lightning_hit_sprite_burst.gd": 17,
+            "lightning_particle_effect.gd": 173,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 18
+          },
+          "objects": 4095.0,
+          "physics_ms": 16.861,
+          "process_ms": 17.972
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 600,
+          "new_nodes": {
+            "lightning_hit_sprite_burst.gd": 1,
+            "lightning_particle_effect.gd": 56
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "effect_visual_budget.gd": 3,
+            "element_reaction_text.gd": 44,
+            "lightning_hit_sprite_burst.gd": 12,
+            "lightning_particle_effect.gd": 56,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 8
+          },
+          "objects": 3779.0,
+          "physics_ms": 16.861,
+          "process_ms": 17.972
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 630,
+          "new_nodes": {
+            "coin_projectile.gd": 10,
+            "lightning_particle_effect.gd": 3,
+            "ritual_coin_hit.gd": 2
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 10,
+            "effect_visual_budget.gd": 3,
+            "element_reaction_text.gd": 44,
+            "lightning_hit_sprite_burst.gd": 10,
+            "lightning_particle_effect.gd": 3,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 2,
+            "ritual_coin_hit.gd": 2
+          },
+          "objects": 3588.0,
+          "physics_ms": 16.861,
+          "process_ms": 17.972
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 660,
+          "new_nodes": {
+            "lightning_hit_sprite_burst.gd": 13,
+            "lightning_particle_effect.gd": 55,
+            "projectile_instance.gd": 15,
+            "ritual_coin_hit.gd": 9,
+            "water_wave_effect.gd": 8
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 5,
+            "effect_visual_budget.gd": 3,
+            "element_reaction_text.gd": 44,
+            "lightning_hit_sprite_burst.gd": 23,
+            "lightning_particle_effect.gd": 55,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 17,
+            "ritual_coin_hit.gd": 9,
+            "water_wave_effect.gd": 8
+          },
+          "objects": 3860.0,
+          "physics_ms": 18.958,
+          "process_ms": 15.689
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 47,
+          "frame": 690,
+          "new_nodes": {
+            "lightning_particle_effect.gd": 14
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "effect_visual_budget.gd": 3,
+            "element_reaction_text.gd": 44,
+            "lightning_hit_sprite_burst.gd": 17,
+            "lightning_particle_effect.gd": 14,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "water_wave_effect.gd": 6
+          },
+          "objects": 3627.0,
+          "physics_ms": 18.958,
+          "process_ms": 15.689
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 47,
+          "frame": 720,
+          "new_nodes": {},
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "effect_visual_budget.gd": 3,
+            "element_reaction_text.gd": 44,
+            "lightning_hit_sprite_burst.gd": 8,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1
+          },
+          "objects": 3533.0,
+          "physics_ms": 18.958,
+          "process_ms": 15.689
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 750,
+          "new_nodes": {
+            "coin_projectile.gd": 5,
+            "ritual_coin_hit.gd": 13,
+            "water_wave_effect.gd": 8
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 5,
+            "effect_visual_budget.gd": 3,
+            "element_reaction_text.gd": 44,
+            "lightning_hit_sprite_burst.gd": 8,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "ritual_coin_hit.gd": 13,
+            "water_wave_effect.gd": 8
+          },
+          "objects": 3570.0,
+          "physics_ms": 18.958,
+          "process_ms": 15.689
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 47,
+          "frame": 780,
+          "new_nodes": {
+            "lightning_hit_sprite_burst.gd": 1,
+            "lightning_particle_effect.gd": 125,
+            "projectile_instance.gd": 15,
+            "ritual_coin_hit.gd": 4,
+            "water_wave_effect.gd": 4
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 2,
+            "effect_visual_budget.gd": 3,
+            "element_reaction_text.gd": 44,
+            "lightning_hit_sprite_burst.gd": 9,
+            "lightning_particle_effect.gd": 125,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 15,
+            "ritual_coin_hit.gd": 4,
+            "water_wave_effect.gd": 12
+          },
+          "objects": 3929.0,
+          "physics_ms": 18.958,
+          "process_ms": 15.689
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 41,
+          "frame": 810,
+          "new_nodes": {
+            "lightning_hit_sprite_burst.gd": 12,
+            "lightning_particle_effect.gd": 23
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "effect_visual_budget.gd": 3,
+            "element_reaction_text.gd": 44,
+            "lightning_hit_sprite_burst.gd": 21,
+            "lightning_particle_effect.gd": 40,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "water_wave_effect.gd": 3
+          },
+          "objects": 3682.0,
+          "physics_ms": 21.606,
+          "process_ms": 16.388
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 840,
+          "new_nodes": {},
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "effect_visual_budget.gd": 3,
+            "element_reaction_text.gd": 44,
+            "lightning_hit_sprite_burst.gd": 8,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1
+          },
+          "objects": 3545.0,
+          "physics_ms": 21.606,
+          "process_ms": 16.388
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 870,
+          "new_nodes": {
+            "coin_projectile.gd": 10,
+            "ritual_coin_hit.gd": 14,
+            "water_wave_effect.gd": 6
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 10,
+            "effect_visual_budget.gd": 3,
+            "element_reaction_text.gd": 44,
+            "lightning_hit_sprite_burst.gd": 8,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "ritual_coin_hit.gd": 14,
+            "water_wave_effect.gd": 6
+          },
+          "objects": 3564.0,
+          "physics_ms": 21.606,
+          "process_ms": 16.388
+        }
+      ],
+      "spikes": [
+        {
+          "frame": 119,
+          "ms": 38.47
+        },
+        {
+          "frame": 156,
+          "ms": 31.222
+        },
+        {
+          "frame": 319,
+          "ms": 25.564
+        },
+        {
+          "frame": 560,
+          "ms": 25.819
+        },
+        {
+          "frame": 599,
+          "ms": 25.268
+        },
+        {
+          "frame": 648,
+          "ms": 26.631
+        },
+        {
+          "frame": 795,
+          "ms": 27.325
+        }
+      ],
+      "variant": "no_fire"
+    },
+    {
+      "frames": 900,
+      "max_ms": 42.474,
+      "mean_ms": 8.82186333333334,
+      "observed_new_nodes": {
+        "Sprite2D": 1,
+        "cavern_sunlight_backdrop.gd": 1,
+        "coin_projectile.gd": 46,
+        "effect_visual_budget.gd": 3,
+        "element_reaction_text.gd": 57,
+        "explosion_effect.gd": 12,
+        "fire_patch.gd": 8,
+        "fire_seed.gd": 40,
+        "lightning_hit_sprite_burst.gd": 69,
+        "lightning_particle_effect.gd": 891,
+        "particle_light_field.gd": 1,
+        "particle_world.gd": 1,
+        "projectile_instance.gd": 104,
+        "reaction_block_visual.gd": 145,
+        "ritual_coin_hit.gd": 60,
+        "thunder_fire_visual_budget.gd": 1
+      },
+      "over_16_ms": 66,
+      "p95_ms": 19.124,
+      "snapshots": [
+        {
+          "draw_calls": 0.0,
+          "enemies": 0,
+          "frame": 0,
+          "new_nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1
+          },
+          "objects": 1884.0,
+          "physics_ms": 21.806,
+          "process_ms": 141.797
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 0,
+          "frame": 30,
+          "new_nodes": {},
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1
+          },
+          "objects": 2232.0,
+          "physics_ms": 21.806,
+          "process_ms": 141.797
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 0,
+          "frame": 60,
+          "new_nodes": {},
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1
+          },
+          "objects": 2596.0,
+          "physics_ms": 21.806,
+          "process_ms": 141.797
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 0,
+          "frame": 90,
+          "new_nodes": {},
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1
+          },
+          "objects": 2892.0,
+          "physics_ms": 0.415,
+          "process_ms": 218.966
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 27,
+          "frame": 120,
+          "new_nodes": {
+            "coin_projectile.gd": 8,
+            "projectile_instance.gd": 11
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 8,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 11
+          },
+          "objects": 3359.0,
+          "physics_ms": 0.415,
+          "process_ms": 218.966
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 27,
+          "frame": 150,
+          "new_nodes": {
+            "coin_projectile.gd": 2,
+            "effect_visual_budget.gd": 1,
+            "fire_seed.gd": 16,
+            "ritual_coin_hit.gd": 1
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 9,
+            "effect_visual_budget.gd": 1,
+            "fire_seed.gd": 16,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 9,
+            "ritual_coin_hit.gd": 1
+          },
+          "objects": 3403.0,
+          "physics_ms": 0.415,
+          "process_ms": 218.966
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 45,
+          "frame": 180,
+          "new_nodes": {
+            "fire_patch.gd": 2
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 5,
+            "effect_visual_budget.gd": 1,
+            "fire_patch.gd": 2,
+            "fire_seed.gd": 16,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 5
+          },
+          "objects": 3531.0,
+          "physics_ms": 0.415,
+          "process_ms": 218.966
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 210,
+          "new_nodes": {
+            "effect_visual_budget.gd": 2,
+            "element_reaction_text.gd": 30,
+            "explosion_effect.gd": 1,
+            "lightning_hit_sprite_burst.gd": 17,
+            "lightning_particle_effect.gd": 109,
+            "projectile_instance.gd": 10,
+            "reaction_block_visual.gd": 30,
+            "thunder_fire_visual_budget.gd": 1
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "effect_visual_budget.gd": 3,
+            "element_reaction_text.gd": 30,
+            "explosion_effect.gd": 1,
+            "fire_patch.gd": 2,
+            "fire_seed.gd": 16,
+            "lightning_hit_sprite_burst.gd": 17,
+            "lightning_particle_effect.gd": 109,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 15,
+            "reaction_block_visual.gd": 30,
+            "thunder_fire_visual_budget.gd": 1
+          },
+          "objects": 4011.0,
+          "physics_ms": 0.415,
+          "process_ms": 218.966
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 240,
+          "new_nodes": {
+            "element_reaction_text.gd": 22,
+            "lightning_hit_sprite_burst.gd": 2,
+            "lightning_particle_effect.gd": 60,
+            "reaction_block_visual.gd": 14
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "effect_visual_budget.gd": 3,
+            "element_reaction_text.gd": 52,
+            "fire_patch.gd": 2,
+            "fire_seed.gd": 16,
+            "lightning_hit_sprite_burst.gd": 19,
+            "lightning_particle_effect.gd": 60,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 7,
+            "reaction_block_visual.gd": 14,
+            "thunder_fire_visual_budget.gd": 1
+          },
+          "objects": 3916.0,
+          "physics_ms": 13.004,
+          "process_ms": 33.813
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 270,
+          "new_nodes": {
+            "coin_projectile.gd": 2,
+            "fire_patch.gd": 1,
+            "projectile_instance.gd": 5,
+            "ritual_coin_hit.gd": 10
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 2,
+            "effect_visual_budget.gd": 3,
+            "element_reaction_text.gd": 52,
+            "fire_patch.gd": 3,
+            "fire_seed.gd": 16,
+            "lightning_hit_sprite_burst.gd": 8,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 8,
+            "ritual_coin_hit.gd": 10,
+            "thunder_fire_visual_budget.gd": 1
+          },
+          "objects": 3725.0,
+          "physics_ms": 13.004,
+          "process_ms": 33.813
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 300,
+          "new_nodes": {
+            "projectile_instance.gd": 6
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 2,
+            "effect_visual_budget.gd": 3,
+            "element_reaction_text.gd": 52,
+            "fire_patch.gd": 3,
+            "fire_seed.gd": 16,
+            "lightning_hit_sprite_burst.gd": 8,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 10,
+            "thunder_fire_visual_budget.gd": 1
+          },
+          "objects": 3722.0,
+          "physics_ms": 13.004,
+          "process_ms": 33.813
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 330,
+          "new_nodes": {
+            "lightning_hit_sprite_burst.gd": 6,
+            "lightning_particle_effect.gd": 49,
+            "projectile_instance.gd": 1,
+            "reaction_block_visual.gd": 1
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "effect_visual_budget.gd": 3,
+            "element_reaction_text.gd": 52,
+            "fire_patch.gd": 3,
+            "fire_seed.gd": 16,
+            "lightning_hit_sprite_burst.gd": 14,
+            "lightning_particle_effect.gd": 49,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 7,
+            "reaction_block_visual.gd": 1,
+            "thunder_fire_visual_budget.gd": 1
+          },
+          "objects": 3905.0,
+          "physics_ms": 12.778,
+          "process_ms": 11.534
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 360,
+          "new_nodes": {
+            "fire_patch.gd": 1,
+            "lightning_particle_effect.gd": 11
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "effect_visual_budget.gd": 3,
+            "element_reaction_text.gd": 52,
+            "fire_patch.gd": 4,
+            "fire_seed.gd": 16,
+            "lightning_hit_sprite_burst.gd": 13,
+            "lightning_particle_effect.gd": 11,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 3,
+            "thunder_fire_visual_budget.gd": 1
+          },
+          "objects": 3809.0,
+          "physics_ms": 12.778,
+          "process_ms": 11.534
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 390,
+          "new_nodes": {
+            "coin_projectile.gd": 6,
+            "projectile_instance.gd": 11,
+            "ritual_coin_hit.gd": 10
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 6,
+            "effect_visual_budget.gd": 3,
+            "element_reaction_text.gd": 52,
+            "fire_patch.gd": 4,
+            "fire_seed.gd": 16,
+            "lightning_hit_sprite_burst.gd": 8,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 14,
+            "ritual_coin_hit.gd": 10,
+            "thunder_fire_visual_budget.gd": 1
+          },
+          "objects": 3829.0,
+          "physics_ms": 12.778,
+          "process_ms": 11.534
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 420,
+          "new_nodes": {
+            "fire_seed.gd": 4,
+            "lightning_particle_effect.gd": 34,
+            "projectile_instance.gd": 4,
+            "reaction_block_visual.gd": 17
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 3,
+            "effect_visual_budget.gd": 3,
+            "element_reaction_text.gd": 52,
+            "fire_patch.gd": 4,
+            "fire_seed.gd": 20,
+            "lightning_hit_sprite_burst.gd": 8,
+            "lightning_particle_effect.gd": 34,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 12,
+            "reaction_block_visual.gd": 17,
+            "thunder_fire_visual_budget.gd": 1
+          },
+          "objects": 3899.0,
+          "physics_ms": 12.778,
+          "process_ms": 11.534
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 47,
+          "frame": 450,
+          "new_nodes": {
+            "element_reaction_text.gd": 1,
+            "lightning_hit_sprite_burst.gd": 11,
+            "lightning_particle_effect.gd": 147,
+            "projectile_instance.gd": 2,
+            "reaction_block_visual.gd": 34
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "effect_visual_budget.gd": 3,
+            "element_reaction_text.gd": 53,
+            "fire_patch.gd": 3,
+            "fire_seed.gd": 20,
+            "lightning_hit_sprite_burst.gd": 19,
+            "lightning_particle_effect.gd": 147,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 7,
+            "reaction_block_visual.gd": 34,
+            "thunder_fire_visual_budget.gd": 1
+          },
+          "objects": 4196.0,
+          "physics_ms": 15.633,
+          "process_ms": 15.197
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 46,
+          "frame": 480,
+          "new_nodes": {
+            "element_reaction_text.gd": 4,
+            "lightning_particle_effect.gd": 14,
+            "projectile_instance.gd": 8,
+            "reaction_block_visual.gd": 5
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "effect_visual_budget.gd": 3,
+            "element_reaction_text.gd": 57,
+            "fire_patch.gd": 3,
+            "fire_seed.gd": 20,
+            "lightning_hit_sprite_burst.gd": 8,
+            "lightning_particle_effect.gd": 14,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 14,
+            "reaction_block_visual.gd": 5,
+            "thunder_fire_visual_budget.gd": 1
+          },
+          "objects": 3844.0,
+          "physics_ms": 15.633,
+          "process_ms": 15.197
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 510,
+          "new_nodes": {
+            "coin_projectile.gd": 6,
+            "fire_patch.gd": 1,
+            "fire_seed.gd": 4,
+            "lightning_particle_effect.gd": 3,
+            "projectile_instance.gd": 15,
+            "ritual_coin_hit.gd": 4
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 6,
+            "effect_visual_budget.gd": 3,
+            "element_reaction_text.gd": 57,
+            "fire_patch.gd": 4,
+            "fire_seed.gd": 24,
+            "lightning_hit_sprite_burst.gd": 8,
+            "lightning_particle_effect.gd": 3,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 20,
+            "ritual_coin_hit.gd": 4,
+            "thunder_fire_visual_budget.gd": 1
+          },
+          "objects": 3892.0,
+          "physics_ms": 15.633,
+          "process_ms": 15.197
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 540,
+          "new_nodes": {
+            "lightning_hit_sprite_burst.gd": 9,
+            "lightning_particle_effect.gd": 75,
+            "reaction_block_visual.gd": 2
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 6,
+            "effect_visual_budget.gd": 3,
+            "element_reaction_text.gd": 57,
+            "fire_patch.gd": 3,
+            "fire_seed.gd": 24,
+            "lightning_hit_sprite_burst.gd": 17,
+            "lightning_particle_effect.gd": 75,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 6,
+            "reaction_block_visual.gd": 2,
+            "thunder_fire_visual_budget.gd": 1
+          },
+          "objects": 4025.0,
+          "physics_ms": 19.668,
+          "process_ms": 18.067
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 570,
+          "new_nodes": {
+            "fire_seed.gd": 8,
+            "projectile_instance.gd": 1
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "effect_visual_budget.gd": 3,
+            "element_reaction_text.gd": 57,
+            "fire_patch.gd": 3,
+            "fire_seed.gd": 32,
+            "lightning_hit_sprite_burst.gd": 8,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 2,
+            "thunder_fire_visual_budget.gd": 1
+          },
+          "objects": 3793.0,
+          "physics_ms": 19.668,
+          "process_ms": 18.067
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 600,
+          "new_nodes": {
+            "fire_patch.gd": 2
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "effect_visual_budget.gd": 3,
+            "element_reaction_text.gd": 57,
+            "fire_patch.gd": 5,
+            "fire_seed.gd": 32,
+            "lightning_hit_sprite_burst.gd": 8,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 2,
+            "thunder_fire_visual_budget.gd": 1
+          },
+          "objects": 3802.0,
+          "physics_ms": 19.668,
+          "process_ms": 18.067
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 630,
+          "new_nodes": {
+            "coin_projectile.gd": 6,
+            "ritual_coin_hit.gd": 10
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 6,
+            "effect_visual_budget.gd": 3,
+            "element_reaction_text.gd": 57,
+            "fire_patch.gd": 3,
+            "fire_seed.gd": 32,
+            "lightning_hit_sprite_burst.gd": 8,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 1,
+            "ritual_coin_hit.gd": 10,
+            "thunder_fire_visual_budget.gd": 1
+          },
+          "objects": 3812.0,
+          "physics_ms": 19.668,
+          "process_ms": 18.067
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 47,
+          "frame": 660,
+          "new_nodes": {
+            "explosion_effect.gd": 11,
+            "fire_seed.gd": 8,
+            "lightning_hit_sprite_burst.gd": 12,
+            "lightning_particle_effect.gd": 195,
+            "projectile_instance.gd": 15,
+            "reaction_block_visual.gd": 14
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 6,
+            "effect_visual_budget.gd": 3,
+            "element_reaction_text.gd": 57,
+            "explosion_effect.gd": 11,
+            "fire_patch.gd": 3,
+            "fire_seed.gd": 40,
+            "lightning_hit_sprite_burst.gd": 20,
+            "lightning_particle_effect.gd": 195,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 16,
+            "reaction_block_visual.gd": 14,
+            "thunder_fire_visual_budget.gd": 1
+          },
+          "objects": 4386.0,
+          "physics_ms": 38.428,
+          "process_ms": 21.437
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 47,
+          "frame": 690,
+          "new_nodes": {
+            "lightning_hit_sprite_burst.gd": 2,
+            "lightning_particle_effect.gd": 27,
+            "reaction_block_visual.gd": 3
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "effect_visual_budget.gd": 3,
+            "element_reaction_text.gd": 57,
+            "fire_patch.gd": 3,
+            "fire_seed.gd": 40,
+            "lightning_hit_sprite_burst.gd": 17,
+            "lightning_particle_effect.gd": 27,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "reaction_block_visual.gd": 3,
+            "thunder_fire_visual_budget.gd": 1
+          },
+          "objects": 3899.0,
+          "physics_ms": 38.428,
+          "process_ms": 21.437
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 47,
+          "frame": 720,
+          "new_nodes": {},
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "effect_visual_budget.gd": 3,
+            "element_reaction_text.gd": 57,
+            "fire_patch.gd": 3,
+            "fire_seed.gd": 40,
+            "lightning_hit_sprite_burst.gd": 8,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "thunder_fire_visual_budget.gd": 1
+          },
+          "objects": 3775.0,
+          "physics_ms": 38.428,
+          "process_ms": 21.437
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 750,
+          "new_nodes": {
+            "coin_projectile.gd": 7,
+            "ritual_coin_hit.gd": 17
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 7,
+            "effect_visual_budget.gd": 3,
+            "element_reaction_text.gd": 57,
+            "fire_patch.gd": 3,
+            "fire_seed.gd": 40,
+            "lightning_hit_sprite_burst.gd": 8,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "ritual_coin_hit.gd": 17,
+            "thunder_fire_visual_budget.gd": 1
+          },
+          "objects": 3814.0,
+          "physics_ms": 24.454,
+          "process_ms": 25.325
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 39,
+          "frame": 780,
+          "new_nodes": {
+            "fire_patch.gd": 1,
+            "lightning_particle_effect.gd": 143,
+            "projectile_instance.gd": 15,
+            "reaction_block_visual.gd": 18,
+            "ritual_coin_hit.gd": 1
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 6,
+            "effect_visual_budget.gd": 3,
+            "element_reaction_text.gd": 57,
+            "fire_patch.gd": 3,
+            "fire_seed.gd": 40,
+            "lightning_hit_sprite_burst.gd": 8,
+            "lightning_particle_effect.gd": 143,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 15,
+            "reaction_block_visual.gd": 18,
+            "ritual_coin_hit.gd": 1,
+            "thunder_fire_visual_budget.gd": 1
+          },
+          "objects": 4106.0,
+          "physics_ms": 24.454,
+          "process_ms": 25.325
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 28,
+          "frame": 810,
+          "new_nodes": {
+            "lightning_hit_sprite_burst.gd": 10,
+            "lightning_particle_effect.gd": 24,
+            "reaction_block_visual.gd": 7
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "effect_visual_budget.gd": 3,
+            "element_reaction_text.gd": 57,
+            "fire_patch.gd": 3,
+            "fire_seed.gd": 40,
+            "lightning_hit_sprite_burst.gd": 18,
+            "lightning_particle_effect.gd": 38,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 3,
+            "reaction_block_visual.gd": 7,
+            "thunder_fire_visual_budget.gd": 1
+          },
+          "objects": 3741.0,
+          "physics_ms": 24.454,
+          "process_ms": 25.325
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 840,
+          "new_nodes": {},
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "effect_visual_budget.gd": 3,
+            "element_reaction_text.gd": 57,
+            "fire_patch.gd": 3,
+            "fire_seed.gd": 40,
+            "lightning_hit_sprite_burst.gd": 8,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "thunder_fire_visual_budget.gd": 1
+          },
+          "objects": 3707.0,
+          "physics_ms": 29.908,
+          "process_ms": 28.263
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 870,
+          "new_nodes": {
+            "coin_projectile.gd": 9,
+            "ritual_coin_hit.gd": 7
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 9,
+            "effect_visual_budget.gd": 3,
+            "element_reaction_text.gd": 57,
+            "fire_patch.gd": 3,
+            "fire_seed.gd": 40,
+            "lightning_hit_sprite_burst.gd": 8,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "ritual_coin_hit.gd": 7,
+            "thunder_fire_visual_budget.gd": 1
+          },
+          "objects": 3737.0,
+          "physics_ms": 29.908,
+          "process_ms": 28.263
+        }
+      ],
+      "spikes": [
+        {
+          "frame": 119,
+          "ms": 35.525
+        },
+        {
+          "frame": 156,
+          "ms": 26.835
+        },
+        {
+          "frame": 196,
+          "ms": 27.665
+        },
+        {
+          "frame": 447,
+          "ms": 26.023
+        },
+        {
+          "frame": 511,
+          "ms": 26.496
+        },
+        {
+          "frame": 638,
+          "ms": 42.474
+        },
+        {
+          "frame": 639,
+          "ms": 30.665
+        },
+        {
+          "frame": 640,
+          "ms": 30.277
+        },
+        {
+          "frame": 646,
+          "ms": 38.904
+        },
+        {
+          "frame": 647,
+          "ms": 27.405
+        },
+        {
+          "frame": 653,
+          "ms": 37.945
+        },
+        {
+          "frame": 654,
+          "ms": 32.484
+        },
+        {
+          "frame": 660,
+          "ms": 29.545
+        },
+        {
+          "frame": 661,
+          "ms": 33.146
+        },
+        {
+          "frame": 666,
+          "ms": 35.303
+        },
+        {
+          "frame": 667,
+          "ms": 26.55
+        },
+        {
+          "frame": 766,
+          "ms": 33.691
+        },
+        {
+          "frame": 774,
+          "ms": 26.276
+        },
+        {
+          "frame": 775,
+          "ms": 26.118
+        },
+        {
+          "frame": 781,
+          "ms": 26.726
+        },
+        {
+          "frame": 839,
+          "ms": 31.109
+        }
+      ],
+      "variant": "no_water"
+    },
+    {
+      "frames": 900,
+      "max_ms": 37.383,
+      "mean_ms": 6.87685555555555,
+      "observed_new_nodes": {
+        "Sprite2D": 1,
+        "cavern_sunlight_backdrop.gd": 1,
+        "coin_projectile.gd": 36,
+        "effect_visual_budget.gd": 4,
+        "element_reaction_text.gd": 18,
+        "element_reaction_visual.gd": 94,
+        "explosion_effect.gd": 2,
+        "fire_patch.gd": 6,
+        "fire_seed.gd": 20,
+        "lightning_hit_sprite_burst.gd": 72,
+        "lightning_particle_effect.gd": 233,
+        "particle_light_field.gd": 1,
+        "particle_world.gd": 1,
+        "projectile_instance.gd": 60,
+        "reaction_block_visual.gd": 41,
+        "ritual_coin_hit.gd": 24,
+        "thunder_fire_visual_budget.gd": 1,
+        "water_wave_effect.gd": 27
+      },
+      "over_16_ms": 9,
+      "p95_ms": 11.107,
+      "snapshots": [
+        {
+          "draw_calls": 0.0,
+          "enemies": 0,
+          "frame": 0,
+          "new_nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1
+          },
+          "objects": 1859.0,
+          "physics_ms": 29.908,
+          "process_ms": 28.263
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 0,
+          "frame": 30,
+          "new_nodes": {},
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1
+          },
+          "objects": 2203.0,
+          "physics_ms": 14.59,
+          "process_ms": 217.151
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 0,
+          "frame": 60,
+          "new_nodes": {},
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1
+          },
+          "objects": 2547.0,
+          "physics_ms": 14.59,
+          "process_ms": 217.151
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 0,
+          "frame": 90,
+          "new_nodes": {},
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1
+          },
+          "objects": 2835.0,
+          "physics_ms": 14.59,
+          "process_ms": 217.151
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 27,
+          "frame": 120,
+          "new_nodes": {
+            "coin_projectile.gd": 8,
+            "projectile_instance.gd": 11
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 8,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 11
+          },
+          "objects": 3294.0,
+          "physics_ms": 14.59,
+          "process_ms": 217.151
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 27,
+          "frame": 150,
+          "new_nodes": {
+            "effect_visual_budget.gd": 2,
+            "element_reaction_visual.gd": 2,
+            "fire_seed.gd": 8,
+            "ritual_coin_hit.gd": 1,
+            "water_wave_effect.gd": 1
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 7,
+            "effect_visual_budget.gd": 2,
+            "element_reaction_visual.gd": 2,
+            "fire_seed.gd": 8,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 9,
+            "ritual_coin_hit.gd": 1,
+            "water_wave_effect.gd": 1
+          },
+          "objects": 3337.0,
+          "physics_ms": 14.59,
+          "process_ms": 217.151
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 45,
+          "frame": 180,
+          "new_nodes": {
+            "fire_patch.gd": 1,
+            "water_wave_effect.gd": 2
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 5,
+            "effect_visual_budget.gd": 2,
+            "element_reaction_visual.gd": 2,
+            "fire_patch.gd": 1,
+            "fire_seed.gd": 8,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 5,
+            "water_wave_effect.gd": 3
+          },
+          "objects": 3462.0,
+          "physics_ms": 14.804,
+          "process_ms": 35.641
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 210,
+          "new_nodes": {
+            "effect_visual_budget.gd": 2,
+            "element_reaction_text.gd": 5,
+            "element_reaction_visual.gd": 19,
+            "lightning_hit_sprite_burst.gd": 6,
+            "lightning_particle_effect.gd": 7,
+            "projectile_instance.gd": 6,
+            "reaction_block_visual.gd": 1,
+            "thunder_fire_visual_budget.gd": 1
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "effect_visual_budget.gd": 4,
+            "element_reaction_text.gd": 5,
+            "element_reaction_visual.gd": 21,
+            "fire_patch.gd": 1,
+            "fire_seed.gd": 8,
+            "lightning_hit_sprite_burst.gd": 6,
+            "lightning_particle_effect.gd": 7,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 11,
+            "reaction_block_visual.gd": 1,
+            "thunder_fire_visual_budget.gd": 1
+          },
+          "objects": 3598.0,
+          "physics_ms": 14.804,
+          "process_ms": 35.641
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 240,
+          "new_nodes": {
+            "element_reaction_text.gd": 8,
+            "element_reaction_visual.gd": 3,
+            "lightning_hit_sprite_burst.gd": 10,
+            "lightning_particle_effect.gd": 17,
+            "reaction_block_visual.gd": 5
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "effect_visual_budget.gd": 4,
+            "element_reaction_text.gd": 13,
+            "element_reaction_visual.gd": 22,
+            "fire_patch.gd": 1,
+            "fire_seed.gd": 8,
+            "lightning_hit_sprite_burst.gd": 16,
+            "lightning_particle_effect.gd": 17,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 7,
+            "reaction_block_visual.gd": 5,
+            "thunder_fire_visual_budget.gd": 1
+          },
+          "objects": 3675.0,
+          "physics_ms": 14.804,
+          "process_ms": 35.641
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 270,
+          "new_nodes": {
+            "coin_projectile.gd": 5,
+            "element_reaction_visual.gd": 17,
+            "projectile_instance.gd": 5,
+            "ritual_coin_hit.gd": 3,
+            "water_wave_effect.gd": 3
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 5,
+            "effect_visual_budget.gd": 4,
+            "element_reaction_text.gd": 13,
+            "element_reaction_visual.gd": 20,
+            "fire_patch.gd": 1,
+            "fire_seed.gd": 8,
+            "lightning_hit_sprite_burst.gd": 8,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 8,
+            "ritual_coin_hit.gd": 3,
+            "thunder_fire_visual_budget.gd": 1,
+            "water_wave_effect.gd": 3
+          },
+          "objects": 3573.0,
+          "physics_ms": 14.804,
+          "process_ms": 35.641
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 47,
+          "frame": 300,
+          "new_nodes": {
+            "element_reaction_visual.gd": 9,
+            "projectile_instance.gd": 6,
+            "water_wave_effect.gd": 1
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 4,
+            "effect_visual_budget.gd": 4,
+            "element_reaction_text.gd": 13,
+            "element_reaction_visual.gd": 26,
+            "fire_patch.gd": 1,
+            "fire_seed.gd": 8,
+            "lightning_hit_sprite_burst.gd": 8,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 11,
+            "thunder_fire_visual_budget.gd": 1,
+            "water_wave_effect.gd": 4
+          },
+          "objects": 3582.0,
+          "physics_ms": 18.277,
+          "process_ms": 24.174
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 47,
+          "frame": 330,
+          "new_nodes": {
+            "fire_seed.gd": 4,
+            "lightning_hit_sprite_burst.gd": 2,
+            "lightning_particle_effect.gd": 11,
+            "reaction_block_visual.gd": 2
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "effect_visual_budget.gd": 4,
+            "element_reaction_text.gd": 13,
+            "element_reaction_visual.gd": 26,
+            "fire_patch.gd": 1,
+            "fire_seed.gd": 12,
+            "lightning_hit_sprite_burst.gd": 10,
+            "lightning_particle_effect.gd": 11,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 8,
+            "reaction_block_visual.gd": 2,
+            "thunder_fire_visual_budget.gd": 1
+          },
+          "objects": 3632.0,
+          "physics_ms": 18.277,
+          "process_ms": 24.174
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 360,
+          "new_nodes": {
+            "fire_patch.gd": 1,
+            "lightning_hit_sprite_burst.gd": 11,
+            "lightning_particle_effect.gd": 11,
+            "reaction_block_visual.gd": 2
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "effect_visual_budget.gd": 4,
+            "element_reaction_text.gd": 13,
+            "fire_patch.gd": 2,
+            "fire_seed.gd": 12,
+            "lightning_hit_sprite_burst.gd": 19,
+            "lightning_particle_effect.gd": 11,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 3,
+            "reaction_block_visual.gd": 2,
+            "thunder_fire_visual_budget.gd": 1
+          },
+          "objects": 3668.0,
+          "physics_ms": 18.277,
+          "process_ms": 24.174
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 390,
+          "new_nodes": {
+            "coin_projectile.gd": 3,
+            "element_reaction_visual.gd": 11,
+            "projectile_instance.gd": 11,
+            "ritual_coin_hit.gd": 5,
+            "water_wave_effect.gd": 5
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 3,
+            "effect_visual_budget.gd": 4,
+            "element_reaction_text.gd": 13,
+            "element_reaction_visual.gd": 11,
+            "fire_patch.gd": 2,
+            "fire_seed.gd": 12,
+            "lightning_hit_sprite_burst.gd": 8,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 14,
+            "ritual_coin_hit.gd": 5,
+            "thunder_fire_visual_budget.gd": 1,
+            "water_wave_effect.gd": 5
+          },
+          "objects": 3661.0,
+          "physics_ms": 18.277,
+          "process_ms": 24.174
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 420,
+          "new_nodes": {
+            "element_reaction_visual.gd": 10,
+            "lightning_particle_effect.gd": 6,
+            "reaction_block_visual.gd": 2
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 3,
+            "effect_visual_budget.gd": 4,
+            "element_reaction_text.gd": 13,
+            "element_reaction_visual.gd": 21,
+            "fire_patch.gd": 2,
+            "fire_seed.gd": 12,
+            "lightning_hit_sprite_burst.gd": 8,
+            "lightning_particle_effect.gd": 6,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 8,
+            "reaction_block_visual.gd": 2,
+            "thunder_fire_visual_budget.gd": 1,
+            "water_wave_effect.gd": 5
+          },
+          "objects": 3659.0,
+          "physics_ms": 22.722,
+          "process_ms": 7.313
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 450,
+          "new_nodes": {
+            "lightning_hit_sprite_burst.gd": 8,
+            "lightning_particle_effect.gd": 24
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "effect_visual_budget.gd": 4,
+            "element_reaction_text.gd": 13,
+            "element_reaction_visual.gd": 10,
+            "fire_patch.gd": 1,
+            "fire_seed.gd": 12,
+            "lightning_hit_sprite_burst.gd": 16,
+            "lightning_particle_effect.gd": 24,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 2,
+            "thunder_fire_visual_budget.gd": 1
+          },
+          "objects": 3682.0,
+          "physics_ms": 22.722,
+          "process_ms": 7.313
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 480,
+          "new_nodes": {
+            "projectile_instance.gd": 4
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "effect_visual_budget.gd": 4,
+            "element_reaction_text.gd": 13,
+            "fire_patch.gd": 1,
+            "fire_seed.gd": 12,
+            "lightning_hit_sprite_burst.gd": 8,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 6,
+            "thunder_fire_visual_budget.gd": 1
+          },
+          "objects": 3591.0,
+          "physics_ms": 22.722,
+          "process_ms": 7.313
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 510,
+          "new_nodes": {
+            "coin_projectile.gd": 2,
+            "element_reaction_visual.gd": 6,
+            "fire_patch.gd": 1,
+            "fire_seed.gd": 4,
+            "projectile_instance.gd": 5,
+            "ritual_coin_hit.gd": 6,
+            "water_wave_effect.gd": 6
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 2,
+            "effect_visual_budget.gd": 4,
+            "element_reaction_text.gd": 13,
+            "element_reaction_visual.gd": 6,
+            "fire_patch.gd": 2,
+            "fire_seed.gd": 16,
+            "lightning_hit_sprite_burst.gd": 8,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 9,
+            "ritual_coin_hit.gd": 6,
+            "thunder_fire_visual_budget.gd": 1,
+            "water_wave_effect.gd": 6
+          },
+          "objects": 3646.0,
+          "physics_ms": 22.722,
+          "process_ms": 7.313
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 46,
+          "frame": 540,
+          "new_nodes": {
+            "element_reaction_visual.gd": 1,
+            "explosion_effect.gd": 1,
+            "lightning_hit_sprite_burst.gd": 13,
+            "lightning_particle_effect.gd": 30,
+            "reaction_block_visual.gd": 6
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 2,
+            "effect_visual_budget.gd": 4,
+            "element_reaction_text.gd": 13,
+            "element_reaction_visual.gd": 7,
+            "explosion_effect.gd": 1,
+            "fire_patch.gd": 2,
+            "fire_seed.gd": 16,
+            "lightning_hit_sprite_burst.gd": 21,
+            "lightning_particle_effect.gd": 30,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 5,
+            "reaction_block_visual.gd": 6,
+            "thunder_fire_visual_budget.gd": 1,
+            "water_wave_effect.gd": 6
+          },
+          "objects": 3752.0,
+          "physics_ms": 22.722,
+          "process_ms": 7.313
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 46,
+          "frame": 570,
+          "new_nodes": {
+            "element_reaction_text.gd": 5,
+            "lightning_hit_sprite_burst.gd": 8,
+            "lightning_particle_effect.gd": 42,
+            "projectile_instance.gd": 2,
+            "reaction_block_visual.gd": 4
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "effect_visual_budget.gd": 4,
+            "element_reaction_text.gd": 18,
+            "element_reaction_visual.gd": 1,
+            "fire_patch.gd": 2,
+            "fire_seed.gd": 16,
+            "lightning_hit_sprite_burst.gd": 27,
+            "lightning_particle_effect.gd": 42,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 4,
+            "reaction_block_visual.gd": 4,
+            "thunder_fire_visual_budget.gd": 1
+          },
+          "objects": 3787.0,
+          "physics_ms": 17.019,
+          "process_ms": 14.606
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 600,
+          "new_nodes": {
+            "fire_patch.gd": 1,
+            "fire_seed.gd": 4,
+            "lightning_particle_effect.gd": 1,
+            "reaction_block_visual.gd": 1
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "effect_visual_budget.gd": 4,
+            "element_reaction_text.gd": 18,
+            "fire_patch.gd": 3,
+            "fire_seed.gd": 20,
+            "lightning_hit_sprite_burst.gd": 8,
+            "lightning_particle_effect.gd": 1,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 3,
+            "reaction_block_visual.gd": 1,
+            "thunder_fire_visual_budget.gd": 1
+          },
+          "objects": 3603.0,
+          "physics_ms": 17.019,
+          "process_ms": 14.606
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 41,
+          "frame": 630,
+          "new_nodes": {
+            "coin_projectile.gd": 5,
+            "element_reaction_visual.gd": 9,
+            "fire_patch.gd": 1,
+            "lightning_particle_effect.gd": 3,
+            "reaction_block_visual.gd": 2,
+            "ritual_coin_hit.gd": 3,
+            "water_wave_effect.gd": 3
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 5,
+            "effect_visual_budget.gd": 4,
+            "element_reaction_text.gd": 18,
+            "element_reaction_visual.gd": 9,
+            "fire_patch.gd": 3,
+            "fire_seed.gd": 20,
+            "lightning_hit_sprite_burst.gd": 8,
+            "lightning_particle_effect.gd": 3,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 1,
+            "reaction_block_visual.gd": 2,
+            "ritual_coin_hit.gd": 3,
+            "thunder_fire_visual_budget.gd": 1,
+            "water_wave_effect.gd": 3
+          },
+          "objects": 3567.0,
+          "physics_ms": 17.019,
+          "process_ms": 14.606
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 34,
+          "frame": 660,
+          "new_nodes": {
+            "element_reaction_visual.gd": 1,
+            "lightning_hit_sprite_burst.gd": 8,
+            "lightning_particle_effect.gd": 43,
+            "projectile_instance.gd": 5,
+            "reaction_block_visual.gd": 8,
+            "ritual_coin_hit.gd": 2,
+            "water_wave_effect.gd": 2
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 3,
+            "effect_visual_budget.gd": 4,
+            "element_reaction_text.gd": 18,
+            "element_reaction_visual.gd": 10,
+            "fire_patch.gd": 3,
+            "fire_seed.gd": 20,
+            "lightning_hit_sprite_burst.gd": 16,
+            "lightning_particle_effect.gd": 43,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 6,
+            "reaction_block_visual.gd": 8,
+            "ritual_coin_hit.gd": 2,
+            "thunder_fire_visual_budget.gd": 1,
+            "water_wave_effect.gd": 5
+          },
+          "objects": 3678.0,
+          "physics_ms": 17.019,
+          "process_ms": 14.606
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 47,
+          "frame": 690,
+          "new_nodes": {
+            "fire_patch.gd": 1,
+            "lightning_particle_effect.gd": 9,
+            "reaction_block_visual.gd": 4
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "effect_visual_budget.gd": 4,
+            "element_reaction_text.gd": 18,
+            "element_reaction_visual.gd": 2,
+            "fire_patch.gd": 4,
+            "fire_seed.gd": 20,
+            "lightning_hit_sprite_burst.gd": 11,
+            "lightning_particle_effect.gd": 9,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "reaction_block_visual.gd": 4,
+            "thunder_fire_visual_budget.gd": 1
+          },
+          "objects": 3617.0,
+          "physics_ms": 12.605,
+          "process_ms": 21.993
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 47,
+          "frame": 720,
+          "new_nodes": {},
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "effect_visual_budget.gd": 4,
+            "element_reaction_text.gd": 18,
+            "fire_patch.gd": 3,
+            "fire_seed.gd": 20,
+            "lightning_hit_sprite_burst.gd": 8,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "thunder_fire_visual_budget.gd": 1
+          },
+          "objects": 3566.0,
+          "physics_ms": 12.605,
+          "process_ms": 21.993
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 750,
+          "new_nodes": {
+            "coin_projectile.gd": 6,
+            "element_reaction_visual.gd": 5,
+            "ritual_coin_hit.gd": 2,
+            "water_wave_effect.gd": 2
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 6,
+            "effect_visual_budget.gd": 4,
+            "element_reaction_text.gd": 18,
+            "element_reaction_visual.gd": 5,
+            "fire_patch.gd": 3,
+            "fire_seed.gd": 20,
+            "lightning_hit_sprite_burst.gd": 8,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "ritual_coin_hit.gd": 2,
+            "thunder_fire_visual_budget.gd": 1,
+            "water_wave_effect.gd": 2
+          },
+          "objects": 3581.0,
+          "physics_ms": 12.605,
+          "process_ms": 21.993
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 44,
+          "frame": 780,
+          "new_nodes": {
+            "explosion_effect.gd": 1,
+            "lightning_particle_effect.gd": 18,
+            "projectile_instance.gd": 5,
+            "reaction_block_visual.gd": 2,
+            "ritual_coin_hit.gd": 1,
+            "water_wave_effect.gd": 1
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 5,
+            "effect_visual_budget.gd": 4,
+            "element_reaction_text.gd": 18,
+            "element_reaction_visual.gd": 5,
+            "explosion_effect.gd": 1,
+            "fire_patch.gd": 3,
+            "fire_seed.gd": 20,
+            "lightning_hit_sprite_burst.gd": 8,
+            "lightning_particle_effect.gd": 18,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 5,
+            "reaction_block_visual.gd": 2,
+            "ritual_coin_hit.gd": 1,
+            "thunder_fire_visual_budget.gd": 1,
+            "water_wave_effect.gd": 3
+          },
+          "objects": 3623.0,
+          "physics_ms": 12.605,
+          "process_ms": 21.993
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 43,
+          "frame": 810,
+          "new_nodes": {
+            "lightning_hit_sprite_burst.gd": 6,
+            "lightning_particle_effect.gd": 11,
+            "reaction_block_visual.gd": 2
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "effect_visual_budget.gd": 4,
+            "element_reaction_text.gd": 18,
+            "element_reaction_visual.gd": 2,
+            "fire_patch.gd": 2,
+            "fire_seed.gd": 20,
+            "lightning_hit_sprite_burst.gd": 14,
+            "lightning_particle_effect.gd": 11,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "reaction_block_visual.gd": 2,
+            "thunder_fire_visual_budget.gd": 1,
+            "water_wave_effect.gd": 1
+          },
+          "objects": 3579.0,
+          "physics_ms": 12.605,
+          "process_ms": 21.993
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 840,
+          "new_nodes": {},
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "effect_visual_budget.gd": 4,
+            "element_reaction_text.gd": 18,
+            "fire_patch.gd": 2,
+            "fire_seed.gd": 20,
+            "lightning_hit_sprite_burst.gd": 8,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "thunder_fire_visual_budget.gd": 1
+          },
+          "objects": 3551.0,
+          "physics_ms": 12.605,
+          "process_ms": 21.993
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 870,
+          "new_nodes": {
+            "coin_projectile.gd": 7,
+            "element_reaction_visual.gd": 1,
+            "ritual_coin_hit.gd": 1,
+            "water_wave_effect.gd": 1
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 7,
+            "effect_visual_budget.gd": 4,
+            "element_reaction_text.gd": 18,
+            "element_reaction_visual.gd": 1,
+            "fire_patch.gd": 2,
+            "fire_seed.gd": 20,
+            "lightning_hit_sprite_burst.gd": 8,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "ritual_coin_hit.gd": 1,
+            "thunder_fire_visual_budget.gd": 1,
+            "water_wave_effect.gd": 1
+          },
+          "objects": 3575.0,
+          "physics_ms": 12.605,
+          "process_ms": 21.993
+        }
+      ],
+      "spikes": [
+        {
+          "frame": 119,
+          "ms": 37.383
+        },
+        {
+          "frame": 156,
+          "ms": 30.159
+        },
+        {
+          "frame": 380,
+          "ms": 25.638
+        },
+        {
+          "frame": 519,
+          "ms": 31.633
+        }
+      ],
+      "variant": "no_split"
+    },
+    {
+      "frames": 900,
+      "max_ms": 36.371,
+      "mean_ms": 8.26720111111112,
+      "observed_new_nodes": {
+        "Sprite2D": 1,
+        "cavern_sunlight_backdrop.gd": 1,
+        "coin_projectile.gd": 42,
+        "effect_visual_budget.gd": 4,
+        "element_reaction_text.gd": 56,
+        "element_reaction_visual.gd": 105,
+        "fire_patch.gd": 6,
+        "fire_seed.gd": 28,
+        "lightning_hit_sprite_burst.gd": 78,
+        "lightning_particle_effect.gd": 605,
+        "particle_light_field.gd": 1,
+        "particle_world.gd": 1,
+        "projectile_instance.gd": 90,
+        "reaction_block_visual.gd": 69,
+        "ritual_coin_hit.gd": 83,
+        "thunder_fire_visual_budget.gd": 1,
+        "water_wave_effect.gd": 56
+      },
+      "over_16_ms": 31,
+      "p95_ms": 15.268,
+      "snapshots": [
+        {
+          "draw_calls": 0.0,
+          "enemies": 0,
+          "frame": 0,
+          "new_nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1
+          },
+          "objects": 1826.0,
+          "physics_ms": 8.078,
+          "process_ms": 8.795
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 0,
+          "frame": 30,
+          "new_nodes": {},
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1
+          },
+          "objects": 2182.0,
+          "physics_ms": 6.889,
+          "process_ms": 222.312
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 0,
+          "frame": 60,
+          "new_nodes": {},
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1
+          },
+          "objects": 2538.0,
+          "physics_ms": 6.889,
+          "process_ms": 222.312
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 0,
+          "frame": 90,
+          "new_nodes": {},
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1
+          },
+          "objects": 2810.0,
+          "physics_ms": 6.889,
+          "process_ms": 222.312
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 27,
+          "frame": 120,
+          "new_nodes": {
+            "coin_projectile.gd": 7,
+            "projectile_instance.gd": 9
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 7,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 9
+          },
+          "objects": 3242.0,
+          "physics_ms": 6.889,
+          "process_ms": 222.312
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 27,
+          "frame": 150,
+          "new_nodes": {
+            "coin_projectile.gd": 4,
+            "effect_visual_budget.gd": 1,
+            "fire_seed.gd": 16,
+            "ritual_coin_hit.gd": 2
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 9,
+            "effect_visual_budget.gd": 1,
+            "fire_seed.gd": 16,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 7,
+            "ritual_coin_hit.gd": 2
+          },
+          "objects": 3288.0,
+          "physics_ms": 6.889,
+          "process_ms": 222.312
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 45,
+          "frame": 180,
+          "new_nodes": {
+            "effect_visual_budget.gd": 1,
+            "element_reaction_visual.gd": 3,
+            "fire_patch.gd": 1,
+            "ritual_coin_hit.gd": 6,
+            "water_wave_effect.gd": 8
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 3,
+            "effect_visual_budget.gd": 2,
+            "element_reaction_visual.gd": 3,
+            "fire_patch.gd": 1,
+            "fire_seed.gd": 16,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 4,
+            "ritual_coin_hit.gd": 6,
+            "water_wave_effect.gd": 8
+          },
+          "objects": 3441.0,
+          "physics_ms": 28.999,
+          "process_ms": 34.252
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 210,
+          "new_nodes": {
+            "effect_visual_budget.gd": 2,
+            "element_reaction_text.gd": 25,
+            "element_reaction_visual.gd": 17,
+            "lightning_hit_sprite_burst.gd": 9,
+            "lightning_particle_effect.gd": 90,
+            "projectile_instance.gd": 9,
+            "reaction_block_visual.gd": 17,
+            "thunder_fire_visual_budget.gd": 1
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "effect_visual_budget.gd": 4,
+            "element_reaction_text.gd": 25,
+            "element_reaction_visual.gd": 20,
+            "fire_patch.gd": 1,
+            "fire_seed.gd": 16,
+            "lightning_hit_sprite_burst.gd": 9,
+            "lightning_particle_effect.gd": 90,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 13,
+            "reaction_block_visual.gd": 17,
+            "thunder_fire_visual_budget.gd": 1
+          },
+          "objects": 3805.0,
+          "physics_ms": 28.999,
+          "process_ms": 34.252
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 240,
+          "new_nodes": {
+            "element_reaction_text.gd": 30,
+            "fire_seed.gd": 8,
+            "lightning_hit_sprite_burst.gd": 11,
+            "lightning_particle_effect.gd": 90,
+            "reaction_block_visual.gd": 19
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "effect_visual_budget.gd": 4,
+            "element_reaction_text.gd": 55,
+            "element_reaction_visual.gd": 17,
+            "fire_patch.gd": 1,
+            "fire_seed.gd": 24,
+            "lightning_hit_sprite_burst.gd": 20,
+            "lightning_particle_effect.gd": 90,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 3,
+            "reaction_block_visual.gd": 19,
+            "thunder_fire_visual_budget.gd": 1
+          },
+          "objects": 3919.0,
+          "physics_ms": 28.999,
+          "process_ms": 34.252
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 270,
+          "new_nodes": {
+            "coin_projectile.gd": 5,
+            "element_reaction_text.gd": 1,
+            "fire_patch.gd": 1,
+            "projectile_instance.gd": 4,
+            "reaction_block_visual.gd": 3,
+            "ritual_coin_hit.gd": 10,
+            "water_wave_effect.gd": 6
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 5,
+            "effect_visual_budget.gd": 4,
+            "element_reaction_text.gd": 56,
+            "fire_patch.gd": 2,
+            "fire_seed.gd": 24,
+            "lightning_hit_sprite_burst.gd": 9,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 5,
+            "reaction_block_visual.gd": 3,
+            "ritual_coin_hit.gd": 10,
+            "thunder_fire_visual_budget.gd": 1,
+            "water_wave_effect.gd": 6
+          },
+          "objects": 3650.0,
+          "physics_ms": 28.999,
+          "process_ms": 34.252
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 300,
+          "new_nodes": {
+            "element_reaction_visual.gd": 4,
+            "projectile_instance.gd": 5,
+            "ritual_coin_hit.gd": 3,
+            "water_wave_effect.gd": 4
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 2,
+            "effect_visual_budget.gd": 4,
+            "element_reaction_text.gd": 56,
+            "element_reaction_visual.gd": 4,
+            "fire_patch.gd": 2,
+            "fire_seed.gd": 24,
+            "lightning_hit_sprite_burst.gd": 8,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 9,
+            "ritual_coin_hit.gd": 3,
+            "thunder_fire_visual_budget.gd": 1,
+            "water_wave_effect.gd": 10
+          },
+          "objects": 3652.0,
+          "physics_ms": 14.159,
+          "process_ms": 16.933
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 330,
+          "new_nodes": {
+            "lightning_hit_sprite_burst.gd": 16,
+            "lightning_particle_effect.gd": 102,
+            "projectile_instance.gd": 6,
+            "reaction_block_visual.gd": 6
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "effect_visual_budget.gd": 4,
+            "element_reaction_text.gd": 56,
+            "element_reaction_visual.gd": 4,
+            "fire_patch.gd": 2,
+            "fire_seed.gd": 24,
+            "lightning_hit_sprite_burst.gd": 24,
+            "lightning_particle_effect.gd": 102,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 12,
+            "reaction_block_visual.gd": 6,
+            "thunder_fire_visual_budget.gd": 1
+          },
+          "objects": 4017.0,
+          "physics_ms": 14.159,
+          "process_ms": 16.933
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 360,
+          "new_nodes": {
+            "fire_patch.gd": 1,
+            "lightning_hit_sprite_burst.gd": 3,
+            "lightning_particle_effect.gd": 55,
+            "reaction_block_visual.gd": 7
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "effect_visual_budget.gd": 4,
+            "element_reaction_text.gd": 56,
+            "fire_patch.gd": 3,
+            "fire_seed.gd": 24,
+            "lightning_hit_sprite_burst.gd": 23,
+            "lightning_particle_effect.gd": 55,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 1,
+            "reaction_block_visual.gd": 7,
+            "thunder_fire_visual_budget.gd": 1
+          },
+          "objects": 3861.0,
+          "physics_ms": 14.159,
+          "process_ms": 16.933
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 390,
+          "new_nodes": {
+            "coin_projectile.gd": 3,
+            "element_reaction_visual.gd": 17,
+            "projectile_instance.gd": 9,
+            "reaction_block_visual.gd": 1,
+            "ritual_coin_hit.gd": 12,
+            "water_wave_effect.gd": 8
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 3,
+            "effect_visual_budget.gd": 4,
+            "element_reaction_text.gd": 56,
+            "element_reaction_visual.gd": 17,
+            "fire_patch.gd": 3,
+            "fire_seed.gd": 24,
+            "lightning_hit_sprite_burst.gd": 8,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 10,
+            "reaction_block_visual.gd": 1,
+            "ritual_coin_hit.gd": 12,
+            "thunder_fire_visual_budget.gd": 1,
+            "water_wave_effect.gd": 8
+          },
+          "objects": 3656.0,
+          "physics_ms": 34.179,
+          "process_ms": 15.353
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 42,
+          "frame": 420,
+          "new_nodes": {
+            "element_reaction_visual.gd": 13,
+            "ritual_coin_hit.gd": 3,
+            "water_wave_effect.gd": 2
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 2,
+            "effect_visual_budget.gd": 4,
+            "element_reaction_text.gd": 56,
+            "element_reaction_visual.gd": 30,
+            "fire_patch.gd": 3,
+            "fire_seed.gd": 24,
+            "lightning_hit_sprite_burst.gd": 8,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 6,
+            "ritual_coin_hit.gd": 3,
+            "thunder_fire_visual_budget.gd": 1,
+            "water_wave_effect.gd": 10
+          },
+          "objects": 3588.0,
+          "physics_ms": 34.179,
+          "process_ms": 15.353
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 46,
+          "frame": 450,
+          "new_nodes": {
+            "lightning_hit_sprite_burst.gd": 11,
+            "lightning_particle_effect.gd": 51,
+            "projectile_instance.gd": 4,
+            "reaction_block_visual.gd": 7
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "effect_visual_budget.gd": 4,
+            "element_reaction_text.gd": 56,
+            "element_reaction_visual.gd": 30,
+            "fire_patch.gd": 3,
+            "fire_seed.gd": 24,
+            "lightning_hit_sprite_burst.gd": 19,
+            "lightning_particle_effect.gd": 51,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 8,
+            "reaction_block_visual.gd": 7,
+            "thunder_fire_visual_budget.gd": 1,
+            "water_wave_effect.gd": 2
+          },
+          "objects": 3828.0,
+          "physics_ms": 34.179,
+          "process_ms": 15.353
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 45,
+          "frame": 480,
+          "new_nodes": {
+            "lightning_particle_effect.gd": 20,
+            "projectile_instance.gd": 7,
+            "reaction_block_visual.gd": 4
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "effect_visual_budget.gd": 4,
+            "element_reaction_text.gd": 56,
+            "fire_patch.gd": 3,
+            "fire_seed.gd": 24,
+            "lightning_hit_sprite_burst.gd": 17,
+            "lightning_particle_effect.gd": 20,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 11,
+            "reaction_block_visual.gd": 4,
+            "thunder_fire_visual_budget.gd": 1
+          },
+          "objects": 3689.0,
+          "physics_ms": 34.179,
+          "process_ms": 15.353
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 510,
+          "new_nodes": {
+            "coin_projectile.gd": 3,
+            "element_reaction_visual.gd": 1,
+            "fire_patch.gd": 1,
+            "lightning_particle_effect.gd": 8,
+            "projectile_instance.gd": 12,
+            "reaction_block_visual.gd": 2,
+            "ritual_coin_hit.gd": 12,
+            "water_wave_effect.gd": 8
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 3,
+            "effect_visual_budget.gd": 4,
+            "element_reaction_text.gd": 56,
+            "element_reaction_visual.gd": 1,
+            "fire_patch.gd": 4,
+            "fire_seed.gd": 24,
+            "lightning_hit_sprite_burst.gd": 12,
+            "lightning_particle_effect.gd": 8,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 17,
+            "reaction_block_visual.gd": 2,
+            "ritual_coin_hit.gd": 12,
+            "thunder_fire_visual_budget.gd": 1,
+            "water_wave_effect.gd": 8
+          },
+          "objects": 3724.0,
+          "physics_ms": 11.938,
+          "process_ms": 21.376
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 47,
+          "frame": 540,
+          "new_nodes": {
+            "element_reaction_visual.gd": 21,
+            "lightning_hit_sprite_burst.gd": 5,
+            "lightning_particle_effect.gd": 66,
+            "ritual_coin_hit.gd": 3,
+            "water_wave_effect.gd": 2
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 2,
+            "effect_visual_budget.gd": 4,
+            "element_reaction_text.gd": 56,
+            "element_reaction_visual.gd": 22,
+            "fire_patch.gd": 3,
+            "fire_seed.gd": 24,
+            "lightning_hit_sprite_burst.gd": 17,
+            "lightning_particle_effect.gd": 66,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 6,
+            "ritual_coin_hit.gd": 3,
+            "thunder_fire_visual_budget.gd": 1,
+            "water_wave_effect.gd": 10
+          },
+          "objects": 3833.0,
+          "physics_ms": 11.938,
+          "process_ms": 21.376
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 46,
+          "frame": 570,
+          "new_nodes": {
+            "projectile_instance.gd": 1
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "effect_visual_budget.gd": 4,
+            "element_reaction_text.gd": 56,
+            "element_reaction_visual.gd": 21,
+            "fire_patch.gd": 3,
+            "fire_seed.gd": 24,
+            "lightning_hit_sprite_burst.gd": 8,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 4,
+            "thunder_fire_visual_budget.gd": 1,
+            "water_wave_effect.gd": 2
+          },
+          "objects": 3614.0,
+          "physics_ms": 11.938,
+          "process_ms": 21.376
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 600,
+          "new_nodes": {},
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "effect_visual_budget.gd": 4,
+            "element_reaction_text.gd": 56,
+            "element_reaction_visual.gd": 10,
+            "fire_patch.gd": 3,
+            "fire_seed.gd": 24,
+            "lightning_hit_sprite_burst.gd": 8,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 2,
+            "thunder_fire_visual_budget.gd": 1
+          },
+          "objects": 3600.0,
+          "physics_ms": 11.938,
+          "process_ms": 21.376
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 630,
+          "new_nodes": {
+            "coin_projectile.gd": 4,
+            "element_reaction_visual.gd": 13,
+            "ritual_coin_hit.gd": 15,
+            "water_wave_effect.gd": 9
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 4,
+            "effect_visual_budget.gd": 4,
+            "element_reaction_text.gd": 56,
+            "element_reaction_visual.gd": 13,
+            "fire_patch.gd": 1,
+            "fire_seed.gd": 24,
+            "lightning_hit_sprite_burst.gd": 8,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 1,
+            "ritual_coin_hit.gd": 15,
+            "thunder_fire_visual_budget.gd": 1,
+            "water_wave_effect.gd": 9
+          },
+          "objects": 3594.0,
+          "physics_ms": 17.649,
+          "process_ms": 10.413
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 37,
+          "frame": 660,
+          "new_nodes": {
+            "element_reaction_visual.gd": 5,
+            "lightning_hit_sprite_burst.gd": 4,
+            "lightning_particle_effect.gd": 75,
+            "projectile_instance.gd": 12
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 4,
+            "effect_visual_budget.gd": 4,
+            "element_reaction_text.gd": 56,
+            "element_reaction_visual.gd": 18,
+            "fire_patch.gd": 1,
+            "fire_seed.gd": 24,
+            "lightning_hit_sprite_burst.gd": 12,
+            "lightning_particle_effect.gd": 75,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 13,
+            "thunder_fire_visual_budget.gd": 1,
+            "water_wave_effect.gd": 9
+          },
+          "objects": 3790.0,
+          "physics_ms": 17.649,
+          "process_ms": 10.413
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 46,
+          "frame": 690,
+          "new_nodes": {
+            "fire_patch.gd": 1,
+            "lightning_hit_sprite_burst.gd": 11,
+            "lightning_particle_effect.gd": 8,
+            "reaction_block_visual.gd": 1
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "effect_visual_budget.gd": 4,
+            "element_reaction_text.gd": 56,
+            "element_reaction_visual.gd": 5,
+            "fire_patch.gd": 2,
+            "fire_seed.gd": 24,
+            "lightning_hit_sprite_burst.gd": 23,
+            "lightning_particle_effect.gd": 20,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 5,
+            "reaction_block_visual.gd": 1,
+            "thunder_fire_visual_budget.gd": 1
+          },
+          "objects": 3674.0,
+          "physics_ms": 17.649,
+          "process_ms": 10.413
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 46,
+          "frame": 720,
+          "new_nodes": {},
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "effect_visual_budget.gd": 4,
+            "element_reaction_text.gd": 56,
+            "fire_patch.gd": 2,
+            "fire_seed.gd": 24,
+            "lightning_hit_sprite_burst.gd": 8,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 5,
+            "thunder_fire_visual_budget.gd": 1
+          },
+          "objects": 3541.0,
+          "physics_ms": 17.649,
+          "process_ms": 10.413
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 750,
+          "new_nodes": {
+            "coin_projectile.gd": 8,
+            "element_reaction_visual.gd": 4,
+            "fire_seed.gd": 4,
+            "ritual_coin_hit.gd": 5,
+            "water_wave_effect.gd": 2
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 8,
+            "effect_visual_budget.gd": 4,
+            "element_reaction_text.gd": 56,
+            "element_reaction_visual.gd": 4,
+            "fire_patch.gd": 2,
+            "fire_seed.gd": 28,
+            "lightning_hit_sprite_burst.gd": 8,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 5,
+            "ritual_coin_hit.gd": 5,
+            "thunder_fire_visual_budget.gd": 1,
+            "water_wave_effect.gd": 2
+          },
+          "objects": 3593.0,
+          "physics_ms": 17.763,
+          "process_ms": 28.402
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 47,
+          "frame": 780,
+          "new_nodes": {
+            "coin_projectile.gd": 2,
+            "element_reaction_visual.gd": 1,
+            "lightning_particle_effect.gd": 20,
+            "projectile_instance.gd": 12,
+            "reaction_block_visual.gd": 1,
+            "ritual_coin_hit.gd": 8,
+            "water_wave_effect.gd": 4
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 4,
+            "effect_visual_budget.gd": 4,
+            "element_reaction_text.gd": 56,
+            "element_reaction_visual.gd": 5,
+            "fire_patch.gd": 2,
+            "fire_seed.gd": 28,
+            "lightning_hit_sprite_burst.gd": 8,
+            "lightning_particle_effect.gd": 20,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 17,
+            "reaction_block_visual.gd": 1,
+            "ritual_coin_hit.gd": 8,
+            "thunder_fire_visual_budget.gd": 1,
+            "water_wave_effect.gd": 6
+          },
+          "objects": 3692.0,
+          "physics_ms": 17.763,
+          "process_ms": 28.402
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 46,
+          "frame": 810,
+          "new_nodes": {
+            "lightning_hit_sprite_burst.gd": 8,
+            "lightning_particle_effect.gd": 20,
+            "reaction_block_visual.gd": 1,
+            "ritual_coin_hit.gd": 1,
+            "water_wave_effect.gd": 1
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 1,
+            "effect_visual_budget.gd": 4,
+            "element_reaction_text.gd": 56,
+            "element_reaction_visual.gd": 1,
+            "fire_patch.gd": 1,
+            "fire_seed.gd": 28,
+            "lightning_hit_sprite_burst.gd": 16,
+            "lightning_particle_effect.gd": 20,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "projectile_instance.gd": 4,
+            "reaction_block_visual.gd": 1,
+            "ritual_coin_hit.gd": 1,
+            "thunder_fire_visual_budget.gd": 1,
+            "water_wave_effect.gd": 4
+          },
+          "objects": 3623.0,
+          "physics_ms": 17.763,
+          "process_ms": 28.402
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 840,
+          "new_nodes": {},
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "effect_visual_budget.gd": 4,
+            "element_reaction_text.gd": 56,
+            "fire_patch.gd": 1,
+            "fire_seed.gd": 28,
+            "lightning_hit_sprite_burst.gd": 8,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "thunder_fire_visual_budget.gd": 1,
+            "water_wave_effect.gd": 1
+          },
+          "objects": 3527.0,
+          "physics_ms": 17.763,
+          "process_ms": 28.402
+        },
+        {
+          "draw_calls": 0.0,
+          "enemies": 48,
+          "frame": 870,
+          "new_nodes": {
+            "coin_projectile.gd": 6,
+            "element_reaction_visual.gd": 6,
+            "fire_patch.gd": 1,
+            "ritual_coin_hit.gd": 3,
+            "water_wave_effect.gd": 2
+          },
+          "nodes": {
+            "Sprite2D": 1,
+            "cavern_sunlight_backdrop.gd": 1,
+            "coin_projectile.gd": 6,
+            "effect_visual_budget.gd": 4,
+            "element_reaction_text.gd": 56,
+            "element_reaction_visual.gd": 6,
+            "fire_patch.gd": 2,
+            "fire_seed.gd": 28,
+            "lightning_hit_sprite_burst.gd": 8,
+            "particle_light_field.gd": 1,
+            "particle_world.gd": 1,
+            "ritual_coin_hit.gd": 3,
+            "thunder_fire_visual_budget.gd": 1,
+            "water_wave_effect.gd": 2
+          },
+          "objects": 3552.0,
+          "physics_ms": 11.369,
+          "process_ms": 9.028
+        }
+      ],
+      "spikes": [
+        {
+          "frame": 119,
+          "ms": 35.951
+        },
+        {
+          "frame": 151,
+          "ms": 30.942
+        },
+        {
+          "frame": 156,
+          "ms": 30.341
+        },
+        {
+          "frame": 386,
+          "ms": 36.371
+        },
+        {
+          "frame": 439,
+          "ms": 25.364
+        },
+        {
+          "frame": 679,
+          "ms": 32.295
+        }
+      ],
+      "variant": "no_multishot"
+    }
+  ]
+}

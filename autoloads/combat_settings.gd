@@ -6,6 +6,7 @@ var keyboard_movement := false
 var quick_cast := false
 var show_hints := true
 var hide_combat_guide := false
+var disable_screen_shake := false
 var combat_guide_seen := false
 var weapon_auto_cast: Dictionary = {}
 
@@ -21,6 +22,7 @@ func load_config(config: ConfigFile) -> void:
 	keyboard_movement = bool(config.get_value("combat", "keyboard_movement", false))
 	quick_cast = bool(config.get_value("combat", "quick_cast", false))
 	show_hints = bool(config.get_value("combat", "show_hints", true))
+	disable_screen_shake = bool(config.get_value("combat", "disable_screen_shake", false))
 	# Having completed an older tutorial is not an opt-out of future tutorials.
 	hide_combat_guide = bool(config.get_value("combat", "hide_combat_guide", false))
 	weapon_auto_cast.clear()
@@ -36,7 +38,7 @@ func load_config(config: ConfigFile) -> void:
 func build_config() -> ConfigFile:
 	var config := ConfigFile.new()
 	config.set_value("onboarding", "combat_guide_seen", combat_guide_seen)
-	for option in ["keyboard_movement", "quick_cast", "show_hints", "hide_combat_guide"]:
+	for option in ["keyboard_movement", "quick_cast", "show_hints", "hide_combat_guide", "disable_screen_shake"]:
 		config.set_value("combat", option, get(option))
 	for id: String in weapon_auto_cast:
 		config.set_value("weapon_auto_cast", id, weapon_auto_cast[id])
@@ -75,8 +77,8 @@ func reset_weapon_auto_cast(persist: bool = true) -> void:
 	settings_changed.emit()
 
 func set_option(key: String, value: bool, persist: bool = true) -> void:
-	if MobileProfile.is_mobile(): return
-	if key not in ["keyboard_movement", "quick_cast", "show_hints", "hide_combat_guide"]:
+	if MobileProfile.is_mobile() and key != "disable_screen_shake": return
+	if key not in ["keyboard_movement", "quick_cast", "show_hints", "hide_combat_guide", "disable_screen_shake"]:
 		return
 	set(key, value)
 	_save(persist)

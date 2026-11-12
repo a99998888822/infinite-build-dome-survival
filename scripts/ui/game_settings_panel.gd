@@ -26,6 +26,7 @@ var _mode_descriptions: Array[Label] = []
 var quick_cast: CheckBox
 var show_hints: CheckBox
 var hide_combat_guide: CheckBox
+var disable_screen_shake: CheckBox
 var volume_controls: Dictionary = {}
 var resolution: OptionButton
 var fullscreen_yes: Button
@@ -203,6 +204,11 @@ func _build_basic(parent: Node) -> void:
 		slider.value_changed.connect(func(value: float):
 			amount.text = "%d%%" % roundi(value)
 			AudioManager.set_bus_volume(spec[1], roundi(value)))
+	disable_screen_shake = _checkbox("ui.settings.disable_screen_shake", PAPER)
+	disable_screen_shake.name = "DisableScreenShake"
+	disable_screen_shake.custom_minimum_size.y = 46.666667
+	disable_screen_shake.toggled.connect(func(value: bool): CombatSettings.set_option("disable_screen_shake", value))
+	basic_settings.add_child(disable_screen_shake)
 	var resolution_row := _basic_row("ui.settings.display.resolution")
 	resolution_row.visible = not MobileProfile.is_mobile()
 	resolution = OptionButton.new()
@@ -414,6 +420,7 @@ func sync_combat() -> void:
 	quick_cast.set_pressed_no_signal(CombatSettings.quick_cast)
 	show_hints.set_pressed_no_signal(CombatSettings.show_hints)
 	hide_combat_guide.set_pressed_no_signal(CombatSettings.hide_combat_guide)
+	disable_screen_shake.set_pressed_no_signal(CombatSettings.disable_screen_shake)
 	_key_descriptions[0].text = "ui.settings.skills.manual_quick" if CombatSettings.quick_cast else "ui.settings.skills.manual_select"
 	_key_descriptions[1].text = "ui.settings.controls.no_click_needed" if CombatSettings.quick_cast else "ui.settings.controls.confirm_cast_hint"
 	_key_descriptions[2].text = "ui.settings.controls.cancel_keyboard_hint" if CombatSettings.keyboard_movement else "ui.settings.controls.cancel_mouse_hint"

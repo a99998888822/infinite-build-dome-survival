@@ -17,8 +17,8 @@
   "pressure_double_seconds": 30.0,
   "pressure_late_gain_per_period": 0.35,
   "speed_growth_start": 50.0,
-  "speed_growth_seconds": 30.0,
-  "speed_player_ratio": 0.95,
+  "speed_growth_seconds": 60.0,
+  "speed_player_gap": 15.0,
   "flank_first_seconds": 12.0,
   "flank_interval_min": 18.0,
   "flank_interval_max": 26.0,
@@ -26,7 +26,7 @@
   "flank_half_angle_degrees": 45.0,
   "flank_min_radius": 440.0,
   "flank_max_radius": 560.0,
-  "reward_decay_start": 30.0,
-  "reward_decay_period": 20.0,
-  "minimum_reward_multiplier": 0.2
+  "reward_decay_start": 15.0,
+  "reward_decay_period": 12.0,
+  "minimum_reward_multiplier": 0.1
 }

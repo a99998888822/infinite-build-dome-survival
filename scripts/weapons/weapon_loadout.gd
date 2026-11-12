@@ -314,6 +314,16 @@ func can_equip_reserve(weapon_id: String, replace_id: String = "") -> bool:
 	return total <= _get_load_capacity()
 
 
+func auto_equip_available_reserves() -> void:
+	if not is_instance_valid(owner_player) or not owner_player.alive: return
+	for weapon in reserve_weapons.duplicate():
+		if get_total_load_cost()+weapon.get_load_cost() > _get_load_capacity(): continue
+		reserve_weapons.erase(weapon)
+		weapon_instances.append(weapon)
+		weapon_equipped.emit(weapon.weapon_id)
+		_notify_loadout_changed()
+
+
 func equip_reserve_weapon(weapon_id: String, replace_id: String = "") -> bool:
 	if str(GameGlobal.get_runtime_flag("main_flow_state", "")) != MainFlowCoordinator.STATE_ESC_OVERLAY:
 		return false

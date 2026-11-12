@@ -35,6 +35,12 @@ var _original_presentation_material: Material
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	process_priority = -1000 # Close the previous hit frame before its flash advances.
+	CombatSettings.settings_changed.connect(_on_settings_changed)
+
+
+func _on_settings_changed() -> void:
+	if CombatSettings.disable_screen_shake:
+		clear()
 
 
 func bind_battle(world_viewport: Viewport, layers: Array[CanvasLayer], presentation: CanvasItem = null) -> void:
@@ -80,6 +86,7 @@ func _input(event: InputEvent) -> void:
 
 
 func record_damage(enemy: Node2D, attack_id: int = 0, hit_position: Variant = null) -> void:
+	if CombatSettings.disable_screen_shake: return
 	# Status ticks without an attack identity retain body feedback only.
 	if attack_id <= 0: return
 	if not active or enemy.get_viewport() != _world_viewport: return
@@ -214,6 +221,7 @@ func _process(delta: float) -> void:
 
 
 func _play(count: int) -> void:
+	if CombatSettings.disable_screen_shake: return
 	last_local_count = count
 	var requested := tier_for_count(count)
 	if requested == 0: return

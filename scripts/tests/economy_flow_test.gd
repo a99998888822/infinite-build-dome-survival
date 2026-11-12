@@ -81,8 +81,8 @@ func _test_cash_interest() -> void:
 	bank.begin_wave(3)
 	before = m.current_gold
 	var batch := bank.process_wave_end_settlements()
-	check(batch.size() == 3 and batch[0].gain == 60 and batch[1].gain == 62 and batch[2].gain == 64, "extra settlements use unchanged principal and growing rate")
-	check(m.current_gold == before + 186 and bank.principal == 999 and is_equal_approx(bank.get_interest_rate(), 6.6), "all three cash payouts still grow the tome")
+	check(batch.size() == 3 and batch[0].gain == 60 and batch[1].gain == 62 and batch[2].gain == 62, "extra settlements keep the rate after the first one")
+	check(m.current_gold == before + 184 and bank.principal == 999 and is_equal_approx(bank.get_interest_rate(), 6.2), "the tome grows at most once per wave")
 	check(journal_contains(m, "复利宝典") and journal_contains(m, "有效利率") and journal_contains(m, "永续年金") and journal_contains(m, "周期分红钟"), "journal explains growth and each extra settlement source")
 	var preview_player := m.player.create_stat_preview_copy()
 	var preview := bank.create_preview_copy(preview_player)

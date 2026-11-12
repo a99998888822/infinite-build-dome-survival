@@ -223,7 +223,7 @@ func refresh() -> void:
 	if glow_material != null: glow_material.set_shader_parameter("strength",lerpf(saved_glow_strength,.36,night))
 	if not lit or not is_instance_valid(bank): return
 	announcement.size = Vector2(size.x,50*guide_scale)
-	announcement.position = Vector2(0,112*guide_scale)
+	announcement.position = Vector2(0,180*guide_scale)
 	announcement.add_theme_font_size_override("font_size",maxi(12,roundi(24*guide_scale)))
 	announcement.visible = phase.elapsed<4.5 or (phase.elapsed>=phase.next_hunter_at-3.0 and phase.elapsed<phase.next_hunter_at)
 	announcement.text = L10n.text("ui.evacuation.open" if phase.elapsed<4.5 else "ui.evacuation.hunters")

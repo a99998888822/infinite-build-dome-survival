@@ -24,6 +24,8 @@ func active_seconds(seconds: float) -> void:
 func _run() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	CampProgression.begin_transient_session()
+	var saved_shake_setting := CombatSettings.disable_screen_shake
+	CombatSettings.set_option("disable_screen_shake", false, false)
 	var positions: Array = []
 	for index in 24: positions.append(Vector2(index * 5, 0))
 	await setup(positions)
@@ -150,6 +152,21 @@ func _run() -> void:
 		check(CombatHitFeedback.screen_offset != Vector2.ZERO, "screen shake remains visible at each tier")
 		await get_tree().create_timer(0.06).timeout
 		check(probe.updates > before and probe.physics_updates > physics_before, "idle and physics clocks advance during shake")
+	CombatHitFeedback._play(12)
+	CombatSettings.set_option("disable_screen_shake", true, false)
+	check(CombatHitFeedback.screen_offset == Vector2.ZERO and CombatHitFeedback.tier == 0, "disabling shake immediately restores presentation")
+	check(world_layer.offset == Vector2(7, 11) and sky_layer.offset == Vector2(-2, 4), "disabling shake restores layer base offsets")
+	for index in 12: CombatHitFeedback.record_damage(enemies[index], 991)
+	CombatHitFeedback._play(12)
+	check(CombatHitFeedback._batches.is_empty() and CombatHitFeedback.screen_offset == Vector2.ZERO, "disabled shake rejects new damage batches and impulses")
+	var saved_config := CombatSettings.build_config()
+	CombatSettings.load_config(ConfigFile.new())
+	check(not CombatSettings.disable_screen_shake, "old preferences keep shake enabled")
+	CombatSettings.load_config(saved_config)
+	check(CombatSettings.disable_screen_shake, "disabled shake survives config round trip")
+	CombatSettings.set_option("disable_screen_shake", false, false)
+	CombatHitFeedback._play(3)
+	check(CombatHitFeedback.screen_offset != Vector2.ZERO, "unchecking restores hit shake")
 	CombatHitFeedback.clear()
 	get_tree().paused = true
 	CombatHitFeedback._play(12)
@@ -215,6 +232,7 @@ func _run() -> void:
 	await settle_damage()
 	check(CombatHitFeedback.last_local_count == 3, "lethal contacts count using position snapshots")
 	CombatHitFeedback.unbind_battle()
+	CombatSettings.set_option("disable_screen_shake", saved_shake_setting, false)
 	host.queue_free()
 	await frames()
 	AudioManager.stop_combat_sfx()

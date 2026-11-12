@@ -22,6 +22,13 @@ const WEAPON_STRIP_HEIGHT: float = 128.0
 const WEAPON_STRIP_WIDTH: float = 880.0
 const OFFER_LAYOUT_COLUMNS: int = 4
 const OFFER_VISIBLE_ROWS: int = 2
+## Phones pack the offer page from the cards' own density. Stretching a single
+## row to the whole offer area left a tall empty gap under each description and
+## made the cards read as oversized on a handheld.
+const MOBILE_CARD_HEIGHT: float = 260.0
+## A handheld shows the same four-up page as the desktop; the narrower cell is
+## what keeps each card small enough to compare offers at a glance.
+const MOBILE_OFFER_COLUMNS: int = 4
 const DRAWER_RESERVED_RIGHT: float = 496.0
 const MAX_PANEL_SIZE := Vector2(1312.0, 896.0)
 const PANEL_HORIZONTAL_PADDING: float = 48.0
@@ -72,9 +79,8 @@ func _ready() -> void:
 		offer_scroll.resized.connect(_queue_fit_offer_grid)
 		offer_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 		offer_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
-		# Hovered cards grow slightly beyond their grid cell. Let the card's z_index
-		# control overlap instead of clipping the enlarged edge at the scroll viewport.
-		offer_scroll.clip_contents = false
+		# Scrolled cards must stay inside the reward area, including hover scaling.
+		offer_scroll.clip_contents = true
 	if offer_grid != null:
 		offer_grid.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		offer_grid.columns = OFFER_LAYOUT_COLUMNS
@@ -516,7 +522,7 @@ func _fit_offer_grid() -> void:
 		return
 	# Preserve the established four-column, two-row page even with fewer offers.
 	# Empty slots must not enlarge or reposition the remaining reward cards.
-	var columns := mini(3, cards.size()) if MobileProfile.is_mobile() else OFFER_LAYOUT_COLUMNS
+	var columns := mini(MOBILE_OFFER_COLUMNS, cards.size()) if MobileProfile.is_mobile() else OFFER_LAYOUT_COLUMNS
 	offer_grid.columns = columns
 	var separation := float(offer_grid.get_theme_constant("h_separation"))
 	var row_separation := float(offer_grid.get_theme_constant("v_separation"))
@@ -526,7 +532,9 @@ func _fit_offer_grid() -> void:
 		available_height = _get_prepared_offer_height()
 	var card_height := maxf(floorf((available_height - row_separation * float(OFFER_VISIBLE_ROWS - 1)) / float(OFFER_VISIBLE_ROWS)), 0.0)
 	if MobileProfile.is_mobile():
-		card_height = maxf(320.0, available_height)
+		# Smaller cards per page: the next row peeks into the scroll area instead
+		# of one row swallowing it whole.
+		card_height = minf(available_height, MOBILE_CARD_HEIGHT)
 	for card in cards:
 		card.set_available_size(slot_width, card_height)
 		card.set_layout_width(slot_width)

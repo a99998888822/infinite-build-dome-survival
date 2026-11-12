@@ -59,6 +59,11 @@ func check_settings(panel: GameSettingsPanel, context: String) -> void:
 	check(panel.basic_settings.visible and not panel.combat_settings.visible and not panel.show_hints.visible, context + " cannot enter combat settings programmatically")
 	check(not panel.guide_button.visible, context + " hides desktop combat guide")
 	check(panel.volume_controls.size() == 2, context + " keeps both audio controls")
+	check(panel.disable_screen_shake.is_visible_in_tree(), context + " exposes screen shake in basic settings")
+	panel.disable_screen_shake.button_pressed = true
+	check(CombatSettings.disable_screen_shake, context + " phone checkbox disables shake")
+	panel.disable_screen_shake.button_pressed = false
+	check(not CombatSettings.disable_screen_shake, context + " phone checkbox restores shake")
 	for control in panel.volume_controls.values():
 		check(control.label.get_global_rect().end.x <= panel.content_scroll.get_global_rect().end.x - 24, context + " volume percentage clears scrollbar")
 
@@ -252,17 +257,26 @@ func _run() -> void:
 	flow.close_esc_overlay()
 	await frames()
 	await check_night_guidance(battle)
+	battle.player.modifier_stack.set_base_stat("shop_offer_count_bonus", 5)
 	flow.request_shared_reward_shop_popup(4, "device_feedback_review")
 	await frames(20)
 	var rewards := game.find_child("ShopPopup", true, false) as ShopPopup
-	check(rewards != null and rewards.visible and rewards.offer_grid.columns <= 3, "phone rewards use up to three columns")
+	check(rewards != null and rewards.visible and rewards.offer_grid.columns <= 4, "phone rewards use up to four columns")
 	check(rewards.title_label.get_theme_font_size("font_size") == 24, "reward heading is smaller on phone")
 	for card: RewardOption in rewards._offer_cards:
 		check(card.name_label.get_theme_font_size("font_size") >= 20 and card.description_label.get_theme_font_size("normal_font_size") >= 18, "reward text is readable")
 		check(card.icon_frame.size.y <= 70 and card.select_button.size.y >= 40, "reward icon shrinks and touch action remains large")
 	await get_tree().create_timer(0.6).timeout
+	await check_reward_scroll(rewards, "level reward")
 	await capture("06_mobile_rewards")
 	flow.close_shared_reward_shop_popup()
+	await frames()
+	battle.wave_manager._on_relic_choice_collected("mobile_scroll_review")
+	await frames(20)
+	check(rewards.visible, "boss relic rewards open")
+	await check_reward_scroll(rewards, "boss reward")
+	flow.close_shared_reward_shop_popup()
+	battle.player.modifier_stack.set_base_stat("shop_offer_count_bonus", 0)
 	await frames()
 	flow.present_battle_result(false)
 	await frames()
@@ -285,6 +299,32 @@ func _run() -> void:
 	AudioManager.stop_bgm()
 	print("MOBILE_CONTROLS_TEST checks=%d failures=%d" % [checks, failures])
 	get_tree().quit(1 if failures else 0)
+
+func check_reward_scroll(rewards: ShopPopup, context: String) -> void:
+	var scroll := rewards.offer_scroll as TouchScrollContainer
+	check(scroll.clip_contents, context + " clips cards at scroll viewport")
+	check(scroll.get_v_scroll_bar().max_value > scroll.get_v_scroll_bar().page, context + " has overflowing reward rows")
+	var point := scroll.get_global_rect().get_center()
+	var touch := InputEventScreenTouch.new()
+	touch.index = 19
+	touch.position = point
+	touch.pressed = true
+	get_viewport().push_input(touch, true)
+	var drag := InputEventScreenDrag.new()
+	drag.index = 19
+	drag.position = point - Vector2(0, 180)
+	drag.relative = Vector2(0, -180)
+	get_viewport().push_input(drag, true)
+	touch.pressed = false
+	touch.position = drag.position
+	get_viewport().push_input(touch, true)
+	await frames()
+	check(scroll.scroll_vertical > 0, context + " responds to native upward touch drag")
+	check(rewards.visible, context + " drag does not select a reward")
+	check(rewards._offer_cards[0].get_global_rect().position.y < scroll.global_position.y, context + " scrolled card crosses the active clipping boundary")
+	await capture("scroll_" + context.replace(" ", "_"))
+	scroll.scroll_vertical = 0
+	await frames()
 
 func check_night_guidance(battle: BattleRoot) -> void:
 	var phase := battle.wave_manager.evacuation as NightEvacuation

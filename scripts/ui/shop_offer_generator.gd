@@ -17,6 +17,10 @@ const RARITY_LUCK_REQUIREMENTS: Dictionary = {
 const WEAPON_UPGRADE_MISS_WEIGHT: int = 1
 const WEAPON_UPGRADE_WEIGHT_CAP: int = 10
 const WEAPON_UPGRADE_ROLL_CHANCE := 1.0 / 3.0
+# Balance-only pressure for snowballing relics: the candidate weight of a relic
+# shrinks as the player stacks copies. Configured per relic in data_config and
+# deliberately absent from every player-facing string, tooltip and encyclopedia.
+const DEFAULT_CANDIDATE_WEIGHT: int = 100
 const BASE_TYPE_WEIGHTS: Dictionary = {
 	OFFER_NEW_WEAPON: 12,
 	OFFER_RELIC: 60,
@@ -98,6 +102,7 @@ func build_shop_candidate_pool(context: Dictionary) -> Array[Dictionary]:
 			"total_relic_count": total_relic_count,
 			"relic_rarity_count": int(owned_relic_rarity_counts.get(relic_rarity, 0)),
 			"target_id": relic_id,
+			"weight": get_relic_offer_weight(relic_data, owned_count),
 			"display_name": str(relic_data.get("display_name", relic_id)),
 			"description": str(relic_data.get("description", "")),
 			"icon": str(relic_data.get("icon", "")),
@@ -145,6 +150,18 @@ func build_shop_candidate_pool(context: Dictionary) -> Array[Dictionary]:
 
 func get_rarity_luck_requirement(rarity: String) -> int:
 	return maxi(0, int(RARITY_LUCK_REQUIREMENTS.get(rarity, 0)))
+
+
+func get_relic_offer_weight(relic_data: Dictionary, owned_count: int) -> int:
+	# Exponential duplicate pressure: weight = base * (percent/100)^owned, clamped
+	# by an absolute floor. Relics without offer_weight_decay_percent keep the flat
+	# base weight, so this rule never touches an unconfigured relic.
+	var decay_percent := int(relic_data.get("offer_weight_decay_percent", 100))
+	if owned_count <= 0 or decay_percent >= 100 or decay_percent <= 0:
+		return DEFAULT_CANDIDATE_WEIGHT
+	var weight_floor := maxi(1, int(relic_data.get("offer_weight_floor", 1)))
+	var decayed_weight := float(DEFAULT_CANDIDATE_WEIGHT) * pow(float(decay_percent) / 100.0, float(owned_count))
+	return maxi(weight_floor, roundi(decayed_weight))
 
 
 func get_shop_rarity_weights(luck: int) -> Dictionary:

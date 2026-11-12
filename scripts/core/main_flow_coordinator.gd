@@ -654,6 +654,8 @@ func submit_shop_purchase(offer: Dictionary, mode: String) -> Dictionary:
 	_transaction_busy = false
 	clear_stat_preview()
 	if sanitized_mode == "free":
+		if _active_relic_choice.is_empty() and is_instance_valid(_bound_player):
+			_bound_player.grant_upgrade_protection()
 		_relic_choice_selected = not _active_relic_choice.is_empty()
 		close_shared_reward_shop_popup()
 	else:
@@ -869,6 +871,7 @@ func _start_prepared_wave() -> bool:
 	if _bound_wave_manager == null:
 		_pending_wave_start_after_finance = false
 		return false
+	if _bound_loadout != null: _bound_loadout.auto_equip_available_reserves()
 	if _bound_wave_manager.start_next_wave():
 		_pending_wave_start_after_finance = false
 		return true

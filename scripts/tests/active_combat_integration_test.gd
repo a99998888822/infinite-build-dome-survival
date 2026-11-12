@@ -384,7 +384,7 @@ func _cleanup() -> void:
 	manager._process(.02)
 	check(evacuation.active and manager.running and flow.current_state==MainFlowCoordinator.STATE_WAVE_COMBAT,"wave expiry starts evacuation with surviving elite")
 	(battle.hud as BattleHud)._refresh_wave_display()
-	check((battle.hud as BattleHud).wave_label.text==L10n.text("ui.evacuation.title"),"HUD names evacuation rather than cleanup")
+	check((battle.hud as BattleHud).wave_label.text.contains(L10n.text("ui.evacuation.title")) and (battle.hud as BattleHud).wave_label.text.contains(L10n.text("ui.hud.wave") % (manager.current_wave_index+1)),"night HUD includes wave number and evacuation title")
 	var time := evacuation.elapsed
 	flow.request_esc_overlay()
 	manager._process(8)

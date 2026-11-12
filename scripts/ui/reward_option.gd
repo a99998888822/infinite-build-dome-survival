@@ -23,12 +23,12 @@ const OFFER_TYPE_TITLES: Dictionary = {
 }
 
 const RARITY_COLORS: Dictionary = {
-	"common": Color("a5a69f"),
-	"uncommon": Color("8fa990"),
-	"rare": Color("7e9fb8"),
-	"epic": Color("a28aae"),
-	"mythic": Color("c2a174"),
-	"legendary": Color("bf827a"),
+	"common": Color("d0d3cd"),
+	"uncommon": Color("66e58a"),
+	"rare": Color("58baff"),
+	"epic": Color("cf89ff"),
+	"mythic": Color("ffd15c"),
+	"legendary": Color("ff7868"),
 }
 
 var offer_data: Dictionary = {}
@@ -101,7 +101,7 @@ func _create_rarity_marker() -> void:
 	_rarity_rule = ColorRect.new()
 	_rarity_rule.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_rarity_rule.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
-	_rarity_rule.offset_top = -2
+	_rarity_rule.offset_top = -4
 	overlay.add_child(_rarity_rule)
 
 
@@ -136,6 +136,7 @@ func _create_relic_glow() -> void:
 func configure(offer: Dictionary, mode: String = ENTRY_FREE, explicit_cost: int = -1) -> void:
 	_reset_animation_state()
 	offer_data = offer.duplicate(true)
+	_interaction_style_state = -1
 	entry_mode = mode
 	_hovered = false
 	_button_hovered = false
@@ -388,7 +389,10 @@ func _update_interaction_style() -> void:
 	_update_panel_style()
 	_update_type_style()
 	_update_button_style()
-	if icon_frame != null: icon_frame.add_theme_stylebox_override("panel", HUD_STYLE.inset(warm))
+	if icon_frame != null:
+		var icon_style := HUD_STYLE.inset(warm)
+		icon_style.border_color = get_color_for_rarity(str(offer_data.get("rarity", "common")))
+		icon_frame.add_theme_stylebox_override("panel", icon_style)
 	if name_label != null: name_label.add_theme_color_override("font_color", PALETTE.WARM_TEXT if warm else PALETTE.TEXT)
 	if description_label != null: description_label.add_theme_color_override("default_color", PALETTE.WARM_TEXT if warm else PALETTE.TEXT)
 

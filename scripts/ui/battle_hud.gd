@@ -48,6 +48,7 @@ var _drawer_layout_initialized := false
 var combat_bar: ActiveCombatWeaponBar
 var combat_hints: Label
 var cleanup_label: Label
+var _finance_interest_hint: Label
 
 const DRAWER_OPEN_LEFT := -480.0
 const DRAWER_OPEN_RIGHT := 0.0
@@ -208,10 +209,18 @@ func _ready() -> void:
 	cleanup_label = Label.new()
 	cleanup_label.name = "CleanupStatus"
 	cleanup_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	cleanup_label.add_theme_font_size_override("font_size", 12)
+	cleanup_label.add_theme_font_size_override("font_size", 20)
 	cleanup_label.add_theme_color_override("font_color", Color("f2a18e"))
 	cleanup_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	battle_top_bar.add_child(cleanup_label)
+	_finance_interest_hint = Label.new()
+	_finance_interest_hint.name = "InterestEstimate"
+	_finance_interest_hint.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_finance_interest_hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	_finance_interest_hint.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	_finance_interest_hint.add_theme_font_size_override("font_size", 20)
+	_finance_interest_hint.add_theme_color_override("font_color", Color("e8d49a"))
+	battle_top_bar.add_child(_finance_interest_hint)
 	_weapon_damage_meter = WEAPON_DAMAGE_METER.new()
 	_weapon_damage_meter.name = "WeaponDamageMeter"
 	status_panel.add_child(_weapon_damage_meter)
@@ -682,6 +691,8 @@ func _sync_economy(animate: bool) -> void:
 	# The balance label does not need a full settlement/relic projection each frame.
 	var finance := _wave_manager.finance_system
 	var principal := maxi(finance.principal, 0) if finance != null else 0
+	if _finance_interest_hint != null and finance != null:
+		_finance_interest_hint.text = L10n.text("ui.hud.interest_estimate") % [HumanityEconomy.number(finance.get_interest_rate()), finance.get_estimated_interest()]
 	if gold_label != null:
 		var gold_text := _format_number(current_gold)
 		if _wave_manager.pickup_gold_remainder_cents > 0:
@@ -705,9 +716,9 @@ func _refresh_wave_display() -> void:
 	var evacuation := _wave_manager.evacuation
 	if is_instance_valid(evacuation) and evacuation.is_active():
 		cleanup_label.visible = _flow.get_current_state() == MainFlowCoordinator.STATE_WAVE_COMBAT
-		cleanup_label.position = Vector2(get_viewport().get_visible_rect().size.x*.5-230,86)
-		cleanup_label.size = Vector2(460,22)
-		wave_label.text = L10n.text("ui.evacuation.title")
+		cleanup_label.position = Vector2(get_viewport().get_visible_rect().size.x*.5-340,wave_panel.position.y+wave_panel.size.y+16)
+		cleanup_label.size = Vector2(680,30)
+		wave_label.text = (L10n.text("ui.hud.wave") % wave_number) + " · " + L10n.text("ui.evacuation.title")
 		wave_timer_label.text = L10n.text("ui.evacuation.elapsed") % floori(evacuation.elapsed)
 		wave_timer_label.add_theme_color_override("font_color",Color("8fdbf0"))
 		wave_timer_label.modulate = Color.WHITE
@@ -930,6 +941,9 @@ func _apply_combat_layout() -> void:
 		economy_panel.size = economy_size
 		_finance_economy_back.position = economy_panel.position - Vector2(10, 4)
 		_finance_economy_back.size = economy_size + Vector2(30, 13.333333)
+		_finance_interest_hint.visible = finance_scene
+		_finance_interest_hint.position = economy_panel.position + Vector2(-324, 0)
+		_finance_interest_hint.size = Vector2(300, economy_size.y)
 		quick_shop_button.position = economy_panel.position + (Vector2(0, economy_size.y + 6) if MobileProfile.is_mobile() else Vector2(-112, 12))
 		quick_shop_button.size = Vector2(100, 46)
 		if MobileProfile.is_mobile():

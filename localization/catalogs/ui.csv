@@ -1,6 +1,10 @@
 keys,zh_CN,en
+ui.settings.disable_screen_shake,去除屏幕震动,Disable screen shake
 ui.loading.dungeon,正在进入地下城,Entering the dungeon
 ui.evacuation.title,夜幕降临,NIGHTFALL
+ui.hud.interest_estimate,利率 %s%% · 预计利息 %d,Rate %s%% · Est. interest %d
+ui.weapon.load_help,持有的武器不能超过负载,Your weapons must fit within the load capacity
+ui.menu.qq_group,加入QQ群 1042673422,Join QQ group 1042673422
 ui.evacuation.elapsed,逗留 %ds,STAY %ds
 ui.evacuation.open,夜幕降临 · 地堡已开放，跟随金色指引避难。,Night falls · Follow the golden arrow to shelter.
 ui.evacuation.hunters,追猎者正在逼近 · 前往地堡避难！,Hunters are approaching · Reach the bunker!
@@ -459,13 +463,12 @@ ui.settlement.retreat_multiplier,撤离结算 ×%d%%,Withdrawal ×%d%%
 ui.settlement.retreat_conversion,基础 %s ×%d%% + 双倍战败补偿 %s = %s,Base %s ×%d%% + double defeat compensation %s = %s
 ui.settlement.retreat_hint,结束本次冒险并结算已获得的天赋点。,End this expedition and collect the Talent Points earned.
 ui.settlement.difficulty_suffix, · 难度 %s, · Difficulty %s
-ui.settlement.gold_earned,赚取金币,Gold Earned
-ui.settlement.gold_tooltip,每 %d 战斗金币折算 1 天赋点；消费与存款不减少累计收入。,Every %d gold earned in combat earns 1 Talent Point. Spending and deposits do not reduce this total.
-ui.settlement.interest_cap_suffix, · 利息贡献已达上限, · Interest contribution capped
-ui.settlement.interest_earned,赚取利息,Interest Earned
-ui.settlement.interest_tooltip,每 %d 实际利息折算 1 天赋点，上限为每个已完成波次 %d 点。,"Every %d interest received earns 1 Talent Point, capped at %d points per completed wave."
 ui.settlement.kill_records,击杀记录,Kill Record
-ui.settlement.kills_tooltip,每 %s 只敌人折算 1 天赋点。,Every %s enemies defeated earns 1 Talent Point.
+ui.settlement.damage_dealt,伤害总量,Damage Dealt
+ui.settlement.damage_tooltip,伤害总量占 %d%% 权重，参考 %d 点；只统计实际扣除的血量，溢出伤害不计。,"Damage dealt carries %d%% of the budget; reference %d removed hit points. Overkill is ignored."
+ui.settlement.survival_time,存活时间,Survival Time
+ui.settlement.survival_tooltip,存活时间占 %d%% 权重，参考 %d 秒；只统计战斗中的时间。,"Survival time carries %d%% of the budget; reference %d seconds of active combat."
+ui.settlement.kills_tooltip,击杀占 %d%% 权重，参考 %d 只；超出参考后仍按对数缓慢增长。,"Kills carry %d%% of the budget; reference %d defeated, still growing logarithmically beyond it."
 ui.settlement.multiplier,结算 ×%d%%,Reward ×%d%%
 ui.settlement.no_kills,本次未击败敌人,No enemies defeated this run
 ui.settlement.save_failed,保存失败，返回时重试,Save failed; retrying when you return
@@ -474,7 +477,7 @@ ui.settlement.skip_hint,点击空白处 / 空格快进,Click an empty area / Spa
 ui.settlement.total_kills,总杀敌数,Enemies Defeated
 ui.settlement.victory,通关！,Victory!
 ui.settlement.waves_survived,度过波次,Waves Survived
-ui.settlement.waves_tooltip,每完整度过一波获得 %d 天赋点。,Each completed wave earns %d Talent Points.
+ui.settlement.waves_tooltip,波次占 %d%% 权重，参考 %d 波；这是最稳定的一半预算。,Waves carry %d%% of the budget; reference %d completed waves.
 ui.shop.gold_price,%s 金币,%s gold
 ui.shop.gold_shortfall,差 %d,Need %d more
 ui.shop.new_weapon,新武器,New Weapon

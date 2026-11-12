@@ -15,6 +15,10 @@ const HIT_SPRITE_BURST = preload("res://scripts/effects/lightning_hit_sprite_bur
 const REACTION_TEXT = preload("res://scripts/effects/element_reaction_text.gd")
 const RANGE_QUERY = preload("res://scripts/effects/lightning_range_query.gd")
 const BAKED_STRIKE = preload("res://scripts/effects/baked_ground_strike.gd")
+const VISUAL_BUDGET = preload("res://scripts/effects/effect_visual_budget.gd")
+const BOLTS_PER_FRAME: int = 8
+const STRIKE_STAGGER_SECONDS: float = 0.004
+const STRIKE_STAGGER_STEPS: int = 8
 
 const STEP_SECONDS := 0.08
 const FLASH_SECONDS := STEP_SECONDS * 2.0
@@ -63,6 +67,10 @@ var _baked_strike: Node2D
 var _baked_rng_start := Vector2.ZERO
 var _baked_rng_end := Vector2.ZERO
 var _baked_rng_echoed := false
+var _echo_enabled := true
+static var _bolt_frame := -1
+static var _bolt_count := 0
+static var _spawn_stagger := 0
 
 
 func _exit_tree() -> void:
@@ -83,6 +91,10 @@ static func spawn(parent: Node, hit_position: Vector2, first_body: Node, weapon:
 	effect._weapon = weapon
 	effect._damage_event = damage_event
 	effect._attachment_item_id = attachment_item_id
+	# The chain strikes keep their damage and geometry; only the second, purely
+	# decorative echo path is dropped once the neighbouring area is saturated.
+	# Each echo rebuilds a node with fresh random geometry.
+	effect._echo_enabled = VISUAL_BUDGET.claim_visual(parent, "lightning_chain", hit_position) < VISUAL_BUDGET.Tier.REDUCED
 	effect._direction = direction.normalized() if not direction.is_zero_approx() else Vector2.RIGHT
 	effect._audio_impact = AudioManager.current_combat_audio()
 	# Each attachment owns a chain; global modifiers still apply to every chain.
@@ -101,7 +113,13 @@ static func spawn(parent: Node, hit_position: Vector2, first_body: Node, weapon:
 	effect._jump_radius = maxf(effect._get_cached_parameter("jump_radius", DEFAULT_JUMP_RADIUS) * effect._get_cached_parameter("attack_range_multiplier", 1.0), 32.0)
 	# Bind an instance id instead of the enemy object itself. Enemies can be
 	# freed while the delayed chain hop is waiting in EffectScheduler.
-	EffectScheduler.schedule(0.0, Callable(effect, "_strike_chain").bind(first_enemy.get_instance_id(), hit_position), effect)
+	#
+	# A wide volley lands many chains in the same frame, and the first hop pays
+	# the whole effect's setup. Rotating the first-hop offset spreads a burst over
+	# sub-frames; how often and how hard each chain hits is unchanged.
+	var stagger := STRIKE_STAGGER_SECONDS * float(_spawn_stagger % STRIKE_STAGGER_STEPS)
+	_spawn_stagger += 1
+	EffectScheduler.schedule(stagger, Callable(effect, "_strike_chain").bind(first_enemy.get_instance_id(), hit_position), effect)
 
 
 static func spawn_ground_strike(parent: Node, ground_position: Vector2, weapon: WeaponInstance, damage_event: DamageEvent, attachment_item_id: String = "", strike_height: float = 182.0, damage_radius: float = 20.0) -> LightningParticleEffect:
@@ -358,6 +376,17 @@ static func ground_alpha_at(age: float) -> float:
 func _emit_bolt(start_position: Vector2, end_position: Vector2) -> void:
 	if start_position.distance_squared_to(end_position) <= 1.0:
 		return
+	# Burst geometry is the costliest part of a chain and several chains land in
+	# the same frame. Cap how many paths are built per frame and slide the rest by
+	# one frame; damage has already been settled by the caller either way.
+	var frame := Engine.get_process_frames()
+	if frame != _bolt_frame:
+		_bolt_frame = frame
+		_bolt_count = 0
+	if _bolt_count >= BOLTS_PER_FRAME:
+		EffectScheduler.schedule(0.0, Callable(self, "_emit_bolt").bind(start_position, end_position), self)
+		return
+	_bolt_count += 1
 	# Both spells use the existing ground strike's sparse control geometry.
 	_control_point_envelope_power = 0.65
 	var lifetime_scale := clampf(_get_cached_parameter("lifetime_multiplier", 1.0), 0.5, 2.0)
@@ -475,11 +504,16 @@ func _process(delta: float) -> void:
 			_path_pulses.remove_at(index)
 			continue
 		if not pulse.echoed and pulse.age >= FLASH_SECONDS + DARK_SECONDS:
-			pulse.bolt.hide()
-			pulse.bolt.queue_free()
-			pulse.bolt = _create_bolt_path(pulse.start, pulse.end, pulse.initial_points)
-			pulse.echoed = true
-			# New node and new random geometry; no second strike or damage event.
+			if not _echo_enabled:
+				# Retire the pulse without rebuilding a bolt; the drawn path keeps
+				# fading and is freed at TOTAL_SECONDS.
+				pulse.echoed = true
+			else:
+				pulse.bolt.hide()
+				pulse.bolt.queue_free()
+				pulse.bolt = _create_bolt_path(pulse.start, pulse.end, pulse.initial_points)
+				pulse.echoed = true
+				# New node and new random geometry; no second strike or damage event.
 		pulse.bolt.modulate.a = ground_alpha_at(pulse.age) if _is_ground_strike else alpha_at(pulse.age)
 		if _is_ground_strike:
 			pulse.bolt.advance_flash(pulse.age - (FLASH_SECONDS + DARK_SECONDS if pulse.echoed else 0.0))

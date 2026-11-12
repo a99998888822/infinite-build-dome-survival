@@ -243,11 +243,15 @@ func apply_pressure(enemy: EnemyController) -> void:
 		"melee_damage":damage,"ranged_damage":damage,"element_damage":damage}
 	var base_speed := enemy.get_chase_speed()
 	var speed_progress := smoothstep(0.0,float(config.speed_growth_seconds),elapsed-float(config.speed_growth_start))
-	var speed_limit := maxf(0.0,player.get_stat("move_speed"))*float(config.speed_player_ratio)
-	var grown_speed := lerpf(minf(base_speed,speed_limit),speed_limit,speed_progress)
-	var resolved_speed := enemy.get_stat("move_speed")
-	if resolved_speed > 0.0: factors.move_speed = grown_speed/resolved_speed
-	enemy.night_speed_player_ratio = float(config.speed_player_ratio)
+	var speed_limit := maxf(0.0,player.get_stat("move_speed")-float(config.speed_player_gap))
+	# Faster enemies keep their original chase speed; night never slows them.
+	if base_speed < speed_limit and speed_progress > 0.0:
+		var grown_speed := lerpf(base_speed,speed_limit,speed_progress)
+		var resolved_speed := enemy.get_stat("move_speed")
+		if resolved_speed > 0.0: factors.move_speed = grown_speed/resolved_speed
+		enemy.night_speed_player_ratio = 1.0
+		enemy.night_speed_player_gap = float(config.speed_player_gap)
+		enemy.night_speed_base = base_speed
 	for stat: String in factors:
 		enemy.modifier_stack.add_modifier_from_dictionary({"id":"evacuation_"+stat,"source_type":"evacuation","source_id":"night",
 			"target_scope":"enemy","stat":stat,"operation":"multiply","value":factors[stat],"duration":-1,"stack_rule":"replace_same_source"})

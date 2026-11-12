@@ -37,6 +37,9 @@ var _cast_mode_buttons: Array[WeaponCastModeIcon] = []
 var _cast_mode_layer: Control
 var _automation_editing_enabled := false
 var _reordering_enabled := false
+## Reserve weapons and the equip action belong to the inventory on every
+## platform; only the cast-policy controls are desktop-only.
+var _reserve_editing_enabled := false
 var _selected_weapon_id := ""
 var _reorder_buttons: Array[Dictionary] = []
 var _drag_scroll_remainder := 0.0
@@ -52,7 +55,10 @@ var _rendered_row_state: Array = []
 var _reserve_dialog: Control
 var _reserve_choices: VBoxContainer
 var _reserve_scroll: ScrollContainer
+var _reserve_hint: Label
 var _pending_reserve_id := ""
+var _load_help: Button
+var _load_help_popup: PanelContainer
 
 @onready var weapon_list: HBoxContainer = get_node_or_null("StripPanel/StripMargin/StripBody/WeaponScroll/WeaponList")
 @onready var load_label: Label = get_node_or_null("StripPanel/StripMargin/StripBody/LoadLabel")
@@ -64,6 +70,28 @@ func _ready() -> void:
 	L10n.locale_changed.connect(_refresh_weapon_strip)
 	if load_label != null:
 		load_label.add_theme_font_size_override("font_size", load_font_size)
+		_load_help = Button.new()
+		_load_help.name = "LoadHelp"
+		_load_help.text = "?"
+		_load_help.custom_minimum_size = Vector2(32, 32)
+		_load_help.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+		FinanceUIStyle.bank_button(_load_help)
+		load_label.get_parent().add_child(_load_help)
+		load_label.get_parent().move_child(_load_help, load_label.get_index())
+		_load_help_popup = PanelContainer.new()
+		_load_help_popup.add_theme_stylebox_override("panel", FinanceFrameSkin.box("panel", 12))
+		GameTooltipLayer.for_owner(self).add_child(_load_help_popup)
+		var help_text := Label.new()
+		help_text.text = "ui.weapon.load_help"
+		FinanceUIStyle.label(help_text, 20, FinanceUIStyle.TEXT)
+		_load_help_popup.add_child(help_text)
+		_load_help_popup.hide()
+		_load_help.pressed.connect(func():
+			if MobileProfile.is_mobile(): _show_load_help())
+		_load_help.mouse_entered.connect(func():
+			if not MobileProfile.is_mobile(): _show_load_help())
+		_load_help.mouse_exited.connect(func():
+			if not MobileProfile.is_mobile(): _load_help_popup.hide())
 	_cast_mode_layer = Control.new()
 	_cast_mode_layer.name = "CastModesBelowFrame"
 	_cast_mode_layer.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -88,10 +116,19 @@ func _ready() -> void:
 		weapon_tooltip_label.add_theme_constant_override("line_separation", 4)
 	_build_attachment_tooltip()
 	visibility_changed.connect(func():
+		if not is_visible_in_tree() and _load_help_popup != null: _load_help_popup.hide()
 		if not is_visible_in_tree() and _reserve_dialog != null: _reserve_dialog.hide())
 
 
-func set_loadout(loadout: WeaponLoadout, allow_attachment_editing: bool = false, allow_automation_editing: bool = false, allow_reordering: bool = false) -> void:
+func _show_load_help() -> void:
+	_load_help_popup.reset_size()
+	var point := _load_help.global_position + Vector2(0, _load_help.size.y + 10)
+	point.x = clampf(point.x, 12, maxf(12, get_viewport_rect().size.x-_load_help_popup.size.x-12))
+	_load_help_popup.position = point
+	_load_help_popup.show()
+
+
+func set_loadout(loadout: WeaponLoadout, allow_attachment_editing: bool = false, allow_automation_editing: bool = false, allow_reordering: bool = false, allow_reserve_editing: bool = false) -> void:
 	if _loadout != loadout and is_instance_valid(_loadout):
 		if _loadout.loadout_changed.is_connected(_on_loadout_changed):
 			_loadout.loadout_changed.disconnect(_on_loadout_changed)
@@ -100,6 +137,8 @@ func set_loadout(loadout: WeaponLoadout, allow_attachment_editing: bool = false,
 	_loadout = loadout
 	_attachment_editing_enabled = allow_attachment_editing
 	_automation_editing_enabled = allow_automation_editing
+	# Cast-policy editing has always implied the reserve list for the desktop UI.
+	_reserve_editing_enabled = allow_reserve_editing or allow_automation_editing
 	_reordering_enabled = allow_reordering or allow_automation_editing
 	if _loadout != null and not _loadout.weapon_attachment_changed.is_connected(_on_weapon_attachment_changed):
 		_loadout.weapon_attachment_changed.connect(_on_weapon_attachment_changed)
@@ -235,7 +274,7 @@ func _refresh_load_label() -> void:
 		load_label.text = "ui.weapon.load_empty"
 		return
 	load_label.text = L10n.text("ui.weapon.load") % [_loadout.get_total_load_cost(), _loadout.get_load_capacity()]
-	if _automation_editing_enabled and _loadout.reserve_capacity > 0:
+	if _reserve_editing_enabled and _loadout.reserve_capacity > 0:
 		load_label.text += "\n" + L10n.text("ui.reserve.slots") % [_loadout.reserve_weapons.size(), _loadout.reserve_capacity]
 
 
@@ -245,11 +284,12 @@ func _refresh_weapon_strip() -> void:
 		return
 	var weapons: Array[WeaponInstance] = []
 	if _loadout != null:
-		weapons = _loadout.get_owned_weapons() if _automation_editing_enabled else _loadout.get_weapon_instances()
+		weapons = _loadout.get_owned_weapons() if _reserve_editing_enabled else _loadout.get_weapon_instances()
 	# The buttons hold live WeaponInstances. Stats/attachments and cast policy
 	# can change without rebuilding the row; identity, order and layout cannot.
 	var row_state: Array = [slot_size, icon_size, icon_slot_theme, cast_mode_icon_size,
-		_attachment_editing_enabled, _automation_editing_enabled, _reordering_enabled]
+		_attachment_editing_enabled, _automation_editing_enabled, _reordering_enabled,
+		_reserve_editing_enabled]
 	for weapon in weapons:
 		row_state.append([weapon, str(weapon.weapon_data.get("icon", "")), _loadout.is_weapon_equipped(weapon.weapon_id)])
 	if row_state == _rendered_row_state:
@@ -286,6 +326,19 @@ func _refresh_weapon_strip() -> void:
 			button.flat = false
 		button.text = ""
 		button.tooltip_text = ""
+		if get_parent() is EscOverlay:
+			var weight := Label.new()
+			weight.name = "WeaponLoadCost"
+			weight.text = str(weapon.get_load_cost())
+			weight.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			weight.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
+			weight.offset_top = -30
+			weight.offset_bottom = -5
+			weight.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+			FinanceUIStyle.label(weight, 20, FinanceUIStyle.TEXT)
+			weight.add_theme_color_override("font_outline_color", Color("10141b"))
+			weight.add_theme_constant_override("outline_size", 5)
+			button.add_child(weight)
 		var icon_path := str(weapon.weapon_data.get("icon", ""))
 		if not icon_path.is_empty() and ResourceLoader.exists(icon_path):
 			var texture := load(icon_path)
@@ -321,7 +374,7 @@ func _refresh_weapon_strip() -> void:
 			button.pressed.connect(_select_weapon.bind(weapon.weapon_id))
 		else:
 			weapon_list.add_child(button)
-		if not equipped:
+		if not equipped and _reserve_editing_enabled:
 			var equip_label := Label.new()
 			equip_label.name = "EquipWeaponLabel"
 			equip_label.text = "ui.reserve.equip"
@@ -330,7 +383,11 @@ func _refresh_weapon_strip() -> void:
 			equip_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 			equip_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 			equip_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-			FinanceUIStyle.label(equip_label, 20, FinanceUIStyle.TEXT)
+			# A phone slot is 88 px wide, so the four-character action has to fit on
+			# one line instead of breaking across two or bleeding over the frame.
+			FinanceUIStyle.label(equip_label, 14 if MobileProfile.is_mobile() else 20, FinanceUIStyle.TEXT)
+			if MobileProfile.is_mobile():
+				equip_label.autowrap_mode = TextServer.AUTOWRAP_OFF
 			equip_label.add_theme_constant_override("outline_size", 6)
 			equip_label.add_theme_color_override("font_outline_color", Color("111816"))
 			button.add_child(equip_label)
@@ -361,6 +418,7 @@ func _equip_reserve(weapon_id: String) -> void:
 	for child in _reserve_choices.get_children():
 		_reserve_choices.remove_child(child)
 		child.queue_free()
+	var any_blocked := false
 	for weapon in _loadout.weapon_instances:
 		var choice := Button.new()
 		choice.text = L10n.text("ui.reserve.choice") % [L10n.source(str(weapon.weapon_data.display_name)), weapon.get_load_cost()]
@@ -370,9 +428,16 @@ func _equip_reserve(weapon_id: String) -> void:
 		choice.custom_minimum_size.y = 60
 		FinanceUIStyle.bank_button(choice)
 		choice.disabled = not _loadout.can_equip_reserve(weapon_id, weapon.weapon_id)
-		if choice.disabled: choice.tooltip_text = "ui.reserve.no_room"
+		if choice.disabled:
+			any_blocked = true
+			choice.tooltip_text = "ui.reserve.no_room"
+			# The shared bank skin ships no disabled art, so dim the whole row:
+			# on a touch screen this is the only cue that the row cannot be used.
+			choice.modulate = Color(1, 1, 1, 0.45)
 		choice.pressed.connect(_replace_reserve.bind(weapon.weapon_id))
 		_reserve_choices.add_child(choice)
+	if _reserve_hint != null:
+		_reserve_hint.visible = any_blocked
 	_reserve_dialog.show()
 
 
@@ -416,6 +481,15 @@ func _build_reserve_dialog() -> void:
 	_reserve_choices = VBoxContainer.new()
 	_reserve_choices.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	scroll.add_child(_reserve_choices)
+	# A phone has no hover tooltip, so a swap blocked by load capacity has to
+	# explain itself in the dialog body instead of only in a tooltip.
+	_reserve_hint = Label.new()
+	_reserve_hint.name = "ReserveLoadHint"
+	_reserve_hint.text = "ui.reserve.no_room"
+	_reserve_hint.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_reserve_hint.visible = false
+	FinanceUIStyle.label(_reserve_hint, 18, FinanceUIStyle.MUTED)
+	column.add_child(_reserve_hint)
 	var cancel := Button.new()
 	cancel.text = "ui.common.cancel"
 	FinanceUIStyle.bank_button(cancel)
@@ -640,6 +714,9 @@ func _hide_attachment_tooltip() -> void:
 
 
 func _input(event: InputEvent) -> void:
+	if _load_help_popup != null and _load_help_popup.visible:
+		if (event is InputEventScreenTouch and event.pressed) or (event is InputEventMouseButton and event.pressed):
+			if not _load_help.get_global_rect().has_point(event.position): _load_help_popup.hide()
 	if _reserve_dialog != null and _reserve_dialog.visible and event.is_action_pressed("ui_cancel"):
 		_reserve_dialog.hide()
 		get_viewport().set_input_as_handled()

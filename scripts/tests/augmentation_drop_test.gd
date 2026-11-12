@@ -62,6 +62,17 @@ func _run() -> void:
 	add_child(player)
 	player.initialize_from_character("character_void_hunter")
 	player.set_physics_process(false)
+	for bonus in [-100.0, 10000.0]:
+		player.modifier_stack.set_base_stat("drop_rate_percent", bonus)
+		var packs := 0
+		var unchanged := true
+		for i in 1000:
+			for action in drops.build_drop_actions("drop_basic_enemy", player):
+				if str(action.type) == "health_pack":
+					packs += 1
+					unchanged = unchanged and is_equal_approx(float(action.adjusted_chance_percent), float(action.chance_percent))
+		check(packs > 0 and unchanged, "health packs ignore positive and negative drop-rate modifiers: " + str(bonus))
+	player.modifier_stack.set_base_stat("drop_rate_percent", 0.0)
 	var host := Node2D.new()
 	add_child(host)
 	check(drops.spawn_augmentation("wizard_scroll_chain_mastery", 1, Vector2.ZERO, host, player) == null,

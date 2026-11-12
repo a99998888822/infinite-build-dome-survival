@@ -1,9 +1,13 @@
 {
-  "formula": {"kills_per_coin": 2.8, "gold_per_coin": 6, "coins_per_wave": 75, "interest_per_coin": 14, "interest_cap_per_wave": 75,
-    "defeat_compensation": {"max_points": 200, "points_per_kill": 4, "falloff_waves": 10}},
+  "budget": 20000,
+  "weights": {"waves": 0.5, "kills": 0.2, "damage": 0.2, "seconds": 0.1},
+  "references": {"waves": 12, "kills": 6000, "damage": 300000, "seconds": 900},
+  "soft_tail_factor": 0.6,
+  "seconds_per_wave_cap": 90,
   "difficulty_multipliers": {"1": 1.0, "2": 1.5, "3": 2.0},
   "outcome_multipliers": {"defeat": 0.6, "victory": 1.0, "retreat": 0.6},
   "retreat_compensation_multiplier": 2.0,
+  "defeat_compensation": {"max_points": 200, "points_per_kill": 4, "falloff_waves": 10},
   "presentation": {"stage_times": [0.55, 1.35, 2.15, 2.95, 3.85], "count_seconds": 0.6, "voice_time": 4.6, "voice_volume_db": -4, "cue_volume_db": -6},
   "reactions": {
     "death_no_advice": {"speech": "ui.settlement.death_no_advice", "voice_path": "", "row": 0},

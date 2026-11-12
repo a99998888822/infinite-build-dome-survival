@@ -1,0 +1,61 @@
+{
+	"checks": 2140,
+	"failures": 0,
+	"profile": {
+		"fill_usec": 23292,
+		"quads": 15800,
+		"raster_usec": 9759,
+		"rows_usec": 17852,
+		"upload_usec": 1282
+	},
+	"rows": [
+		{
+			"before": true,
+			"builds": 1024,
+			"ms": 438.65,
+			"quads": 126400
+		},
+		{
+			"before": false,
+			"builds": 1024,
+			"ms": 267.773,
+			"quads": 126400
+		},
+		{
+			"before": false,
+			"builds": 1024,
+			"ms": 271.228,
+			"quads": 126400
+		},
+		{
+			"before": true,
+			"builds": 1024,
+			"ms": 479.681,
+			"quads": 126400
+		},
+		{
+			"before": false,
+			"builds": 1024,
+			"ms": 273.692,
+			"quads": 126400
+		},
+		{
+			"before": true,
+			"builds": 1024,
+			"ms": 431.819,
+			"quads": 126400
+		},
+		{
+			"before": true,
+			"builds": 1024,
+			"ms": 428.62,
+			"quads": 126400
+		},
+		{
+			"before": false,
+			"builds": 1024,
+			"ms": 265.151,
+			"quads": 126400
+		}
+	]
+}

@@ -405,6 +405,7 @@ func _validate_relic_records(records: Array, records_by_id: Dictionary) -> void:
 		_validate_bond_rarity_rule(record, path, records_by_id)
 		if record.has("max_stack"):
 			_validate_non_negative_int(record, "max_stack", path)
+		_validate_relic_offer_weight_rule(record, path)
 		var effects: Variant = record.get("effects", [])
 		if not (effects is Array):
 			errors.append("%s.effects must be an array." % path)
@@ -417,6 +418,28 @@ func _validate_relic_records(records: Array, records_by_id: Dictionary) -> void:
 			continue
 		for runtime_index in runtime_effects.size():
 			_validate_relic_runtime_effect(runtime_effects[runtime_index], "%s.runtime_effects[%d]" % [path, runtime_index])
+
+
+func _validate_relic_offer_weight_rule(record: Dictionary, path: String) -> void:
+	# Balance-only duplicate pressure. It is data-only on purpose: no player-facing
+	# text ever states or implies it, so validation stays the only visible surface.
+	var has_decay := record.has("offer_weight_decay_percent")
+	if has_decay:
+		var decay_percent: Variant = record["offer_weight_decay_percent"]
+		if not (decay_percent is int or decay_percent is float):
+			errors.append("%s.offer_weight_decay_percent must be a number." % path)
+		elif int(decay_percent) != decay_percent:
+			errors.append("%s.offer_weight_decay_percent must be an integer percentage." % path)
+		elif int(decay_percent) <= 0 or int(decay_percent) >= 100:
+			errors.append("%s.offer_weight_decay_percent must be between 1 and 99." % path)
+	if not record.has("offer_weight_floor"):
+		return
+	if not has_decay:
+		warnings.append("%s.offer_weight_floor is ignored without offer_weight_decay_percent." % path)
+	_validate_non_negative_int(record, "offer_weight_floor", path)
+	var weight_floor: Variant = record["offer_weight_floor"]
+	if (weight_floor is int or weight_floor is float) and int(weight_floor) < 1:
+		errors.append("%s.offer_weight_floor must be at least 1." % path)
 
 
 func _validate_bond_rarity_rule(record: Dictionary, path: String, records_by_id: Dictionary) -> void:

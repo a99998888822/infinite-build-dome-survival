@@ -11,6 +11,7 @@ var screen: Control
 var columns: GridContainer
 var form: GridContainer
 var fields: Dictionary = {}
+var stat_fields: Dictionary = {}
 var weapon_box: VBoxContainer
 var relic_box: VBoxContainer
 var weapon_rows: Array[Dictionary] = []
@@ -171,6 +172,7 @@ func _build_ui() -> void:
 	form.add_child(hud)
 	fields.hud = hud
 	_label("金币、本金为开波前余额；波初遗物仍正常生效。额外理智和侵蚀叠加在角色、遗物之上。", setup, 13, Color("9bb39f"))
+	_build_stat_editor(left)
 	var build := _card("02 / 武器与附魔", right)
 	_label("每把武器独立选择等级和附魔；空槽表示不装。", build, 13, Color("9bb39f"))
 	weapon_box = VBoxContainer.new()
@@ -216,6 +218,39 @@ func _number(key: String, title: String, minimum: int, maximum: int) -> void:
 	var spin := _spin(form, minimum, maximum)
 	fields[key] = spin
 	spin.value_changed.connect(func(_value): _update_summary())
+
+
+func _build_stat_editor(parent: Node) -> void:
+	var card := _card("玩家属性 / 测试覆盖", parent)
+	_label("勾选属性后直接填写目标值；未勾选沿用角色与遗物。勾选值在本次测试中保持固定，升级和遗物不会继续增加该属性。百分比填 100 表示 100%。", card, 13, Color("9bb39f"))
+	var toggle := CheckButton.new()
+	toggle.text = "展开属性编辑"
+	card.add_child(toggle)
+	var grid := GridContainer.new()
+	grid.columns = 2
+	grid.add_theme_constant_override("h_separation", 12)
+	grid.add_theme_constant_override("v_separation", 6)
+	card.add_child(grid)
+	grid.hide()
+	toggle.toggled.connect(func(value): grid.visible = value)
+	for stat_id in StatDefinitions.STAT_DEFINITIONS:
+		# This derived value already includes armor; edit armor instead.
+		if stat_id == "damage_taken_percent": continue
+		var check := CheckBox.new()
+		check.text = StatDefinitions.get_display_name(stat_id) + (" / %" if StatDefinitions.is_percent_stat(stat_id) else "")
+		check.tooltip_text = StatDefinitions.get_description(stat_id)
+		grid.add_child(check)
+		var spin := _spin(grid, -10000000, 10000000)
+		spin.min_value = maxf(StatDefinitions.get_min_value(stat_id), -10000000)
+		spin.max_value = minf(StatDefinitions.get_max_value(stat_id), 10000000)
+		spin.step = 1.0 if StatDefinitions.is_integer_stat(stat_id) else 0.01
+		spin.value = StatDefinitions.get_default_value(stat_id)
+		spin.editable = false
+		check.toggled.connect(func(value): spin.editable = value)
+		stat_fields[stat_id] = {"check": check, "spin": spin}
+	_button("清除全部属性覆盖", card, func():
+		for row in stat_fields.values(): row.check.button_pressed = false)
+	_label("受到伤害比例仍由护甲计算；实际本金使用上方“银行本金”。F8 返回可继续修改，F6 重拍和保存方案会保留覆盖值。", card, 13, Color("9bb39f"))
 
 
 func _spin(parent: Node, minimum: int, maximum: int) -> SpinBox:
@@ -323,6 +358,11 @@ func _add_relic(data: Dictionary) -> void:
 
 
 func set_config(data: Dictionary) -> void:
+	var overrides: Dictionary = data.get("player_stats", {})
+	for stat_id in stat_fields:
+		var row: Dictionary = stat_fields[stat_id]
+		row.check.button_pressed = overrides.has(stat_id)
+		row.spin.value = float(overrides.get(stat_id, StatDefinitions.get_default_value(stat_id)))
 	for key in fields:
 		if fields[key] is SpinBox: fields[key].value = int(data.get(key, 0))
 		elif fields[key] is OptionButton: _select(fields[key], str(data.get(key, "")))
@@ -337,7 +377,12 @@ func set_config(data: Dictionary) -> void:
 
 
 func get_config() -> Dictionary:
-	var result := {"weapons": [], "relics": []}
+	var result := {"weapons": [], "relics": [], "player_stats": {}}
+	for stat_id in stat_fields:
+		var row: Dictionary = stat_fields[stat_id]
+		if row.check.button_pressed:
+			if row.spin.get_line_edit().has_focus(): row.spin.apply()
+			result.player_stats[stat_id] = int(row.spin.value) if StatDefinitions.is_integer_stat(stat_id) else float(row.spin.value)
 	for key in fields:
 		if fields[key] is SpinBox:
 			if fields[key].get_line_edit().has_focus(): fields[key].apply()

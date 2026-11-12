@@ -70,6 +70,11 @@ func run() -> void:
 	CampProgression.begin_transient_session()
 	L10n.set_locale("zh_CN",false)
 	get_tree().root.size = Vector2i(1920,1080)
+	for argument in OS.get_cmdline_user_args():
+		if argument.begins_with("--window="):
+			var dimensions := argument.trim_prefix("--window=").split("x")
+			get_tree().root.size = Vector2i(int(dimensions[0]),int(dimensions[1]))
+	MobileProfile.apply_to_window(get_tree().root)
 	game = load("res://scenes/core/game_root.tscn").instantiate()
 	get_tree().root.add_child(game)
 	get_tree().current_scene = game
@@ -107,12 +112,14 @@ func run() -> void:
 	manager._process(50)
 	check(evacuation.elapsed==before_pause,"reward popup freezes evacuation")
 	flow.close_shared_reward_shop_popup()
-	evacuation.elapsed = 50.0
-	check(is_equal_approx(evacuation.reward_multiplier(),.5),"late reinforcements have half rewards after fifty seconds")
+	evacuation.elapsed = 27.0
+	check(is_equal_approx(evacuation.reward_multiplier(),.5),"late reinforcements have half rewards after twenty-seven seconds")
 	var reward_actions: Array[Dictionary] = [{"type":"exp_orb","amount":1}]
 	var first := evacuation.scale_reward_actions(reward_actions)
 	var second := evacuation.scale_reward_actions(reward_actions)
 	check(first.is_empty() and second.size()==1 and second[0].amount==1,"fractional rewards accumulate without rounding to full drops")
+	evacuation.elapsed = 120.0
+	check(is_equal_approx(evacuation.reward_multiplier(),0.1),"long-night rewards stop decaying at ten percent")
 	for i in 100: manager._process(.3)
 	check(manager.get_living_enemy_count()<=int(manager._difficulty.enemy_limit),"long overtime obeys enemy cap")
 	check(EnemyRegistry.get_registered_enemies().any(func(e): return bool(e.get_meta("evacuation_hunter",false))),"prolonged overtime introduces announced hunters")
@@ -135,6 +142,13 @@ func run() -> void:
 	await frames(6)
 	check(finishes[0]==1 and not manager.running,"entry completes exactly once")
 	check(flow.current_state==MainFlowCoordinator.STATE_FINANCE_POPUP,"successful entry opens actual finance")
+	var hud := battle.hud as BattleHud
+	hud._apply_combat_layout()
+	hud._sync_economy(false)
+	var interest_hint := hud._finance_interest_hint
+	check(interest_hint.visible and interest_hint.text.contains(str(manager.finance_system.get_estimated_interest())),"bank header shows estimated interest")
+	check(absf(interest_hint.get_global_rect().get_center().y-hud.economy_panel.get_global_rect().get_center().y)<1.0 and interest_hint.get_global_rect().end.x<hud.economy_panel.get_global_rect().position.x,"interest hint sits left of balances at the same center height")
+	if review: await capture("bank_interest")
 	check(manager.collected_exp_this_wave>0,"successful entry collects existing earned drops")
 	check(manager.wave_challenges.pressure.evacuated and not manager.wave_challenges.pressure.cleanup_timed_out,"extraction records success rather than cleanup timeout")
 	manager.finish_current_wave()

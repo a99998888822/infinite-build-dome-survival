@@ -13,6 +13,7 @@ const MAIN_MENU_TITLE_SCALES := {
 const MOBILE_TITLE_HEIGHT := 264.0
 const MOBILE_MIDDLE_SPACER := 24.0
 const CHARACTER_SELECT_VIEW: Script = preload("res://scripts/ui/character_select_view.gd")
+const QQ_GROUP_URL := "https://qun.qq.com/universal-share/share?ac=1&authKey=wYKpjGPLRH5rawPA0drxcmElNXTxdJPhJXVuXZxqleTHOuKO1CyRG1Gqo0cirhQ4&busi_data=eyJncm91cENvZGUiOiIxMDQyNjczNDIyIiwidG9rZW4iOiJ6dFovRVcxNDFCNHN0L1BBMkpUUzNKMjNzcnFIN0J0dXM0bHY5VnY5c09VNmR6VEpZNmpmUmMvWlE5R0xrSlpaIiwidWluIjoiODY3MTg3MjUwIn0%3D&data=2uJFKmgEKBAxvcbvAkQi6HzDhgWhfXFQhNSCLSl8M0k8fCs_Ouh2iuftRISCkvmyg43YNSUGHrG7fhZ3Ztns8A&svctype=4&tempid=h5_group_info"
 
 var character_view: CharacterSelectView
 var dungeon_loading: DungeonLoadingScreen
@@ -77,6 +78,7 @@ func _ready() -> void:
 	L10n.locale_changed.connect(_on_locale_changed)
 	_create_settings_ui()
 	_create_taptap_entry()
+	_create_qq_entry()
 	get_viewport().size_changed.connect(_layout_settings)
 	get_viewport().size_changed.connect(_on_viewport_resized)
 	_setup_menu_atmosphere()
@@ -96,6 +98,34 @@ func _ready() -> void:
 	if battle_result_panel != null:
 		battle_result_panel.back_requested.connect(_on_result_back_pressed)
 	call_deferred("_bind_to_main_flow")
+
+
+func _create_qq_entry() -> void:
+	var entry := LinkButton.new()
+	entry.name = "QQGroupEntry"
+	entry.text = "ui.menu.qq_group"
+	entry.underline = LinkButton.UNDERLINE_MODE_ALWAYS
+	entry.add_theme_font_size_override("font_size", 16)
+	entry.add_theme_color_override("font_color", Color(0.77, 0.84, 0.78, 0.8))
+	entry.add_theme_color_override("font_hover_color", Color("e8d49a"))
+	start_page.add_child(entry)
+	entry.pressed.connect(func(): OS.shell_open(QQ_GROUP_URL))
+	var version := start_page.get_node("VersionLabel") as Label
+	version.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	version.resized.connect(_layout_qq_entry, CONNECT_DEFERRED)
+	version.item_rect_changed.connect(_layout_qq_entry, CONNECT_DEFERRED)
+	L10n.locale_changed.connect(_layout_qq_entry, CONNECT_DEFERRED)
+	_layout_qq_entry.call_deferred()
+
+
+func _layout_qq_entry() -> void:
+	var entry := start_page.get_node_or_null("QQGroupEntry") as LinkButton
+	var version := start_page.get_node("VersionLabel") as Label
+	if entry == null: return
+	entry.reset_size()
+	var version_width := version.get_theme_font("font").get_string_size(version.text, HORIZONTAL_ALIGNMENT_LEFT, -1, version.get_theme_font_size("font_size")).x
+	entry.position = Vector2(version.position.x + version.size.x - version_width - 24 - entry.size.x,
+		version.position.y + (version.size.y - entry.size.y) * 0.5)
 
 
 func _process(_delta: float) -> void:

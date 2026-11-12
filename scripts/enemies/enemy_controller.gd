@@ -57,6 +57,8 @@ var target_player: PlayerController = null
 var challenge_target: Node2D = null
 var body_scale_multiplier := 1.0
 var night_speed_player_ratio := 0.0
+var night_speed_player_gap := 0.0
+var night_speed_base := 0.0
 
 var _knockback_timer: float = 0.0
 var _knockback_velocity: Vector2 = Vector2.ZERO
@@ -252,6 +254,8 @@ func initialize(target_enemy_id: String, player: PlayerController = null, runtim
 	enemy_id = target_enemy_id
 	enemy_data = data
 	night_speed_player_ratio = 0.0
+	night_speed_player_gap = 0.0
+	night_speed_base = 0.0
 	_hit_visual_pending = false
 	if is_instance_valid(_hit_visual): _hit_visual.reset()
 	_reset_super_armor()
@@ -312,7 +316,8 @@ func get_stat(stat_id: String, fallback_base_value: float = 0.0) -> float:
 
 func limit_night_speed(speed: float) -> float:
 	if night_speed_player_ratio > 0.0 and is_instance_valid(target_player):
-		return minf(speed,maxf(0.0,target_player.get_stat("move_speed"))*night_speed_player_ratio)
+		var cap := maxf(0.0,target_player.get_stat("move_speed")*night_speed_player_ratio-night_speed_player_gap)
+		return minf(speed,maxf(night_speed_base,cap))
 	return speed
 
 
@@ -667,10 +672,12 @@ func take_damage(
 	var final_damage := maxi(1, int(roundi(float(pre_light_damage) * light_multiplier)))
 	if final_hit_resolver.is_valid() and final_hit_resolver.call(self, final_damage):
 		final_damage = maxi(final_damage, current_hp)
+	var hp_before := current_hp
 	current_hp = maxi(current_hp - final_damage, 0)
 	_show_hit_visual()
-	# One notification after mitigation, shared by direct hits, effects and burn ticks.
-	damage_received.emit(source_id, final_damage)
+	# One notification after mitigation, shared by direct hits, effects and burn
+	# ticks. Overkill is clipped so run statistics count removed hit points only.
+	damage_received.emit(source_id, mini(final_damage, hp_before))
 	if damage_components.is_empty():
 		_spawn_damage_number(final_damage, is_critical, 0, 1, light_amplified, pre_light_damage)
 	else:

@@ -149,7 +149,7 @@ content.relics.relic_chain_of_hardship.description,护甲 + 15；每满 2 点侵
 content.relics.relic_chain_of_hardship.display_name,苦难前行之枷锁,Shackles of Hardship
 content.relics.relic_coin_heart.description,每满100本金，最大生命 +1，上限20；本金减少时相应加成消失，增加上限不会恢复当前生命；每局最多持有1件,"Max HP +1 per full 100 Principal, up to +20. Losing Principal removes the corresponding bonus; increasing Max HP does not heal. Stack limit: 1 per run."
 content.relics.relic_coin_heart.display_name,金币心脏,Coin Heart
-content.relics.relic_compound_interest_tome.description,利率 +1 个百分点；每次收到正数利息后，利率再 +0.2 个百分点,Interest Rate +1 percentage point. Each positive interest payment received grants another +0.2 percentage points.
+content.relics.relic_compound_interest_tome.description,利率 +1 个百分点；每波最多触发一次，收到正数利息后利率再 +0.2 个百分点（最多持有8本）,"Interest Rate +1 percentage point. At most once per wave, each positive interest payment grants another +0.2 percentage points. Up to 8 copies."
 content.relics.relic_compound_interest_tome.display_name,复利宝典,Tome of Compound Interest
 content.relics.relic_corroded_blowpipe.description,远程伤害 +7；最大生命 -3,Ranged Damage +7; Max HP -3
 content.relics.relic_corroded_blowpipe.display_name,蚀腐吹管,Corroded Blowpipe
@@ -171,7 +171,7 @@ content.relics.relic_defiled_blessing_coin.description,幸运 + 36；理智值 -
 content.relics.relic_defiled_blessing_coin.display_name,被亵渎的祈福铜钱,Defiled Blessing Coin
 content.relics.relic_diffusion_nozzle.description,通用伤害 +5%；伤害范围 +12；元素伤害 +3；攻击速度 -6,Damage Bonus +5%; Damage Area +12; Elemental Damage +3; Attack Speed -6
 content.relics.relic_diffusion_nozzle.display_name,扩散喷口,Diffusion Nozzle
-content.relics.relic_dividend_check.description,每次结算利息的时候有20%的概率翻倍,Each interest settlement has a 20% chance to pay double.
+content.relics.relic_dividend_check.description,每次结算利息时，每张支票独立有10%的概率让这次结算翻倍（命中几次多翻几倍），最多持有8张,"When interest settles, every ticket independently has a 10% chance to double that payout; each hit stacks another multiplier. Up to 8 copies."
 content.relics.relic_divine_fusion.description,利率 + 2 个百分点；每满 5 侵蚀度再提供利率 + 0.2 个百分点；每波开始时侵蚀度 + 3；每局最多持有 1 件,"Interest Rate +2 percentage points, plus another +0.2 per full 5 Corruption. Corruption +3 at each wave start. Stack limit: 1 per run."
 content.relics.relic_divine_fusion.display_name,神性融合,Divine Fusion
 content.relics.relic_executioner_bracer.description,近战伤害 +11；移动速度 -10,Melee Damage +11; Move Speed -10

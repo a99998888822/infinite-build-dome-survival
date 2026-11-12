@@ -13,6 +13,14 @@ const SETTLE_WAVE_END: String = "wave_end"
 const SETTLE_MANUAL: String = "manual"
 const SETTLE_PERIODIC: String = "periodic"
 const SETTLE_ANNUITY_EXTRA: String = "annuity_extra"
+## Dividend tickets roll independently: 10% each, at most eight copies. Hits are
+## counted and the settlement is multiplied by 1 + hits, so five tickets can give
+## x3 (two hits) but never the old x29 single roll.
+const DIVIDEND_TICKET_CHANCE_PERCENT: float = 10.0
+const MAX_DIVIDEND_TICKET_COPIES: int = 8
+## The periodic clock always adds one extra settlement on its wave. Extra copies
+## shorten the interval from three waves down to two instead of stacking settles.
+const CLOCK_MIN_INTERVAL_WAVES: int = 2
 
 const TRIGGER_WAVE_START: String = "wave_start"
 const TRIGGER_ON_ACQUIRE: String = "on_acquire"
@@ -82,6 +90,8 @@ var _last_activity_rate: float = DEFAULT_INTEREST_RATE
 var _principal_revive_uses: Dictionary = {}
 var _run_serial := 0
 var _interest_event_serial := 0
+## Wave number that already spent its single compound-tome rate growth.
+var _tome_growth_wave := -1
 var _runtime_effect_cache: Dictionary = {}
 var _runtime_effect_owner_id := 0
 var _runtime_effect_revision := -1
@@ -454,9 +464,12 @@ func process_wave_end_settlements() -> Array[Dictionary]:
 		match str(effect.get("effect", "")):
 			EFFECT_SETTLE_INTEREST_EVERY_N_WAVES:
 				var interval := int(effect.get("interval_waves", 3))
+				var clock_copies := maxi(1, int(effect.get("relic_count", 1)))
+				# Duplicates shorten the interval; the settlement itself never
+				# stacks per copy any more.
+				interval = maxi(CLOCK_MIN_INTERVAL_WAVES, interval - (clock_copies - 1))
 				if interval > 0 and wave_counter % interval == 0:
-					for _index in range(int(effect.get("relic_count", 1))):
-						results.append(settle_interest(SETTLE_PERIODIC, str(effect.get("relic_id", ""))))
+					results.append(settle_interest(SETTLE_PERIODIC, str(effect.get("relic_id", ""))))
 			EFFECT_EXTRA_SETTLEMENT_PER_WAVE:
 				for _index in range(int(effect.get("relic_count", 1))):
 					results.append(settle_interest(SETTLE_ANNUITY_EXTRA, str(effect.get("relic_id", ""))))
@@ -625,25 +638,39 @@ func _apply_interest_gain_relics(base_gain: int, source: String, result: Diction
 	for effect in _collect_runtime_effects(TRIGGER_INTEREST_SETTLE):
 		match str(effect.get("effect", "")):
 			EFFECT_DIVIDEND_DOUBLE:
-				var dividend_chance := float(effect.get("double_chance_percent", 20)) / 100.0
-				var stack_count := maxi(1, int(effect.get("relic_count", 1)))
-				var dividend_multiplier := stack_count + 1
+				# Every ticket rolls on its own, so stacking adds independent
+				# chances instead of one huge multiplier: with five tickets the
+				# settlement doubles per hit (2 hits -> x3, 0 hits -> x1).
+				var dividend_chance := float(effect.get("double_chance_percent", DIVIDEND_TICKET_CHANCE_PERCENT)) / 100.0
+				var ticket_count := mini(maxi(1, int(effect.get("relic_count", 1))), MAX_DIVIDEND_TICKET_COPIES)
 				if _project_expected_dividends:
-					final_gain = ceili(float(final_gain)*(1.0+dividend_chance*stack_count))
+					final_gain = ceili(float(final_gain) * (1.0 + dividend_chance * float(ticket_count)))
 					continue
-				if _rng.randf() < dividend_chance:
+				var hits := 0
+				for _ticket in range(ticket_count):
+					if _rng.randf() < dividend_chance:
+						hits += 1
+				if hits > 0:
+					var dividend_multiplier := hits + 1
 					final_gain = int(ceil(float(final_gain) * float(dividend_multiplier)))
 					result["dividend_double_triggered"] = true
 					result["dividend_multiplier"] = dividend_multiplier
+					result["dividend_hits"] = hits
 					result["dividend_relic_id"] = str(effect.get("relic_id", ""))
 	return maxi(0, final_gain)
 
 
 func _apply_after_successful_interest_relics(_source: String, result: Dictionary) -> void:
 	var growth_events: Array[Dictionary] = []
+	# The compound tome grows the rate at most once per wave; extra settlements
+	# from the annuity, the clock or a manual trigger never multiply the growth.
+	var growth_allowed := _tome_growth_wave != current_wave_number
 	for effect in _collect_runtime_effects(TRIGGER_INTEREST_SUCCESS):
 		match str(effect.get("effect", "")):
 			EFFECT_ADD_INTEREST_RATE_BONUS:
+				if not growth_allowed:
+					continue
+				_tome_growth_wave = current_wave_number
 				var growth := float(effect.get("value", 0.0)) * float(effect.get("relic_count", 1))
 				interest_rate_bonus += growth
 				growth_events.append({"relic_id": str(effect.get("relic_id", "")), "delta": growth})

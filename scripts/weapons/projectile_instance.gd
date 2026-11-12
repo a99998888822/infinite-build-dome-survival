@@ -9,6 +9,11 @@ const TERRAIN_COLLISION_LAYER: int = 4
 const TRAIL_INTERVAL_SECONDS: float = 0.035
 const ENABLE_ENEMY_HIT_GREEN_PARTICLES: bool = false
 const PLASMA_ENCHANTMENT_DAMAGE_SCALE: float = 0.2
+## How many times one ball may run the enchantment suffix per touched target.
+## Plasma is defined by short, repeated hits, so all five ticks cast the suffix
+## again -- the original behaviour. The cap stays a constant because it is the one
+## knob that removes most of the enchantment fan-out if a fight must be cheaper.
+const PLASMA_ENCHANT_CASTS_PER_TARGET: int = 5
 const PARTICLE_WORLD_SCRIPT = preload("res://scripts/effects/particle_world.gd")
 const HIT_PARTICLE_BURST_SCRIPT = preload("res://scripts/effects/hit_particle_burst.gd")
 const DESTRUCTIBLE_TEST_AREA_SCRIPT = preload("res://scripts/terrain/destructible_test_area.gd")
@@ -34,6 +39,7 @@ var _trail_emitter: Node2D = null
 var _plasma_tick_timer: float = 0.0
 var _plasma_tick_count: int = 0
 var _plasma_contact_hold_left: float = 0.0
+var _plasma_enchant_casts: Dictionary = {}
 var _plasma_visual: Node2D = null
 var _wood_arrow_visual: Node2D = null
 var _sorted_visual: Node2D = null
@@ -74,6 +80,7 @@ func initialize(
 	_plasma_tick_timer = 0.0
 	_plasma_tick_count = 0
 	_plasma_contact_hold_left = 0.0
+	_plasma_enchant_casts.clear()
 
 	collision_layer = 0
 	collision_mask = ENEMY_COLLISION_LAYER | TERRAIN_COLLISION_LAYER
@@ -257,22 +264,39 @@ func _is_plasma_projectile() -> bool:
 	return weapon != null and str(weapon.weapon_data.get("projectile_behavior", "")) == "plasma"
 
 
+func _should_cast_enchantment(enemy: EnemyController) -> bool:
+	var id := enemy.get_instance_id()
+	var casts := int(_plasma_enchant_casts.get(id, 0))
+	if casts >= PLASMA_ENCHANT_CASTS_PER_TARGET:
+		return false
+	_plasma_enchant_casts[id] = casts + 1
+	return true
+
+
 func _process_plasma_contact(delta: float) -> void:
-	var enemies := _query_plasma_enemies()
 	var flight_speed := maxf(weapon.get_projectile_speed(), 1.0)
 	var contact_speed := clampf(float(weapon.weapon_data.get("plasma_contact_speed", 20.0)), 1.0, flight_speed)
+	_plasma_tick_timer -= delta
+	_plasma_contact_hold_left = maxf(_plasma_contact_hold_left - delta, 0.0)
+	# Query only when the answer can change anything: a damage tick is due, or the
+	# contact hold ran out. While both are pending the ball is still holding on a
+	# surface, so the per-frame shape query is redundant. Damage timing is driven
+	# by the same tick timer as before, so payout stays identical.
+	if _plasma_tick_timer > 0.0 and _plasma_contact_hold_left > 0.0:
+		speed = contact_speed
+		return
+	var enemies := _query_plasma_enemies()
 	if enemies.is_empty():
 		# Keep the impact readable even when the first tick kills its target.
 		# Only movement lingers; damage still requires actual surface contact.
 		var recovery_delta := maxf(delta - _plasma_contact_hold_left, 0.0)
-		_plasma_contact_hold_left = maxf(_plasma_contact_hold_left - delta, 0.0)
 		var recovery_seconds := maxf(float(weapon.weapon_data.get("plasma_speed_recovery_ms", 120.0)) / 1000.0, 0.001)
 		speed = move_toward(minf(speed, flight_speed), flight_speed, (flight_speed - contact_speed) / recovery_seconds * recovery_delta)
 		_plasma_tick_timer = 0.0
+		_plasma_contact_hold_left = 0.0
 		return
 	speed = contact_speed
 	_plasma_contact_hold_left = maxf(float(weapon.weapon_data.get("plasma_contact_hold_ms", 160.0)) / 1000.0, 0.0)
-	_plasma_tick_timer -= delta
 	if _plasma_tick_timer <= 0.0:
 		_process_plasma_tick(enemies)
 
@@ -309,12 +333,16 @@ func _process_plasma_tick(enemies: Array[EnemyController]) -> void:
 			continue
 		var tick_event := damage_event.duplicate_event()
 		tick_event.hit_position = enemy.global_position
-		var effect_event := tick_event.duplicate_event()
-		effect_event.damage = maxi(1, int(roundi(float(effect_event.damage) * PLASMA_ENCHANTMENT_DAMAGE_SCALE)))
-		# Elemental effects and reactions use original damage plus the elemental
-		# bonus, not damage. Keep their shared scale through delayed event copies.
-		effect_event.elemental_damage_scale *= PLASMA_ENCHANTMENT_DAMAGE_SCALE
-		COMBAT_EFFECT_WORLD_SCRIPT.trigger_weapon_impact(get_parent(), weapon, effect_event, enemy.global_position, direction, enemy)
+		# Each plasma ball can cast its enchantments up to five times per target,
+		# as set by PLASMA_ENCHANT_CASTS_PER_TARGET. Split children track their own
+		# per-target counts, and each cast uses the shared 20% damage scale below.
+		if _should_cast_enchantment(enemy):
+			var effect_event := tick_event.duplicate_event()
+			effect_event.damage = maxi(1, int(roundi(float(effect_event.damage) * PLASMA_ENCHANTMENT_DAMAGE_SCALE)))
+			# Elemental effects and reactions use original damage plus the elemental
+			# bonus, not damage. Keep their shared scale through delayed event copies.
+			effect_event.elemental_damage_scale *= PLASMA_ENCHANTMENT_DAMAGE_SCALE
+			COMBAT_EFFECT_WORLD_SCRIPT.trigger_weapon_impact(get_parent(), weapon, effect_event, enemy.global_position, direction, enemy)
 		if _split_depth == 0 and not _has_split and weapon.has_effect("split"):
 			_has_split = true
 			_spawn_split_projectiles(enemy.global_position)

@@ -173,8 +173,9 @@ func refresh() -> void:
 		ItemIconArt.bind_button(button, button.icon, 32.0)
 		button.pressed.connect(_select_weapon.bind(weapon.weapon_id))
 		button.item_drop_requested.connect(_drop_item)
-		button.mouse_entered.connect(func(): tooltip_requested.emit(weapon.build_full_stats_text()))
-		button.mouse_exited.connect(func(): tooltip_hidden.emit())
+		if not MobileProfile.is_mobile():
+			button.mouse_entered.connect(func(): tooltip_requested.emit(weapon.build_full_stats_text()))
+			button.mouse_exited.connect(func(): tooltip_hidden.emit())
 	var current := loadout.get_weapon_instance(selected_weapon_id)
 	ItemIconArt.bind_texture(_weapon_icon, FinanceUIStyle.item_icon(str(current.weapon_data.get("icon", "")), "weapons", current.weapon_id) if current != null else null, false, 36.0, null, 36.0)
 	_weapon_name.text = "%s · Lv.%d" % [L10n.source(str(current.weapon_data.get("display_name", ""))), current.level] if current != null else "尚无武器"
@@ -340,6 +341,9 @@ func _sync_weapon_scroll_buttons() -> void:
 func _select_weapon(id: String) -> void:
 	selected_weapon_id = id
 	refresh()
+	if MobileProfile.is_mobile() and flow != null:
+		var weapon := flow.get_bound_loadout().get_weapon_instance(id)
+		if weapon != null: tooltip_requested.emit(weapon.build_full_stats_text())
 
 
 func _select_item(id: String) -> void:

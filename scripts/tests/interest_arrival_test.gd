@@ -79,8 +79,8 @@ func _run() -> void:
 	check(report.steps.any(func(s): return s.kind == "bonus" and not s.icon.is_empty()), "double payout has its real relic icon")
 	check(report.steps.any(func(s): return s.label.contains("额外结息") and not s.icon.is_empty()), "extra settlement retains its source relic")
 	var first_receipt := InterestArrivalReport.build({"settlement_results": [results[0]]})
-	check(report.steps.any(func(s): return s.kind == "growth" and s.amount == "+0.4%") and first_receipt.steps.any(func(s): return s.kind == "growth" and s.amount == "+0.2%"), "growth shows exact single and accumulated percentage bonuses")
-	check(is_equal_approx(report.rate_after, 8.4) and not report.steps.any(func(s): return s.kind == "loss"), "full sanity gets the complete payout and actual ending rate")
+	check(report.steps.any(func(s): return s.kind == "growth" and s.amount == "+0.2%") and first_receipt.steps.any(func(s): return s.kind == "growth" and s.amount == "+0.2%"), "growth shows the single per-wave tome bonus")
+	check(is_equal_approx(report.rate_after, 8.2) and not report.steps.any(func(s): return s.kind == "loss"), "full sanity gets the complete payout and actual ending rate")
 	var snapshot_gold := manager.current_gold
 	var snapshot_rate := manager.finance_system.get_interest_rate()
 	var first_id := str(report.id)

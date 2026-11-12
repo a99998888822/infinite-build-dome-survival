@@ -101,10 +101,12 @@ func _ready() -> void:
 	_speech_label = _label(_speech, "", 30, Color("e4d9bd"))
 	_speech_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_portrait = _texture(_left, null)
-	var names := ["ui.settlement.total_kills", "ui.settlement.gold_earned", "ui.settlement.waves_survived", "ui.settlement.interest_earned"]
+	var names := ["ui.settlement.waves_survived", "ui.settlement.total_kills",
+		"ui.settlement.damage_dealt", "ui.settlement.survival_time"]
+	var icon_index := [2, 0, 1, 3]
 	for i in 4:
 		var row := _panel(_right, false, true)
-		var icon := _texture(row, _atlas(ICONS, Rect2(i * 32, 0, 32, 32)))
+		var icon := _texture(row, _atlas(ICONS, Rect2(icon_index[i] * 32, 0, 32, 32)))
 		var label := _label(row, names[i], 30)
 		label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		label.text_overrun_behavior = TextServer.OVERRUN_NO_TRIMMING
@@ -185,11 +187,8 @@ func present(data: Dictionary) -> void:
 		_monster_nodes.append({"id": id, "tile": tile, "icon": icon, "label": label, "count": count, "amount": int(counts[id])})
 	if ids.is_empty():
 		_label(_monster_list, "ui.settlement.no_kills", 23, MUTED)
-	var rates: Dictionary = _config.formula
-	var tips := [L10n.text("ui.settlement.kills_tooltip") % str(rates.kills_per_coin),
-		L10n.text("ui.settlement.gold_tooltip") % int(rates.gold_per_coin),
-		L10n.text("ui.settlement.waves_tooltip") % int(rates.coins_per_wave),
-		L10n.text("ui.settlement.interest_tooltip") % [int(rates.interest_per_coin), int(rates.interest_cap_per_wave)]]
+	var rates: Dictionary = _config
+	var tips: Array = _row_tooltips(rates)
 	for i in 4:
 		_rows[i].panel.tooltip_text = tips[i]
 		_rows[i].panel.mouse_filter = Control.MOUSE_FILTER_PASS
@@ -226,15 +225,21 @@ func _refresh_language() -> void:
 	_speech_label.text = _speech_text
 	for monster in _monster_nodes:
 		monster.label.text = L10n.source(DataRegistry.get_record("enemies", str(monster.id)).get("display_name", monster.id))
-	var rates: Dictionary = _config.formula
-	var tips := [L10n.text("ui.settlement.kills_tooltip") % str(rates.kills_per_coin),
-		L10n.text("ui.settlement.gold_tooltip") % int(rates.gold_per_coin),
-		L10n.text("ui.settlement.waves_tooltip") % int(rates.coins_per_wave),
-		L10n.text("ui.settlement.interest_tooltip") % [int(rates.interest_per_coin), int(rates.interest_cap_per_wave)]]
+	var rates: Dictionary = _config
+	var tips: Array = _row_tooltips(rates)
 	for index in 4:
 		_rows[index].panel.tooltip_text = tips[index]
 	# Retain progress, payout state, and audio playback.
 	seek(_elapsed)
+
+
+func _row_tooltips(config: Dictionary) -> Array:
+	var weights := RunSettlement.weights_of(config)
+	var references := RunSettlement.references_of(config)
+	return [L10n.text("ui.settlement.waves_tooltip") % [roundi(float(weights.get("waves", 0.0)) * 100.0), int(references.get("waves", 0))],
+		L10n.text("ui.settlement.kills_tooltip") % [roundi(float(weights.get("kills", 0.0)) * 100.0), int(references.get("kills", 0))],
+		L10n.text("ui.settlement.damage_tooltip") % [roundi(float(weights.get("damage", 0.0)) * 100.0), int(references.get("damage", 0))],
+		L10n.text("ui.settlement.survival_tooltip") % [roundi(float(weights.get("seconds", 0.0)) * 100.0), int(references.get("seconds", 0))]]
 
 
 func _refresh_result_heading() -> void:
@@ -262,8 +267,6 @@ func seek(seconds: float) -> void:
 	_conversion.text = "ui.settlement.base_conversion_hint"
 	if _progress(4) >= 1:
 		_conversion.text = _number(int(report.camp_currency))
-	if bool(report.interest_capped) and _progress(3) >= 1:
-		_conversion.text += L10n.text("ui.settlement.interest_cap_suffix")
 	var voice_time := float(_config.presentation.voice_time)
 	_speech.visible = seconds >= voice_time and not _speech_text.is_empty()
 	_speech_label.visible_characters = -1 if _skipped else maxi(0, int((seconds - voice_time) * 18))

@@ -47,6 +47,7 @@ func _run() -> void:
 	_test_revive_consumption()
 	_test_contract()
 	_test_combat_and_limits()
+	_test_offer_weight_decay()
 	_test_validation()
 	print("RELIC_BALANCE_COMPLETE checks=%d failures=%d" % [checks, failures])
 	await get_tree().process_frame
@@ -165,6 +166,34 @@ func _test_combat_and_limits() -> void:
 	p.free()
 
 
+func _test_offer_weight_decay() -> void:
+	var generator := ShopOfferGenerator.new()
+	var tome := DataRegistry.get_record("relics", "relic_compound_interest_tome")
+	check(not tome.is_empty() and int(tome.get("offer_weight_decay_percent", 100)) < 100, "compound tome carries a duplicate decay rule")
+	check(generator.get_relic_offer_weight(tome, 0) == 100, "unowned tome keeps the full candidate weight")
+	for expected in [[1, 75], [2, 56], [3, 42], [5, 24], [8, 10], [12, 10]]:
+		check(generator.get_relic_offer_weight(tome, int(expected[0])) == int(expected[1]), "tome weight decays to %d at %d copies" % [int(expected[1]), int(expected[0])])
+	var previous := 1000
+	for owned in range(0, 13):
+		var weight := generator.get_relic_offer_weight(tome, owned)
+		check(weight <= previous and weight >= int(tome.get("offer_weight_floor", 1)), "tome weight never rises and respects the floor at %d copies" % owned)
+		previous = weight
+	for relic_id in ["relic_periodic_dividend_clock", "relic_void_market_key"]:
+		var record := DataRegistry.get_record("relics", relic_id)
+		check(int(record.get("max_stack", -1)) == 0 and int(record.get("offer_weight_decay_percent", 100)) < 100, "snowballing relic stays unlimited and decays: " + relic_id)
+	# Interest multipliers are capped so the bank build cannot snowball forever.
+	var dividend := DataRegistry.get_record("relics", "relic_dividend_check")
+	check(int(dividend.get("max_stack", 0)) == 8 and int(dividend.runtime_effects[0].get("double_chance_percent", 0)) == 10, "dividend ticket caps at eight copies and rolls ten percent per copy")
+	check(int(DataRegistry.get_record("relics", "relic_compound_interest_tome").get("max_stack", 0)) == 8, "compound tome caps at eight copies")
+	var plain := DataRegistry.get_record("relics", "relic_piggy_bank")
+	check(generator.get_relic_offer_weight(plain, 0) == 100 and generator.get_relic_offer_weight(plain, 9) == 100, "unconfigured relic keeps a flat candidate weight")
+	var pool := generator.build_shop_candidate_pool({"owned_relic_counts": {"relic_compound_interest_tome": 3}})
+	var weighted := pool.filter(func(offer): return offer.get("target_id", "") == "relic_compound_interest_tome")
+	check(weighted.size() == 1 and int(weighted[0].get("weight", 0)) == 42, "candidate pool applies the duplicate weight")
+	var rival := pool.filter(func(offer): return offer.get("target_id", "") == "relic_periodic_dividend_clock")
+	check(rival.size() == 1 and int(rival[0].get("weight", 0)) == 100, "untouched same-rarity peer keeps the flat weight")
+
+
 func _test_validation() -> void:
 	for bad in [
 		{"trigger": "derived", "effect": "interest_rate_on_wave_deposit", "value": 6},
@@ -174,3 +203,19 @@ func _test_validation() -> void:
 		var validator := DataValidator.new()
 		validator._validate_relic_runtime_effect(bad, "contract")
 		check(not validator.errors.is_empty(), "reject malformed conditional interest configuration")
+	for bad_rule in [
+		{"offer_weight_decay_percent": 0},
+		{"offer_weight_decay_percent": 100},
+		{"offer_weight_decay_percent": 60, "offer_weight_floor": 0},
+		{"offer_weight_decay_percent": "60"},
+		{"offer_weight_decay_percent": 60.5},
+	]:
+		var rule_validator := DataValidator.new()
+		rule_validator._validate_relic_offer_weight_rule(bad_rule, "relic")
+		check(not rule_validator.errors.is_empty(), "reject malformed duplicate weight rule: " + JSON.stringify(bad_rule))
+	var good_rule := DataValidator.new()
+	good_rule._validate_relic_offer_weight_rule({"offer_weight_decay_percent": 75, "offer_weight_floor": 10}, "relic")
+	check(good_rule.errors.is_empty() and good_rule.warnings.is_empty(), "accept the shipped duplicate weight rule")
+	good_rule = DataValidator.new()
+	good_rule._validate_relic_offer_weight_rule({"offer_weight_floor": 4}, "relic")
+	check(good_rule.warnings.size() == 1, "warn about a floor without a decay")

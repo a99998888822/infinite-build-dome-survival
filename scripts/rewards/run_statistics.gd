@@ -8,6 +8,11 @@ var kills := 0
 var combat_gold := 0
 var interest := 0
 var completed_waves := 0
+## Hit points actually removed from enemies this run; overkill is excluded.
+var damage_dealt := 0
+## Seconds spent inside an active combat wave. Menus, settlements and pauses
+## never reach the accumulation point.
+var survived_seconds := 0.0
 var monsters: Dictionary = {}
 var _enemies: Dictionary = {}
 var _interest_events: Dictionary = {}
@@ -29,6 +34,8 @@ func reset() -> void:
 	combat_gold = 0
 	interest = 0
 	completed_waves = 0
+	damage_dealt = 0
+	survived_seconds = 0.0
 	monsters.clear()
 	_enemies.clear()
 	_interest_events.clear()
@@ -48,6 +55,14 @@ func record_kill(instance_id: int, enemy_id: String) -> bool:
 
 func record_combat_gold(amount: int) -> void:
 	if not frozen: combat_gold += maxi(0, amount)
+
+
+func record_damage(amount: int) -> void:
+	if not frozen: damage_dealt += maxi(0, amount)
+
+
+func record_survival(delta: float) -> void:
+	if not frozen and delta > 0.0: survived_seconds += delta
 
 
 func record_interest(result: Dictionary) -> void:
@@ -87,6 +102,7 @@ func snapshot() -> Dictionary:
 		if int(decision) == 1: accepted += 1
 		elif int(decision) == 0: refused += 1
 	return {"run_id": run_id, "kills": kills, "gold": combat_gold, "waves": completed_waves, "interest": interest,
+		"damage": damage_dealt, "seconds": survived_seconds,
 		"monsters": monsters.duplicate(true), "accepted": accepted, "refused": refused,
 		"has_advice": accepted + refused > 0, "followed": accepted > refused or (accepted == refused and _last_accepted)}
 
