@@ -89,6 +89,7 @@ var action_animator := PlayerActionAnimator.new()
 
 @onready var visual_anchor: Node2D = get_node_or_null("VisualAnchor")
 @onready var sprite: Sprite2D = get_node_or_null("VisualAnchor/Sprite2D")
+@onready var pickup_area: Area2D = get_node_or_null("PickupArea")
 @onready var pickup_shape: CollisionShape2D = get_node_or_null("PickupArea/CollisionShape2D")
 @onready var camera_2d: Camera2D = get_node_or_null("Camera2D")
 
@@ -101,12 +102,29 @@ func _init() -> void:
 func _ready() -> void:
 	_clear_move_input()
 	_setup_visuals()
+	if pickup_area != null:
+		# Ground orbs sleep outside this area; it is the only thing that has to
+		# wake them, so a large idle pile costs no per-frame script callbacks.
+		if not pickup_area.area_entered.is_connected(_on_pickup_area_entered):
+			pickup_area.area_entered.connect(_on_pickup_area_entered)
+		if not pickup_area.area_exited.is_connected(_on_pickup_area_exited):
+			pickup_area.area_exited.connect(_on_pickup_area_exited)
 	walk_audio = LOOP_AUDIO.new()
 	add_child(walk_audio)
 	# The supplied footsteps are quiet (peak -29.6 dBFS); keep them audible.
 	walk_audio.configure(WALK_AUDIO, 6.0, "SFX")
 	if auto_initialize_on_ready:
 		initialize_from_character(character_id)
+
+
+func _on_pickup_area_entered(area: Area2D) -> void:
+	if area is ExpOrb:
+		(area as ExpOrb).wake_orb()
+
+
+func _on_pickup_area_exited(area: Area2D) -> void:
+	if area is ExpOrb:
+		(area as ExpOrb).sleep_orb()
 
 
 func _input(event: InputEvent) -> void:

@@ -22,6 +22,7 @@ const MIN_SPAWN_INTERVAL_MS: float = 300.0
 const SPAWN_COUNT_PRECISION: int = 10000
 const DROP_REWARD_SYSTEM_SCRIPT: Script = preload("res://scripts/rewards/drop_reward_system.gd")
 const BATTLE_FINANCE_SYSTEM_SCRIPT: Script = preload("res://scripts/rewards/battle_finance_system.gd")
+const EXP_ORB_FIELD_SCRIPT: Script = preload("res://scripts/pickups/exp_orb_field.gd")
 
 @export var auto_start: bool = false
 @export var enemy_root_path: NodePath
@@ -52,6 +53,7 @@ var challenge_vault: ChallengeVault
 var _vault_attacker_counter := 0
 var weapon_damage_this_wave: Dictionary = {}
 var _reward_remainders: Dictionary = {}
+var _reward_hud_dirty := false
 
 var reward_snapshot: RewardSnapshot = RewardSnapshot.new()
 var run_statistics := RunStatistics.new()
@@ -69,6 +71,7 @@ var _challenge_elite_spawned := 0
 var _challenge_elite_planned := 0
 var _last_settled_wave := -1
 var enemy_scene_cache: Dictionary = {}
+var exp_orb_field: Node
 var _pending_wave_end_absorb_count: int = 0
 var _finishing_wave_id: String = ""
 var _pending_reward_batches: Array[Dictionary] = []
@@ -105,11 +108,15 @@ func _ready() -> void:
 		enemy_root = self
 	if pickup_root == null:
 		pickup_root = self
+	exp_orb_field = EXP_ORB_FIELD_SCRIPT.new()
+	exp_orb_field.name = "ExpOrbField"
+	add_child(exp_orb_field)
 	if auto_start:
 		start_next_wave()
 
 
 func _process(delta: float) -> void:
+	_flush_reward_hud()
 	if is_instance_valid(final_kill_sequence) and final_kill_sequence.active:
 		return # Keep drops and wave-end modals behind the final-hit presentation.
 	_process_pending_rewards(delta)
@@ -213,6 +220,8 @@ func initialize(target_player: PlayerController, selected_difficulty: String = B
 		if player.health_damage_taken.is_connected(_record_trade_damage): player.health_damage_taken.disconnect(_record_trade_damage)
 		if player.hp_changed.is_connected(_record_trade_health): player.hp_changed.disconnect(_record_trade_health)
 	player = target_player
+	if exp_orb_field != null:
+		exp_orb_field.set("player", target_player)
 	run_statistics.reset()
 	goblin_loans.reset()
 	goblin_trades.reset()
@@ -242,6 +251,8 @@ func initialize(target_player: PlayerController, selected_difficulty: String = B
 	current_gold = 0
 	pickup_gold_remainder_cents = 0
 	_reward_remainders.clear()
+	# Flush once after the reset so an already bound HUD shows the new run's zeroes.
+	_reward_hud_dirty = true
 	collected_exp_this_wave = 0
 	collected_gold_this_wave = 0
 	weapon_damage_this_wave.clear()
@@ -278,6 +289,10 @@ func initialize(target_player: PlayerController, selected_difficulty: String = B
 	drop_reward_system.reset_run()
 	_augmentation_valid_kills = 0
 	clear_battle_entities()
+	if is_instance_valid(exp_orb_field):
+		# Orbs from the previous run stay in the pickup root; re-register them so
+		# the field keeps culling and waking them for the new player.
+		exp_orb_field.call("reset", pickup_root)
 
 
 func _get_optional_node(path: NodePath) -> Node:
@@ -567,14 +582,15 @@ func _start_wave_end_exp_absorb() -> void:
 			continue
 		_pending_wave_end_absorb_count += 1
 		var absorbed_callable := Callable(self, "_on_wave_end_exp_orb_absorbed")
-		if not orb.collected.is_connected(absorbed_callable):
-			orb.collected.connect(absorbed_callable)
+		# Count the orb only after all of its contributions have been paid out.
+		if not orb.collection_completed.is_connected(absorbed_callable):
+			orb.collection_completed.connect(absorbed_callable, CONNECT_ONE_SHOT)
 		orb.start_wave_end_collection(player)
 	if _pending_wave_end_absorb_count <= 0:
 		_complete_wave_end_absorb()
 
 
-func _on_wave_end_exp_orb_absorbed(_orb: ExpOrb, _exp_amount: int, _gold_amount: int) -> void:
+func _on_wave_end_exp_orb_absorbed(_orb: ExpOrb) -> void:
 	_on_wave_end_pickup_absorbed()
 
 
@@ -644,7 +660,7 @@ func get_required_exp_for_next_level() -> int:
 	return ceili(0.45 * pow(float(player_level) + 1.8, 2.9))
 
 
-func add_exp_and_gold(exp_amount: int, gold_amount: float) -> void:
+func add_exp_and_gold(exp_amount: int, gold_amount: float, notify: bool = true) -> void:
 	if run_statistics.frozen: return
 	var final_exp := _apply_percent_bonus(exp_amount, "exp_gain_percent")
 	var bonus := player.get_stat("currency_gain_percent") if player != null else 0.0
@@ -659,6 +675,17 @@ func add_exp_and_gold(exp_amount: int, gold_amount: float) -> void:
 	collected_gold_this_wave += final_gold
 	run_statistics.record_combat_gold(final_gold)
 	_process_level_ups()
+	if notify:
+		exp_changed.emit(current_exp, get_required_exp_for_next_level(), player_level)
+		gold_changed.emit(current_gold)
+	else:
+		_reward_hud_dirty = true
+
+
+func _flush_reward_hud() -> void:
+	if not _reward_hud_dirty:
+		return
+	_reward_hud_dirty = false
 	exp_changed.emit(current_exp, get_required_exp_for_next_level(), player_level)
 	gold_changed.emit(current_gold)
 
@@ -1171,7 +1198,7 @@ func _spawn_drop_actions(actions: Array[Dictionary], drop_position: Vector2) -> 
 
 func _on_exp_orb_collected(orb: ExpOrb, exp_amount: int, gold_amount: int) -> void:
 	if player == null or not player.is_alive() or run_statistics.frozen: return
-	add_exp_and_gold(exp_amount, gold_amount * orb.gold_multiplier)
+	add_exp_and_gold(exp_amount, gold_amount * orb.gold_multiplier, false)
 	reward_snapshot.record_exp_collection(exp_amount, gold_amount)
 
 

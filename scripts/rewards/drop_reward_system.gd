@@ -302,9 +302,18 @@ func spawn_action(
 	var amount := maxi(0, int(action.get("amount", 0)))
 	match drop_type:
 		"exp_orb":
-			var orb := spawn_exp_orb(amount, position, pickup_root, player, snapshot, on_exp_collected)
+			if not is_instance_valid(pickup_root) or not is_instance_valid(player):
+				return null
+			var action_terms: Dictionary = action.get("gold_terms", {})
+			var merged := _try_merge_exp_orb(amount, position, action_terms)
+			if merged != null:
+				_attach_exp_callback(merged, on_exp_collected)
+				if snapshot != null:
+					snapshot.record_spawned_drop("exp_orb", 1)
+				return merged
+			var orb := spawn_exp_orb(amount, position, pickup_root, player, snapshot, on_exp_collected, false)
 			if orb != null:
-				orb.configure_gold(action.get("gold_terms", {}))
+				orb.configure_gold(action_terms)
 				orb.advance_gold_clock(float(action.get("pending_age", 0.0)))
 			return orb
 		"health_pack":
@@ -382,10 +391,18 @@ func spawn_exp_orb(
 	pickup_root: Node,
 	player: PlayerController,
 	snapshot: RewardSnapshot = null,
-	on_collected: Callable = Callable()
+	on_collected: Callable = Callable(),
+	allow_merge: bool = true
 ) -> ExpOrb:
 	if pickup_root == null or player == null:
 		return null
+	if allow_merge:
+		var merged := _try_merge_exp_orb(amount, position, gold_terms)
+		if merged != null:
+			_attach_exp_callback(merged, on_collected)
+			if snapshot != null:
+				snapshot.record_spawned_drop("exp_orb", 1)
+			return merged
 	var orb := pickup_pool.acquire_exp() as ExpOrb if is_instance_valid(pickup_pool) else EXP_ORB_SCENE.instantiate() as ExpOrb
 	if orb == null:
 		return null
@@ -400,6 +417,27 @@ func spawn_exp_orb(
 	if on_collected.is_valid():
 		orb.collected.connect(on_collected)
 	return orb
+
+
+## Over the field cap, a drop is added to an existing compatible orb. It keeps
+## one contribution entry, so collection still applies the exact per-orb path.
+func _try_merge_exp_orb(amount: int, position: Vector2, terms: Dictionary) -> ExpOrb:
+	if amount <= 0 or float(terms.get("lifetime", 0.0)) > 0.0:
+		return null
+	var field := ExpOrb.field_manager
+	if field == null or not is_instance_valid(field):
+		return null
+	var merged: Variant = field.call("try_merge_exp_orb", amount, position, float(terms.get("multiplier", 1.0)))
+	return merged as ExpOrb
+
+
+## A merged drop is paid out through the target orb's listener, so the callback
+## has to exist before the merge; otherwise the extra experience would be lost.
+func _attach_exp_callback(orb: ExpOrb, on_collected: Callable) -> void:
+	if orb == null or not on_collected.is_valid():
+		return
+	if not orb.collected.is_connected(on_collected):
+		orb.collected.connect(on_collected)
 
 
 func spawn_health_pack(
