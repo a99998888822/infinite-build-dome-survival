@@ -58,6 +58,10 @@ func configure(sprite: Sprite2D, visuals: Dictionary) -> void:
 	sprite.scale = Vector2.ONE * float(visuals.get("action_scale_percent", 50)) / 100.0
 	var offset: Array = visuals.get("action_offset", [0.0, -4.0])
 	_base_position = Vector2(float(offset[0]), float(offset[1]))
+	if MobileProfile.is_mobile():
+		# Enlarge the art around its feet; collision and weapon ranges stay independent.
+		sprite.scale *= 1.25
+		_base_position.y -= 10.0
 	sprite.position = _base_position
 	_show("idle", 0)
 

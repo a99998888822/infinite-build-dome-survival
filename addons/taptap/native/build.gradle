@@ -18,9 +18,10 @@ android {
 
 dependencies {
     compileOnly files('../../../android/build/libs/release/godot-lib.template_release.aar')
-    implementation 'com.taptap.sdk:tap-core:4.11.0'
-    implementation 'com.taptap.sdk:tap-login:4.11.0'
-    implementation 'com.taptap.sdk:tap-compliance:4.11.0'
+    implementation 'com.taptap.sdk:tap-core:4.11.1'
+    implementation 'com.taptap.sdk:tap-login:4.11.1'
+    implementation 'com.taptap.sdk:tap-compliance:4.11.1'
+    implementation 'com.taptap.sdk:tap-cloudsave:4.11.1'
 }
 
 tasks.register('installBridge', Copy) {

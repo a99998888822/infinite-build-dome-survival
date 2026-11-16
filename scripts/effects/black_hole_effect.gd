@@ -1,5 +1,6 @@
 extends Node2D
 class_name BlackHoleEffect
+const TARGETS = preload("res://scripts/battle/combat_target_query.gd")
 const BAKED = preload("res://scripts/effects/selected_spell_visual.gd")
 
 const EFFECT_PARAMETER_RESOLVER_SCRIPT = preload("res://scripts/effects/effect_parameter_resolver.gd")
@@ -7,9 +8,13 @@ const ELEMENT_REACTION_RESOLVER_SCRIPT = preload("res://scripts/effects/element_
 const PIXEL = preload("res://scripts/effects/pixel_effect_draw.gd")
 
 const DEFAULT_RADIUS: float = 90.0
+const SIZE_MULTIPLIER := 0.5
 const DEFAULT_DURATION: float = 0.85
 const DEFAULT_PULL_SPEED: float = 150.0
-const DEFAULT_DARK_DURATION: float = 2.0
+const DEFAULT_DARK_DURATION: float = 0.5
+const BLIND_RETRIGGER_INTERVAL := 1.0
+const PULL_SOURCES_META := &"black_hole_pull_sources"
+const PULL_FRAME_META := &"black_hole_pull_frame"
 const SPHERE_FRACTION := 0.35
 const DAMAGE_TO_SPHERE_RATIO := 3.0
 const VISUAL_SPHERE_SCALE := 0.8
@@ -51,12 +56,14 @@ static func spawn(parent: Node, hit_position: Vector2, weapon: WeaponInstance, d
 		"pull_speed": DEFAULT_PULL_SPEED,
 		"dark_duration": DEFAULT_DARK_DURATION,
 	}, attachment_item_id)
-	effect._visual_reach = maxf(effect._context.get_resolved_parameter("radius", DEFAULT_RADIUS) * effect._context.get_resolved_parameter("damage_area_size_multiplier", 1.0), 24.0)
+	effect._visual_reach = maxf(effect._context.get_resolved_parameter("radius", DEFAULT_RADIUS) * effect._context.get_resolved_parameter("damage_area_size_multiplier", 1.0), 24.0) * SIZE_MULTIPLIER
 	effect._sphere_radius = effect._visual_reach * SPHERE_FRACTION
 	effect._radius = effect._sphere_radius * DAMAGE_TO_SPHERE_RATIO
 	effect._duration = StatDefinitions.calculate_control_duration(maxf(effect._context.get_resolved_parameter("duration", DEFAULT_DURATION), 0.1), effect._context.get_resolved_parameter("control_power", 0.0))
 	effect._pull_speed = maxf(effect._context.get_resolved_parameter("pull_speed", DEFAULT_PULL_SPEED), 1.0)
-	effect._dark_duration = maxf(effect._context.get_resolved_parameter("dark_duration", DEFAULT_DARK_DURATION), 0.1)
+	# Older inventory snapshots still carry the former two-second base value.
+	# Control power and target resistance are applied later by the enemy.
+	effect._dark_duration = clampf(effect._context.get_resolved_parameter("dark_duration", DEFAULT_DARK_DURATION), 0.1, DEFAULT_DARK_DURATION)
 	effect.call_deferred("_arm")
 
 
@@ -88,7 +95,7 @@ func _process(delta: float) -> void:
 	for enemy in _targets:
 		if enemy == null or not is_instance_valid(enemy) or not enemy.is_alive():
 			continue
-		if delta > 0.0 and _pull_speed > 0.0 and not enemy.is_movement_locked() and not enemy.global_position.is_equal_approx(global_position) and enemy.can_receive_control():
+		if delta > 0.0 and _pull_speed > 0.0 and not enemy.is_movement_locked() and not enemy.global_position.is_equal_approx(global_position) and _claim_pull(enemy) and enemy.can_receive_control():
 			enemy.global_position = enemy.global_position.move_toward(global_position, _pull_speed * delta * enemy.get_control_multiplier())
 	if _elapsed >= _duration:
 		queue_free()
@@ -97,6 +104,35 @@ func _process(delta: float) -> void:
 	if frame != _visual_frame:
 		_visual_frame = frame
 		_body_visual.queue_redraw()
+
+
+func _claim_pull(enemy: EnemyController) -> bool:
+	var frame := Engine.get_process_frames()
+	if int(enemy.get_meta(PULL_FRAME_META, -1)) == frame:
+		return false
+	var sources: Array = enemy.get_meta(PULL_SOURCES_META, [])
+	for source: WeakRef in sources:
+		var other := source.get_ref() as BlackHoleEffect
+		if not is_instance_valid(other) or other.is_queued_for_deletion():
+			continue
+		# Equal strengths keep the oldest hole, avoiding alternating directions.
+		if other._pull_speed > _pull_speed or (is_equal_approx(other._pull_speed, _pull_speed) and other.get_instance_id() < get_instance_id()):
+			return false
+	enemy.set_meta(PULL_FRAME_META, frame)
+	return true
+
+
+func _exit_tree() -> void:
+	for enemy in _targets:
+		if not is_instance_valid(enemy):
+			continue
+		var sources: Array = enemy.get_meta(PULL_SOURCES_META, [])
+		for index in range(sources.size() - 1, -1, -1):
+			var source: WeakRef = sources[index]
+			if source.get_ref() == self or source.get_ref() == null:
+				sources.remove_at(index)
+		if sources.is_empty():
+			enemy.remove_meta(PULL_SOURCES_META)
 
 
 func _collect_targets() -> void:
@@ -111,12 +147,15 @@ func _collect_targets() -> void:
 	query.collision_mask = 2
 	query.collide_with_bodies = true
 	var handled: Dictionary = {}
-	for result in get_world_2d().direct_space_state.intersect_shape(query, 64):
+	for result in TARGETS.intersect_shape(get_world_2d(), query, 64, &"black_hole"):
 		var enemy := result.get("collider") as EnemyController
 		if enemy == null or not enemy.is_alive() or handled.has(enemy.get_instance_id()):
 			continue
 		handled[enemy.get_instance_id()] = true
 		_targets.append(enemy)
+		var sources: Array = enemy.get_meta(PULL_SOURCES_META, [])
+		sources.append(weakref(self))
+		enemy.set_meta(PULL_SOURCES_META, sources)
 		var had_light := enemy.has_status("light")
 		if had_light:
 			ELEMENT_REACTION_RESOLVER_SCRIPT.apply_element(enemy, "dark", {
@@ -124,6 +163,7 @@ func _collect_targets() -> void:
 				"hit_position": enemy.global_position,
 				"source_id": _damage_event.source_weapon_id,
 				"dark_duration": _dark_duration,
+				"blind_retrigger_interval": BLIND_RETRIGGER_INTERVAL,
 				"damage_event": _damage_event,
 			})
 		enemy.take_attack_damage(damage, _damage_event, false, global_position.direction_to(enemy.global_position))
@@ -133,6 +173,7 @@ func _collect_targets() -> void:
 				"hit_position": enemy.global_position,
 				"source_id": _damage_event.source_weapon_id,
 				"dark_duration": _dark_duration,
+				"blind_retrigger_interval": BLIND_RETRIGGER_INTERVAL,
 				"damage_event": _damage_event,
 			})
 

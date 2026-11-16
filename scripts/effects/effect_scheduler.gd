@@ -1,4 +1,5 @@
 extends Node
+const DIAGNOSTICS = preload("res://scripts/battle/combat_diagnostics.gd")
 
 ## Lightweight scheduler for short-lived combat-effect callbacks.
 ##
@@ -27,6 +28,7 @@ func _enter_tree() -> void:
 func schedule(delay: float, callback: Callable, owner: Object = null, run_when_paused: bool = false) -> int:
 	if not callback.is_valid():
 		return 0
+	DIAGNOSTICS.count(&"scheduled_tasks")
 	var slot := -1
 	if not _free_slots.is_empty():
 		slot = _free_slots.pop_back()
@@ -77,6 +79,7 @@ func _process(delta: float) -> void:
 	# scheduler tick, matching a newly-created SceneTreeTimer's frame boundary.
 	if _processing: return
 	_processing = true
+	var diagnostic_start := DIAGNOSTICS.begin()
 	# IDs survive slot reuse and cancellation from callbacks. Iterate only the
 	# original prefix; compact once instead of shifting the array for each expiry.
 	var count := _order.size()
@@ -97,6 +100,7 @@ func _process(delta: float) -> void:
 		var callback := _callbacks[slot]
 		_release_slot(slot)
 		if callback.is_valid():
+			DIAGNOSTICS.count(&"scheduled_callbacks")
 			callback.call()
 	var write := 0
 	for task_id in _order:
@@ -105,6 +109,7 @@ func _process(delta: float) -> void:
 			write += 1
 	_order.resize(write)
 	_processing = false
+	DIAGNOSTICS.finish(&"scheduler", diagnostic_start)
 
 
 func _release_slot(slot: int) -> void:

@@ -21,6 +21,12 @@ const RETIRED_UPGRADE_OPTIONS: Dictionary = {
 	"camp_upgrade_relic_drop_rate": {"cost": 500, "max_level": 5},
 	"camp_upgrade_on_kill_heal": {"cost": 500, "max_level": 2},
 }
+# Options whose maximum level was lowered after release. Levels above the new cap
+# are refunded at their historical purchase price and clamped, so a repeated load
+# refunds nothing (same idempotency contract as RETIRED_UPGRADE_OPTIONS).
+const REDUCED_UPGRADE_MAX_LEVELS: Dictionary = {
+	"camp_upgrade_shop_offer_count": {"cost": 1200, "max_level": 3},
+}
 const DEFAULT_VOLUME_SETTINGS: Dictionary = {
 	"master_volume": 100,
 	"bgm_volume": 100,
@@ -31,6 +37,8 @@ var state: Dictionary = {}
 var _loaded: bool = false
 var _transient_session_active: bool = false
 var _transient_session_snapshot: Dictionary = {}
+var _account_key := ""
+var account_save_root := "user://saves/accounts"
 
 
 func _ready() -> void:
@@ -102,33 +110,41 @@ func save_state() -> bool:
 		_reset_state()
 	if not _ensure_save_directory():
 		return false
+	var save_path := _account_path(".json") if not _account_key.is_empty() else SAVE_PATH
+	var backup_path := _account_path(".backup.json") if not _account_key.is_empty() else BACKUP_PATH
+	var temp_path := _account_path(".tmp.json") if not _account_key.is_empty() else TEMP_PATH
 	var serialized_state := JSON.stringify(_sanitize_state(state), "  ")
-	var temp_file := FileAccess.open(TEMP_PATH, FileAccess.WRITE)
+	var temp_file := FileAccess.open(temp_path, FileAccess.WRITE)
 	if temp_file == null:
-		push_error("[CampProgression] failed to open temp save file: %s" % TEMP_PATH)
+		push_error("[CampProgression] failed to open temp save file: %s" % temp_path)
 		return false
 	temp_file.store_string(serialized_state)
+	temp_file.flush()
+	var write_error := temp_file.get_error()
 	temp_file = null
-	if FileAccess.file_exists(SAVE_PATH):
-		var backup_file := FileAccess.open(BACKUP_PATH, FileAccess.WRITE)
+	if write_error != OK:
+		DirAccess.remove_absolute(temp_path)
+		return false
+	if FileAccess.file_exists(save_path):
+		var backup_file := FileAccess.open(backup_path, FileAccess.WRITE)
 		if backup_file == null:
-			push_warning("[CampProgression] failed to open backup file: %s" % BACKUP_PATH)
+			push_warning("[CampProgression] failed to open backup file: %s" % backup_path)
 		else:
-			backup_file.store_string(FileAccess.get_file_as_string(SAVE_PATH))
+			backup_file.store_string(FileAccess.get_file_as_string(save_path))
 			backup_file = null
-		var remove_error := DirAccess.remove_absolute(SAVE_PATH)
+		var remove_error := DirAccess.remove_absolute(save_path)
 		if remove_error != OK:
-			push_error("[CampProgression] failed to replace save file: %s" % SAVE_PATH)
-			DirAccess.remove_absolute(TEMP_PATH)
+			push_error("[CampProgression] failed to replace save file: %s" % save_path)
+			DirAccess.remove_absolute(temp_path)
 			return false
-	var rename_error := DirAccess.rename_absolute(TEMP_PATH, SAVE_PATH)
+	var rename_error := DirAccess.rename_absolute(temp_path, save_path)
 	if rename_error != OK:
-		push_error("[CampProgression] failed to finalize save file: %s" % SAVE_PATH)
-		if FileAccess.file_exists(BACKUP_PATH):
-			var restore_file := FileAccess.open(SAVE_PATH, FileAccess.WRITE)
+		push_error("[CampProgression] failed to finalize save file: %s" % save_path)
+		if FileAccess.file_exists(backup_path):
+			var restore_file := FileAccess.open(save_path, FileAccess.WRITE)
 			if restore_file != null:
-				restore_file.store_string(FileAccess.get_file_as_string(BACKUP_PATH))
-		DirAccess.remove_absolute(TEMP_PATH)
+				restore_file.store_string(FileAccess.get_file_as_string(backup_path))
+		DirAccess.remove_absolute(temp_path)
 		return false
 	return true
 
@@ -139,6 +155,91 @@ func is_loaded() -> bool:
 
 func get_state() -> Dictionary:
 	return _sanitize_state(state)
+
+
+func is_transient_session() -> bool:
+	return _transient_session_active
+
+
+func _account_path(suffix: String) -> String:
+	return account_save_root.path_join(_account_key + suffix)
+
+
+func activate_cloud_account(key: String, import_legacy: bool) -> bool:
+	# Desktop keeps its historical paths. Account IDs are hashed by the caller.
+	if _transient_session_active or key.length() != 64 or not key.is_valid_hex_number(false):
+		return false
+	var old_key := _account_key
+	var old_state := state.duplicate(true)
+	_account_key = key
+	var saved := _read_state_file(_account_path(".json"))
+	if not saved.is_empty() and not valid_cloud_progress(saved): saved = {}
+	if saved.is_empty(): saved = _read_state_file(_account_path(".backup.json"))
+	if not saved.is_empty() and not valid_cloud_progress(saved): saved = {}
+	# A corrupt account cache must not become an empty cloud upload.
+	if saved.is_empty() and (FileAccess.file_exists(_account_path(".json")) or FileAccess.file_exists(_account_path(".backup.json"))):
+		_account_key = old_key
+		return false
+	if saved.is_empty() and import_legacy:
+		saved = _load_legacy_state()
+	state = _merge_state(_build_default_state(), saved)
+	state["settings"] = old_state.get("settings", DEFAULT_VOLUME_SETTINGS).duplicate(true)
+	var device_settings := ConfigFile.new()
+	if device_settings.load(account_save_root.path_join("device_volume.cfg")) == OK:
+		for setting_key in DEFAULT_VOLUME_SETTINGS:
+			state["settings"][setting_key] = clampi(int(device_settings.get_value("volume", setting_key, state["settings"][setting_key])), 0, 100)
+	_sync_unlocks_from_config()
+	if not save_state():
+		_account_key = old_key
+		state = old_state
+		return false
+	_loaded = true
+	state_changed.emit()
+	return true
+
+
+func cloud_progress() -> Dictionary:
+	var result := get_state()
+	result.erase("settings")
+	return result
+
+
+func has_cloud_progress() -> bool:
+	var progress := cloud_progress()
+	var defaults := _sanitize_state(_build_default_state())
+	defaults.erase("settings")
+	return progress != defaults
+
+
+func valid_cloud_progress(value: Variant) -> bool:
+	if not value is Dictionary or value.get("schema_version") != SCHEMA_VERSION or value.get("profile_id") != PROFILE_ID:
+		return false
+	if not value.get("currencies") is Dictionary or not _valid_cloud_number(value.currencies.get("camp_currency")):
+		return false
+	for field in ["building_levels", "upgrade_levels", "run_settlements"]:
+		if not value.get(field) is Dictionary or value[field].size() > 100000:
+			return false
+		for id in value[field]:
+			if not id is String or id.length() > 256 or not _valid_cloud_number(value[field][id]): return false
+	return true
+
+
+func _valid_cloud_number(value: Variant) -> bool:
+	return (value is int or value is float) and is_finite(float(value)) \
+		and value >= 0 and value <= 2147483647 and float(value) == floor(float(value))
+
+
+func restore_cloud_progress(progress: Dictionary) -> bool:
+	if _transient_session_active or not valid_cloud_progress(progress): return false
+	var before := state.duplicate(true)
+	state = _merge_state(_build_default_state(), progress)
+	state["settings"] = before.get("settings", DEFAULT_VOLUME_SETTINGS).duplicate(true)
+	_sync_unlocks_from_config()
+	if not save_state():
+		state = before
+		return false
+	state_changed.emit()
+	return true
 
 
 func get_building_records() -> Array:
@@ -452,6 +553,11 @@ func set_volume_setting(setting_key: String, volume_percent: int) -> void:
 	state["settings"] = settings
 	if not _transient_session_active:
 		save_state()
+		if not _account_key.is_empty():
+			var device_settings := ConfigFile.new()
+			for key in DEFAULT_VOLUME_SETTINGS: device_settings.set_value("volume", key, settings.get(key, 100))
+			if device_settings.save(account_save_root.path_join("device_volume.cfg")) != OK:
+				push_warning("[CampProgression] failed to save device audio settings")
 	state_changed.emit()
 
 
@@ -503,6 +609,13 @@ func _build_default_state() -> Dictionary:
 
 
 func _load_saved_state() -> Dictionary:
+	if not _account_key.is_empty():
+		var account_state := _read_state_file(_account_path(".json"))
+		return _read_state_file(_account_path(".backup.json")) if account_state.is_empty() else account_state
+	return _load_legacy_state()
+
+
+func _load_legacy_state() -> Dictionary:
 	var saved_state := _read_state_file(SAVE_PATH)
 	if saved_state.is_empty():
 		saved_state = _read_state_file(BACKUP_PATH)
@@ -661,7 +774,28 @@ func _sanitize_state(raw_state: Dictionary) -> Dictionary:
 		result["settings"] = _sanitize_settings_dictionary(raw_state.get("settings", {}))
 	result["run_settlements"] = _sanitize_string_int_dictionary(raw_state.get("run_settlements", {}))
 	_refund_retired_upgrade_options(result)
+	_refund_reduced_upgrade_levels(result)
 	return result
+
+
+func _refund_reduced_upgrade_levels(migrated: Dictionary) -> void:
+	var levels: Dictionary = migrated.get("upgrade_levels", {})
+	var refund := 0
+	for option_id in REDUCED_UPGRADE_MAX_LEVELS:
+		if not levels.has(option_id):
+			continue
+		var capped_option: Dictionary = REDUCED_UPGRADE_MAX_LEVELS[option_id]
+		var new_max_level := maxi(0, int(capped_option.max_level))
+		var purchased_levels := maxi(0, int(levels[option_id]))
+		if purchased_levels <= new_max_level:
+			continue
+		# Purchase cost is linear: level N cost the option price multiplied by N.
+		for purchased_level in range(new_max_level + 1, purchased_levels + 1):
+			refund += int(capped_option.cost) * purchased_level
+		levels[option_id] = new_max_level
+	if refund <= 0:
+		return
+	migrated["currencies"]["camp_currency"] += refund
 
 
 func _refund_retired_upgrade_options(migrated: Dictionary) -> void:
@@ -706,7 +840,7 @@ func _set_camp_currency_value(amount: int) -> void:
 
 
 func _ensure_save_directory() -> bool:
-	var error := DirAccess.make_dir_recursive_absolute(SAVE_DIR)
+	var error := DirAccess.make_dir_recursive_absolute(account_save_root if not _account_key.is_empty() else SAVE_DIR)
 	if error != OK and error != ERR_ALREADY_EXISTS:
 		push_error("[CampProgression] failed to create save directory: %s" % SAVE_DIR)
 		return false

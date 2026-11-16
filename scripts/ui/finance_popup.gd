@@ -45,6 +45,8 @@ var _shop: Control
 var _enchant_scroll: ScrollContainer
 var _stock: Label
 var _refresh: Button
+var _buy_all: Button
+var _workbench_dirty := true
 var _feedback: Label
 var _sale_layer: Control
 var _sale_box: PanelContainer
@@ -101,6 +103,8 @@ func configure(next_payload: Dictionary) -> void:
 	_title.text = "ui.talent_tree.quick_shop" if _quick_mode else "ui.bank.title"
 	start_button.text = "ui.quick_shop.back" if _quick_mode else "ui.bank.next_wave"
 	_refresh.visible = not _quick_mode
+	_buy_all.visible = not _quick_mode
+	_workbench_dirty = true
 	economy_log.show()
 	economy_log.bind_journal(flow.get_economy_journal() if flow != null else null)
 	if _quick_mode:
@@ -110,7 +114,7 @@ func configure(next_payload: Dictionary) -> void:
 		specialization_panel.configure({}, 0)
 		loan_presentation.configure({})
 		_feedback.text = ""
-		workbench.refresh()
+		_refresh_workbench_if_needed()
 		_layout()
 		return
 	var generation := int(payload.get("offer_generation", 0))
@@ -139,6 +143,7 @@ func configure(next_payload: Dictionary) -> void:
 	for offer in shop_grid.offers:
 		if not bool(offer.get("purchased", false)): remaining += 1
 	_stock.text = L10n.text("ui.bank.shop.remaining") % [remaining, shop_grid.offers.size()]
+	_buy_all.disabled = remaining == 0 or flow == null or flow.is_loan_dialog_open()
 	_refresh.text = L10n.text("ui.bank.shop.reroll_price") % int(payload.get("refresh_cost", 0))
 	_refresh.disabled = int(payload.get("gold", 0)) < int(payload.get("refresh_cost", 0))
 	FinanceUIStyle.bank_button(_refresh, false, false)
@@ -152,7 +157,7 @@ func configure(next_payload: Dictionary) -> void:
 		if free_refreshes > 0: _refresh.text = L10n.text("ui.shop.free_rerolls") % free_refreshes
 		_refresh.tooltip_text = "ui.shop.free_rerolls_tooltip" if free_refreshes > 0 else ""
 		_refresh.remove_theme_color_override("font_hover_color")
-	workbench.refresh()
+	_refresh_workbench_if_needed()
 	if new_shelf:
 		var settled := 0
 		for result in payload.get("settlement_results", []): settled += int(result.get("gain", 0))
@@ -355,13 +360,6 @@ func _build() -> void:
 	_away_sign.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_away_sign.add_theme_stylebox_override("panel", FinanceFrameSkin.box("selected", 16))
 	main_panel.add_child(_away_sign)
-	for side in [0.2, 0.8]:
-		var rope := Line2D.new()
-		rope.width = 3
-		rope.default_color = Color("b69a66")
-		_away_sign.add_child(rope)
-		_away_sign.resized.connect(func():
-			rope.points = PackedVector2Array([Vector2(_away_sign.size.x * side, -36), Vector2(_away_sign.size.x * side, 4)]))
 	var sign_text := _label("ui.quick_shop.away", _away_sign, 27, FinanceUIStyle.GOLD)
 	sign_text.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	sign_text.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -386,7 +384,7 @@ func _build() -> void:
 	amount_input.placeholder_text = "ui.bank.amount_placeholder"
 	amount_input.max_length = 12
 	amount_input.virtual_keyboard_type = LineEdit.KEYBOARD_TYPE_NUMBER
-	amount_input.add_theme_font_size_override("font_size", 22 if MobileProfile.is_mobile() else 20)
+	amount_input.add_theme_font_size_override("font_size", 20)
 	amount_input.custom_minimum_size.y = 34
 	amount_input.add_theme_stylebox_override("normal", FinanceFrameSkin.box("input", 6))
 	amount_input.add_theme_stylebox_override("read_only", FinanceFrameSkin.box("input", 6))
@@ -416,7 +414,7 @@ func _build() -> void:
 	bank_confirm = _button("ui.bank.deposit.confirm", _bank_form)
 	bank_confirm.pressed.connect(_submit_bank)
 	amount_input.text_changed.connect(func(_value): _update_bank_confirm())
-	_receipt = _label("", bank_body, 23, FinanceUIStyle.GREEN)
+	_receipt = _label("", bank_body, 20, FinanceUIStyle.GREEN)
 	_receipt.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_contract = _label("", bank_body, 20, FinanceUIStyle.MUTED)
 	_contract.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -442,6 +440,9 @@ func _build() -> void:
 	_stock = _label("", _shop, 20, FinanceUIStyle.MUTED)
 	_refresh = _button("ui.common.reroll", _shop)
 	_refresh.pressed.connect(_refresh_shop)
+	_buy_all = _button("ui.shop.buy_all", _shop)
+	_buy_all.tooltip_text = "ui.shop.buy_all_tooltip"
+	_buy_all.pressed.connect(_buy_all_offers)
 	_enchant_scroll = preload("res://scripts/ui/touch_scroll_container.gd").new()
 	FinanceUIStyle.bank_scroll(_enchant_scroll)
 	main_panel.add_child(_enchant_scroll)
@@ -699,10 +700,17 @@ func _layout() -> void:
 	_place(_shop, Rect2(work_x, content_y, work_w, content_h))
 	_place(_enchant_scroll, Rect2(work_x, content_y, work_w, content_h))
 	workbench.custom_minimum_size.y = 296
-	_place(shop_grid, Rect2(0, 0, work_w, maxf(16, content_h if short_window else content_h - 38)))
-	_place(_stock, Rect2(148 if short_window else 0, content_h + 8 if short_window else content_h - 30, maxf(40, work_w - 294) if short_window else maxf(40, work_w - 140), 28))
-	_stock.visible = not short_window or work_w >= 360
-	_place(_refresh, Rect2(0 if short_window else work_w - 136, content_h + 8 if short_window else content_h - 30, 136, 28))
+	var separate_shop_row := short_window and work_w < 360
+	_place(shop_grid, Rect2(0, 0, work_w, maxf(16, content_h if short_window and not separate_shop_row else content_h - 38)))
+	var shop_footer_y := content_h + 8 if short_window and not separate_shop_row else content_h - 30
+	# The short layout shares this row with the next-wave button.
+	var action_width := minf(136, (work_w - (162 if short_window and not separate_shop_row else 8)) * 0.5)
+	_refresh.clip_text = short_window
+	_buy_all.clip_text = short_window
+	_place(_stock, Rect2(0, shop_footer_y, maxf(0, work_w - action_width * 2 - 16), 28))
+	_stock.visible = work_w >= 420
+	_place(_buy_all, Rect2(0 if short_window else work_w - action_width * 2 - 8, shop_footer_y, action_width, 28))
+	_place(_refresh, Rect2(action_width + 8 if short_window else work_w - action_width, shop_footer_y, action_width, 28))
 	_place(_feedback, Rect2(84, footer_bottom - 50, maxf(50, w - 252), 38))
 	_feedback.visible = not short_window
 	_place(start_button, Rect2(w - 154, footer_bottom - 38 if short_window else footer_bottom - 50, 134, 30 if short_window else 36))
@@ -732,18 +740,24 @@ func _apply_quick_mode() -> void:
 	var width := minf(300, maxf(112, actor.size.x))
 	_place(_away_sign, Rect2(actor.get_center() - Vector2(width / 2, 40), Vector2(width, 100)))
 	if MobileProfile.is_mobile():
-		# The portrait is wider than the phone's banker column; its centre puts
-		# the hanging sign into the shop. Fit the sign to the reserved column.
+		# Keep the sign within the phone's reserved banker column.
 		var left := _scene_bank_back.position.x if _scene_wide else _bank_header.position.x
 		var right := _shop.position.x - 16.0
 		_away_sign.size.x = minf(width, maxf(112.0, right - left))
-		_away_sign.position.x = left
+		var column_right := minf(right, _scene_bank_back.get_rect().end.x) if _scene_wide else right
+		_away_sign.position.x = roundf(left + (column_right - left - _away_sign.size.x) * 0.5)
+		if _scene_wide:
+			# The blue arch is centred at x=300 in the 1672-wide background art.
+			var arch_center_x := scene_background.position.x + scene_background.size.x * (300.0 / 1672.0)
+			_away_sign.position.x = roundf(arch_center_x - _away_sign.size.x * 0.5)
+			_away_sign.position.y = roundf(maxf(96.0, _scene_bank_back.position.y - 36.0 - _away_sign.size.y))
 
 
 func _select_tab(tab: String) -> void:
 	if _quick_mode and tab not in ["shop", "enchant"]: tab = "enchant"
 	if tab == "specialization" and specialization_panel.offer.is_empty(): tab = "shop"
 	_active_tab = tab
+	_refresh_workbench_if_needed()
 	_bank.visible = not _compact or tab == "bank"
 	_bank_header.show()
 	_scene_enchant_back.visible = _scene_wide and tab == "enchant"
@@ -852,6 +866,24 @@ func _submit_bank() -> void:
 		portrait.react(_bank_action, int(result.get("amount", 0)), int(result.get("source_balance_before", 0)))
 		_feedback_message(L10n.text("ui.bank.transaction_done_hint"), true)
 	else: show_error(str(result.get("reason", "")))
+
+
+func _refresh_workbench_if_needed() -> void:
+	if _workbench_dirty and _active_tab == "enchant":
+		_workbench_dirty = false
+		workbench.refresh()
+
+
+func _buy_all_offers() -> void:
+	if flow == null or _buy_all.disabled: return
+	_buy_all.disabled = true
+	var result := flow.purchase_all_shop_offers()
+	if bool(result.get("success", false)):
+		if int(result.purchased) > 0: cancel_trade("purchase")
+		_feedback_message(L10n.text("ui.shop.buy_all_done") % [int(result.purchased), int(result.spent)], int(result.purchased) > 0)
+	else:
+		show_error(str(result.get("reason", "")))
+	_buy_all.disabled = flow.is_loan_dialog_open() or shop_grid.offers.all(func(offer): return bool(offer.get("purchased", false)))
 
 
 func _buy(offer: Dictionary) -> void:

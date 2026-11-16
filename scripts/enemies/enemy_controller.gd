@@ -59,6 +59,7 @@ var body_scale_multiplier := 1.0
 var night_speed_player_ratio := 0.0
 var night_speed_player_gap := 0.0
 var night_speed_base := 0.0
+var night_base_damage: Dictionary = {}
 
 var _knockback_timer: float = 0.0
 var _knockback_velocity: Vector2 = Vector2.ZERO
@@ -110,6 +111,7 @@ var _blinded_remaining: float = 0.0:
 	set(value):
 		if (_blinded_remaining > 0.0) != (value > 0.0): status_visual_revision += 1
 		_blinded_remaining = value
+var _blind_retrigger_remaining := 0.0
 var _base_sprite_modulate: Color = Color.WHITE
 var _base_sprite_modulate_captured: bool = false
 var _cavern_scenery: Node2D = null
@@ -205,6 +207,7 @@ func _physics_process(delta: float) -> void:
 	_process_freeze(delta)
 	_light_remaining = maxf(_light_remaining - delta, 0.0)
 	_blinded_remaining = maxf(_blinded_remaining - delta, 0.0)
+	_blind_retrigger_remaining = maxf(_blind_retrigger_remaining - delta, 0.0)
 	if _wet_remaining <= 0.0:
 		_wet_slow_multiplier = 1.0
 	if _slowed_remaining <= 0.0:
@@ -256,11 +259,14 @@ func initialize(target_enemy_id: String, player: PlayerController = null, runtim
 	night_speed_player_ratio = 0.0
 	night_speed_player_gap = 0.0
 	night_speed_base = 0.0
+	night_base_damage.clear()
 	_hit_visual_pending = false
 	if is_instance_valid(_hit_visual): _hit_visual.reset()
 	_reset_super_armor()
 	modifier_stack.cache_enabled = true
 	modifier_stack.set_base_stats(data.get("base_stats", {}))
+	if MobileProfile.is_mobile():
+		modifier_stack.set_base_stat("move_speed", float(data.get("base_stats", {}).get("move_speed", 0.0)) + 15.0)
 	_apply_runtime_modifiers(runtime_modifiers)
 	current_hp = int(get_stat("max_hp"))
 	target_player = player
@@ -287,6 +293,7 @@ func initialize(target_enemy_id: String, player: PlayerController = null, runtim
 	_light_freeze_reacted = false
 	_light_remaining = 0.0
 	_blinded_remaining = 0.0
+	_blind_retrigger_remaining = 0.0
 	return true
 
 
@@ -311,7 +318,28 @@ func _apply_runtime_modifiers(modifier_data_list: Array) -> void:
 
 func get_stat(stat_id: String, fallback_base_value: float = 0.0) -> float:
 	var value := modifier_stack.get_stat(stat_id, fallback_base_value)
+	if night_base_damage.has(stat_id):
+		var bonus := maxf(0.0, 1.0 + modifier_stack.get_stat("damage_percent") / 100.0)
+		if bonus > 0.0:
+			return minf(value, night_damage_limit(float(night_base_damage[stat_id]) * bonus) / bonus)
 	return limit_night_speed(value) if stat_id == "move_speed" else value
+
+
+func night_damage_limit(original_raw: float) -> float:
+	if not is_instance_valid(target_player): return original_raw
+	var mitigation := maxf(0.000001, target_player.get_stat("damage_taken_percent", 100.0) / 100.0)
+	# Integer raw damage must still round to no more than floor(max HP / 3).
+	var health_limit := floorf(target_player.get_stat("max_hp") / 3.0)
+	var raw_limit := floorf((health_limit + 0.499999) / mitigation)
+	return maxf(roundf(original_raw), raw_limit)
+
+
+func player_attack_damage(stat: String, attack_multiplier := 1.0) -> int:
+	var bonus := (1.0 + get_stat("damage_percent") / 100.0) * attack_multiplier
+	var raw := roundi(modifier_stack.get_stat(stat) * bonus)
+	if night_base_damage.has(stat):
+		raw = mini(raw, int(night_damage_limit(float(night_base_damage[stat]) * bonus)))
+	return raw
 
 
 func limit_night_speed(speed: float) -> float:
@@ -324,7 +352,7 @@ func limit_night_speed(speed: float) -> float:
 func get_chase_speed() -> float:
 	var speed := get_stat("move_speed")
 	if night_speed_player_ratio > 0.0: return speed
-	var base_speed := float(enemy_data.get("base_stats", {}).get("move_speed",speed))
+	var base_speed := float(modifier_stack.base_stats.get("move_speed",speed))
 	return minf(speed,base_speed*MAX_MOVE_SPEED_MULTIPLIER)
 
 
@@ -419,15 +447,15 @@ func apply_light(duration: float = 5.0) -> void:
 
 func clear_light() -> void:
 	_light_remaining = 0.0
-	_light_freeze_reacted = false
 	_holy_flame = false
 
 
-func apply_blind(duration: float = 2.0, control_power: float = -1.0) -> void:
+func apply_blind(duration: float = 2.0, control_power: float = -1.0, retrigger_interval: float = 0.0) -> void:
 	if not alive or duration <= 0.0:
 		return
-	if can_receive_control():
+	if (retrigger_interval <= 0.0 or _blind_retrigger_remaining <= 0.0) and can_receive_control():
 		_blinded_remaining = maxf(_blinded_remaining, _control_duration(minf(duration, 5.0), control_power) * get_control_multiplier())
+		_blind_retrigger_remaining = maxf(_blind_retrigger_remaining, retrigger_interval)
 	if _burning_remaining > 0.0:
 		_burning_remaining = maxf(_burning_remaining, 10.0)
 		_dark_flame = true
@@ -659,6 +687,7 @@ func take_damage(
 ) -> int:
 	if not alive or raw_damage <= 0:
 		return 0
+	preload("res://scripts/battle/combat_diagnostics.gd").count(&"damage_calls")
 	var damage_taken_percent := get_stat("damage_taken_percent", 100.0)
 	var light_multiplier := 1.0
 	var light_amplified := false
@@ -667,7 +696,7 @@ func take_damage(
 		light_amplified = true
 		# Consume one exposure without removing the separate holy burning state.
 		_light_remaining = 0.0
-		_light_freeze_reacted = false
+		# Reflection belongs to the freeze lifecycle, not each light exposure.
 	var pre_light_damage := maxi(1, int(roundi(float(raw_damage) * damage_taken_percent / 100.0)))
 	var final_damage := maxi(1, int(roundi(float(pre_light_damage) * light_multiplier)))
 	if final_hit_resolver.is_valid() and final_hit_resolver.call(self, final_damage):
@@ -991,15 +1020,14 @@ func _process_contact_damage() -> void:
 		return
 	if not _is_touching_player():
 		return
-	var base_damage := get_stat("melee_damage")
-	var damage := int(roundf(base_damage * (1.0 + get_stat("damage_percent") / 100.0)))
+	var damage := player_attack_damage("melee_damage")
 	if damage <= 0:
 		return
 	var dealt_damage := target_player.take_damage(damage, enemy_id)
 	if dealt_damage > 0:
 		has_contact_damaged = true
 		contact_damaged.emit(target_player, dealt_damage)
-	_apply_contact_knockback()
+		_apply_contact_knockback()
 
 
 func _has_challenge_target() -> bool:

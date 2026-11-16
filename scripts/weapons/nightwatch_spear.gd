@@ -101,6 +101,10 @@ func _contact(thrust: Dictionary, index: int, origin: Vector2, length: float) ->
 	_query.transform = Transform2D(direction.angle(), origin + direction * length * 0.5)
 	ProjectileGuard.intercept(self, weapon, _shape, _query.transform)
 	var contacts := get_world_2d().direct_space_state.intersect_shape(_query, maxi(32, EnemyRegistry.get_registered_enemies().size()))
+	var registry_order: Dictionary = {}
+	var registry := EnemyRegistry.get_registered_enemies()
+	for i in registry.size(): registry_order[registry[i].get_instance_id()] = i
+	contacts.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return int(registry_order.get(a.collider.get_instance_id(), 2147483647)) < int(registry_order.get(b.collider.get_instance_id(), 2147483647)))
 	AudioManager.begin_combat_audio()
 	for contact in contacts:
 		var enemy := contact.collider as EnemyController

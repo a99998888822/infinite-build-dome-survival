@@ -115,6 +115,11 @@
 2. `max_stack = 1` 或更大时，表示单局最多持有对应数量。
 3. 遗物 `effects` 使用统一 modifier 结构，当前模块会直接读取并叠加到玩家。
 4. `offer_weight_decay_percent` 是可选平衡字段（整数 1–99）：同名遗物的候选权重按 `100 × (percent/100)^持有数` 递减，`offer_weight_floor` 指定权重绝对下限（默认 1），未写该字段的遗物权重恒为 100。该规则只影响商店货架与奖励刷新池，且**不得写入任何玩家可见文本**（描述、图鉴、提示、本地化均不体现）。
+5. `tags` 中的 `stat_gate` 是可选平衡标签，同样**只存在于数据中，不得进入任何玩家可见文本**。带该标签的遗物会按自身 `effects` 命中的属性自动套用两条供给规则：
+   - **软限制**（`projectile_count`、`shop_offer_count_bonus`、`load_capacity`、`interest_rate`）：遗物**提升**该属性时，实时属性值越高，候选权重越低，最低 10%。由 `ShopOfferGenerator.SOFT_STAT_GATE_RULES` 的 `reference`/`step`/`decay_percent` 控制。
+   - **硬下限**（`move_speed` 80、`pickup_radius` 100、`max_hp` 6）：遗物**降低**该属性且按预测值会跌破下限时，不再进入候选池。由 `ShopOfferGenerator.FLOOR_STAT_GATE_RULES` 控制。
+   - 只降低软限制属性的遗物（如圣质银杯的利率 -1、商旅账本的负载 -5）**不加**该标签，保持满权重正常刷新。
+   - 属性值缺失的调用方（旧调用点、测试、预览）会自动退化为不过滤、不降权。
 
 ## waves.json 简写规则
 

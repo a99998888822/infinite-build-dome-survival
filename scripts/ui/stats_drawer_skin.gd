@@ -4,8 +4,10 @@ extends Control
 const PANEL: Texture2D = preload("res://assets/ui/stats_drawer/stats_parchment_panel.png")
 const DISPLAY_WIDTH := 416.0
 const MOBILE_DISPLAY_WIDTH := DISPLAY_WIDTH * 0.85
+const MOBILE_BANK_DISPLAY_WIDTH := 300.0
 const TOP_ROWS := 216.0
 const BOTTOM_ROWS := 284.0
+var bank_layout := false
 
 
 func _ready() -> void:
@@ -17,6 +19,8 @@ func _ready() -> void:
 
 func _draw() -> void:
 	var width := MOBILE_DISPLAY_WIDTH if MobileProfile.is_mobile() else DISPLAY_WIDTH
+	if MobileProfile.is_mobile() and bank_layout:
+		width = MOBILE_BANK_DISPLAY_WIDTH
 	var origin := Vector2(floorf((size.x - width) / 2.0), 0.0)
 	var height := floorf(size.y)
 	if height <= 0.0:

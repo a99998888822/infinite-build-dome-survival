@@ -9,6 +9,10 @@ const DEFAULT_HUMANITY: float = 100
 const DEFAULT_DIVINITY: float = 0
 const HUMANITY_LOW_THRESHOLD: float = 30
 const DIVINITY_HIGH_THRESHOLD: float = 70
+# The reward popup lays out a fixed four by two card grid, so eight offers is the
+# widest shelf the native layout contract supports. Base three plus this cap keeps
+# the widest reachable shelf inside it.
+const SHOP_OFFER_COUNT_BONUS_MAX: int = 5
 
 const CATEGORY_SURVIVAL: String = "生存"
 const CATEGORY_MOVEMENT: String = "移动"
@@ -298,10 +302,10 @@ const STAT_DEFINITIONS: Dictionary = {
 		"category": CATEGORY_REWARD,
 		"default": 0,
 		"min": -1,
-		"max": INF,
+		"max": SHOP_OFFER_COUNT_BONUS_MAX,
 		"is_integer": true,
 		"is_percent": false,
-		"description": "共享奖励和局内商店的候选数量加成，无上限；购买货架至少 3 件，升级奖励沿用原有数量规则。"
+		"description": "共享奖励和局内商店的候选数量加成，上限 5；购买货架至少 3 件，升级奖励沿用原有数量规则。上限对应奖励弹窗固定的 4 列 2 行、共 8 张卡片，超出会让货架需要滚动。"
 	},
 	"load_capacity": {
 		"display_name": "负载上限",

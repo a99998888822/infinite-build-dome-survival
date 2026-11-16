@@ -47,8 +47,9 @@ func initialize(source: WeaponInstance, direction: Vector2) -> void:
 	add_to_group("weapon_runtime_effects")
 
 
-func _add_swing(start: float, windup: float, duration: float, multiplier: float, child: bool, index: int, continuation: int = 0) -> void:
+func _add_swing(start: float, windup: float, duration: float, multiplier: float, child: bool, index: int, continuation: int = 0, inherited_budget: Dictionary = {}) -> void:
 	var event := weapon.calculate_damage_events()[0]
+	if child: event.proc_budget = inherited_budget
 	event.split_child = child
 	event.enchantment_start = continuation
 	swings.append({"start": start, "windup": windup, "duration": duration,
@@ -180,7 +181,7 @@ func _apply_hit(swing: Dictionary, enemy: EnemyController, at_time: float) -> vo
 			for _index in int(profile.child_count): children.append(profile)
 		# Finish every queued swing before starting the next follow-through.
 		for index in children.size():
-			_add_swing(maxf(sequence_duration(), at_time), 0.03, 0.32, float(children[index].damage_multiplier), true, swings.size(), int(children[index].enchantment_start))
+			_add_swing(maxf(sequence_duration(), at_time), 0.03, 0.32, float(children[index].damage_multiplier), true, swings.size(), int(children[index].enchantment_start), event.proc_budget)
 	# Every contacted victim gets attachments, including a lethal native hit.
 	EFFECTS.trigger_weapon_impact(get_parent(), weapon, event, where, heading, enemy)
 	enemy.take_attack_damage(event.damage, event, event.is_critical, heading)

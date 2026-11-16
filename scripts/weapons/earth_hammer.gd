@@ -69,7 +69,9 @@ func initialize(source: WeaponInstance, direction: Vector2) -> void:
 		lightning_spacing = span / (lightning_count - 1) if lightning_count > 1 else 0.0
 		lightning_duration = (node_count - 1) * interval
 	for angle in weapon.get_projectile_angles():
-		rays.append({"direction": heading.rotated(deg_to_rad(angle)), "hits": {}, "blocked": false, "lightning_blocked": false})
+		# Root rays are independent units; a bounce must retain its source quota.
+		var budget: Dictionary = event.proc_budget if weapon.attack_context.has("proc_inherited") else {}
+		rays.append({"direction": heading.rotated(deg_to_rad(angle)), "hits": {}, "blocked": false, "lightning_blocked": false, "proc_budget": budget})
 	# Origin and heading stay locked even if the player moves during the windup.
 	queue_redraw()
 
@@ -148,7 +150,7 @@ func _emit_node(index: int, ray: Dictionary) -> void:
 	if index == 0:
 		IMPACT_R02.spawn(get_parent(), point, &"ground", direction, minf(2.5, 1.8 * weapon.get_projectile_visual_scale()))
 	# Resolve the node once; real enemies below do not fire this dispatcher again.
-	EFFECTS.trigger_ground_weapon_impact(get_parent(), weapon, event.duplicate_event(), point, direction, "", "electric_spark" if lightning_count > 0 else "")
+	EFFECTS.trigger_ground_weapon_impact(get_parent(), weapon, _ray_proc_event(ray), point, direction, "", "electric_spark" if lightning_count > 0 else "")
 	_queue_contact_cell(start, direction, maxf(0, end_distance - start_offset), 1.0, ray.hits, when)
 	for profile in weapon.get_split_profiles():
 		for child_index in int(profile.child_count):
@@ -162,7 +164,7 @@ func _emit_node(index: int, ray: Dictionary) -> void:
 				_queue_contact_cell(point, branch_direction, contact_length, float(profile.damage_multiplier), ray.hits, when)
 				continue
 			nodes.append({"point": point - global_position, "at": when, "child": true, "direction": branch_direction, "length": branch_length})
-			var branch_event := event.continue_after_split(profile)
+			var branch_event := _ray_proc_event(ray).continue_after_split(profile)
 			branch_event.damage = maxi(1, roundi(branch_event.damage * float(profile.damage_multiplier)))
 			branch_event.elemental_damage_scale *= float(profile.damage_multiplier)
 			EFFECTS.trigger_ground_weapon_impact(get_parent(), weapon, branch_event, endpoint, branch_direction, "", "electric_spark" if lightning_count > 0 else "")
@@ -176,7 +178,7 @@ func _emit_lightning_sample(index: int, ray: Dictionary) -> void:
 	if not clear_path(self, global_position, point):
 		ray.lightning_blocked = true
 		return
-	EFFECTS.trigger_ground_weapon_impact(get_parent(), weapon, event.duplicate_event(), point, direction, "electric_spark")
+	EFFECTS.trigger_ground_weapon_impact(get_parent(), weapon, _ray_proc_event(ray), point, direction, "electric_spark")
 	# Split-before-lightning samples the same translated branch endpoints;
 	# only the enchantment is repeated, not native damage or other effects.
 	for profile in weapon.get_split_profiles():
@@ -186,7 +188,7 @@ func _emit_lightning_sample(index: int, ray: Dictionary) -> void:
 			var endpoint := point + branch_direction * float(weapon.weapon_data.ground_branch_length)
 			if not clear_path(self, point, endpoint):
 				continue
-			var branch_event := event.continue_after_split(profile)
+			var branch_event := _ray_proc_event(ray).continue_after_split(profile)
 			branch_event.damage = maxi(1, roundi(branch_event.damage * float(profile.damage_multiplier)))
 			branch_event.elemental_damage_scale *= float(profile.damage_multiplier)
 			EFFECTS.trigger_ground_weapon_impact(get_parent(), weapon, branch_event, endpoint, branch_direction, "electric_spark")
@@ -265,3 +267,8 @@ func _draw_ground_cracks() -> void:
 	for node in nodes:
 		APPROVED_VFX.rock(crack_layer,node.point,node.direction,age-float(node.at),float(node.length),bool(node.child),weapon.get_projectile_visual_scale(),crack_clearance)
 	crack_layer.draw_set_transform(Vector2.ZERO)
+
+func _ray_proc_event(ray: Dictionary) -> DamageEvent:
+	var result := event.duplicate_event()
+	result.proc_budget = ray.proc_budget
+	return result

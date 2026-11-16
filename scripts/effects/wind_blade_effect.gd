@@ -7,6 +7,7 @@ const FOOTPRINT = preload("res://scripts/effects/spell_footprint.gd")
 const DEFAULT_SPEED: float = 480.0
 const DEFAULT_LIFETIME: float = 0.46
 const DEFAULT_RADIUS: float = 28.0
+const SIZE_MULTIPLIER := 0.5
 
 var _direction: Vector2 = Vector2.RIGHT
 var _speed: float = DEFAULT_SPEED
@@ -15,8 +16,8 @@ var _elapsed: float = 0.0
 var _weapon: WeaponInstance = null
 var _damage_event: DamageEvent = null
 var _damage_multiplier := 0.7
-var _hit_radius := FOOTPRINT.WIND_RADIUS
-var _area_scale := 1.0
+var _hit_radius := FOOTPRINT.WIND_RADIUS * SIZE_MULTIPLIER
+var _area_scale := SIZE_MULTIPLIER
 var _knockback_speed := 450.0
 var _knockback_duration := 0.3
 var _hit_targets: Dictionary = {}
@@ -42,7 +43,7 @@ static func spawn(parent: Node, hit_position: Vector2, direction: Vector2, speed
 	if weapon != null:
 		var context := PARAMETERS.build_weapon_context(weapon, "wind", {"damage_multiplier": 0.7, "knockback_speed": 450.0, "knockback_duration": 0.3}, attachment_item_id)
 		effect._damage_multiplier = context.get_resolved_parameter("damage_multiplier", 0.7)
-		effect._area_scale = maxf(0.01, context.get_resolved_parameter("damage_area_size_multiplier", 1))
+		effect._area_scale = maxf(0.01, context.get_resolved_parameter("damage_area_size_multiplier", 1)) * SIZE_MULTIPLIER
 		# One reviewed circle for this spell, independent of its source weapon.
 		effect._hit_radius = FOOTPRINT.WIND_RADIUS * effect._area_scale
 		effect._knockback_speed = context.get_resolved_parameter("knockback_speed", 450)

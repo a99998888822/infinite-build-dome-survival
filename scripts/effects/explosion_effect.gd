@@ -1,5 +1,6 @@
 extends Node2D
 class_name ExplosionEffect
+const TARGETS = preload("res://scripts/battle/combat_target_query.gd")
 const REACTION_BLOCKS = preload("res://scripts/effects/reaction_block_visual.gd")
 
 const PARTICLE_WORLD_SCRIPT = preload("res://scripts/effects/particle_world.gd")
@@ -166,13 +167,12 @@ static func _apply_visual_tier(parameters: Dictionary, tier: int) -> void:
 
 
 func _damage_enemies(radius: float, damage: int, damage_falloff: float) -> void:
-	var space_state := get_world_2d().direct_space_state
 	_damage_shape.radius = radius
 	_damage_query.shape = _damage_shape
 	_damage_query.transform = Transform2D(0.0, _hit_position)
 	_damage_query.collision_mask = 2
 	_damage_query.collide_with_bodies = true
-	var results := space_state.intersect_shape(_damage_query, maxi(64, EnemyRegistry.get_registered_enemies().size()))
+	var results := TARGETS.intersect_shape(get_world_2d(), _damage_query, maxi(64, EnemyRegistry.get_registered_enemies().size()), &"explosion")
 	var falloff := clampf(damage_falloff, 0.0, 1.0)
 	for result in results:
 		var enemy := result.get("collider") as EnemyController

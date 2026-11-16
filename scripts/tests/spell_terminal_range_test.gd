@@ -40,13 +40,13 @@ func _run() -> void:
 		water._process(0.55)
 		check_hits("water expansion does not repeat damage")
 
-		axes = Vector2.ONE * 94.5 * multiplier
+		axes = Vector2.ONE * 47.25 * multiplier
 		await fixture("scroll_black_hole", axes, bonus)
 		var hole := spawn_effect("black_hole") as BlackHoleEffect
 		await frames()
 		check_hits("hole " + str(bonus))
 		check(is_equal_approx(hole._radius, hole._sphere_radius*3.0), "hole damage radius is three sphere radii")
-		check(is_equal_approx(hole._sphere_radius, 31.5*multiplier), "hole keeps reviewed sphere size")
+		check(is_equal_approx(hole._sphere_radius, 15.75*multiplier), "hole sphere and influence radius are halved")
 
 		axes = FOOTPRINT.axes(78.0*multiplier)
 		await fixture("scroll_light_sword", axes, bonus)
@@ -104,7 +104,7 @@ func _run() -> void:
 		await frames()
 		check_hits("ground strike " + str(bonus))
 
-		axes = Vector2.ONE*72.0*multiplier
+		axes = Vector2.ONE*36.0*multiplier
 		await fixture("scroll_wind",axes,bonus)
 		weapon.runtime_stats.area_size = 200.0
 		WindBladeEffect.spawn(host,Vector2.ZERO,Vector2.RIGHT,480,0.46,weapon,event)
@@ -114,7 +114,7 @@ func _run() -> void:
 		wind.set_process(false)
 		wind._damage_path_enemies()
 		check_hits("wind " + str(bonus))
-		check(is_equal_approx(wind._hit_radius,72.0*multiplier),"wind circle ignores source attack distance")
+		check(is_equal_approx(wind._hit_radius,36.0*multiplier),"halved wind circle ignores source attack distance")
 		check(wind._speed == 480 and wind._lifetime == 0.46,"wind flight timing unchanged")
 
 		await fixture("scroll_explosion",Vector2.ONE*55.2,bonus)

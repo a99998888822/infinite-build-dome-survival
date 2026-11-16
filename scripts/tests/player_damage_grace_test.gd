@@ -21,7 +21,7 @@ func _run() -> void:
 	player.set_physics_process(false)
 	var hp := player.current_hp
 	check(player.take_damage(1, "contact_a") == 1, "ordinary damage is accepted")
-	check(is_equal_approx(player._invincibility_timer, 0.1), "ordinary damage grants 0.1 seconds of protection")
+	check(is_equal_approx(player._invincibility_timer, 0.5), "ordinary damage grants 0.5 seconds of protection")
 	check(player.take_damage(1, "contact_b") == 0 and player.current_hp == hp - 1, "another source in the same frame is blocked")
 	player._physics_process(0.09)
 	check(player.take_damage(1, "projectile") == 0, "projectiles respect remaining protection")
@@ -30,13 +30,13 @@ func _run() -> void:
 	player._physics_process(1.0)
 	check(is_equal_approx(player._invincibility_timer, remaining), "menu pause preserves protection time")
 	GameGlobal.set_runtime_flag("battle_runtime_paused", false)
-	player._physics_process(0.02)
+	player._physics_process(0.42)
 	check(player.take_damage(1) == 1 and player.current_hp == hp - 2, "ordinary damage resumes after expiry")
-	player._physics_process(0.11)
+	player._physics_process(0.51)
 	player.current_shield = 2
 	check(player.take_damage(1) == 1 and player.current_shield == 1 and player.current_hp == hp - 2, "shield absorbs the accepted hit")
 	check(player.take_damage(2) == 0 and player.current_shield == 1, "shield hits also grant shared protection")
-	player._physics_process(0.11)
+	player._physics_process(0.51)
 	player.add_relic("relic_costly_seed_of_life")
 	player.take_damage(99999)
 	check(player.alive and is_equal_approx(player._invincibility_timer, 1.0), "revival retains its full one-second protection")
@@ -45,11 +45,11 @@ func _run() -> void:
 	add_child(manager)
 	manager.set_process(false)
 	var total := 0
-	for index in 16:
+	for index in DataRegistry.get_table("waves").size():
 		var duration := manager.calculate_wave_duration(index)
 		check(duration == mini(25 + index * 5, 45), "configured duration for wave " + str(index + 1))
 		total += duration
-	check(total == 670 and DataRegistry.get_table("waves").size() == 16, "sixteen waves total eleven minutes ten seconds")
+	check(total == 490 and DataRegistry.get_table("waves").size() == 12, "twelve configured waves total eight minutes ten seconds")
 	manager.queue_free()
 	player.queue_free()
 	await get_tree().process_frame

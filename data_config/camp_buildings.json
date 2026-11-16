@@ -216,7 +216,7 @@
         "stat": "shop_offer_count_bonus",
         "currency": "camp_currency",
         "cost": 1200,
-        "max_level": 5,
+        "max_level": 3,
         "value_per_level": 1,
         "icon": "res://assets/ui/talents/offers.png",
         "tree_position": [

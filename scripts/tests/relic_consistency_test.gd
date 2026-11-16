@@ -219,22 +219,25 @@ func _test_new_attribute_relics() -> void:
 	p.relic_system.remove_relic("relic_void_market_key")
 	check(is_equal_approx(bank.get_interest_rate(), base_rate), "removing both market keys restores the original interest rate")
 	p.free()
-	# Extra choices remain rare to obtain, while owned copies can now stack.
+	# Extra choices remain rare to obtain. Expansion relics now carry explicit caps;
+	# the remaining confirmed relics stay uncapped.
 	for record: Dictionary in DataRegistry.get_table("relics"):
 		for effect: Dictionary in record.get("effects", []):
 			if str(effect.get("stat", "")) == "shop_offer_count_bonus" and float(effect.get("value", 0)) > 0:
 				check(str(record.get("rarity", "")) in ["mythic", "legendary"], "extra shop choices remain high rarity: " + str(record.id))
+	var capped_ids := {"relic_goblin_trade_charter": 2, "relic_void_market_key": 2}
 	var new_ids := ["relic_crimson_coagulation_vial", "relic_goblin_trade_charter", "relic_void_market_key", "relic_hunting_bone_whistle", "relic_hungry_tide_bell"]
 	var many_owned := {}
 	var generator := ShopOfferGenerator.new()
 	var pool := generator.build_shop_candidate_pool({"luck": 350})
 	for id: String in new_ids:
 		check(pool.any(func(offer): return str(offer.get("target_id", "")) == id), "new relic is available in normal shop pool: " + id)
-		check(int(DataRegistry.get_record("relics", id).max_stack) == 0, "confirmed relic has no stack cap: " + id)
+		check(int(DataRegistry.get_record("relics", id).max_stack) == int(capped_ids.get(id, 0)), "relic stack cap matches the shipped limit: " + id)
 		many_owned[id] = 100
 	var repeated_pool := generator.build_shop_candidate_pool({"luck": 350, "owned_relic_counts": many_owned})
 	for id: String in new_ids:
-		check(repeated_pool.any(func(offer): return str(offer.get("target_id", "")) == id), "relic stays in the pool after one hundred copies: " + id)
+		var offered := repeated_pool.any(func(offer): return str(offer.get("target_id", "")) == id)
+		check(offered == (not capped_ids.has(id)), "capped relic leaves the pool and uncapped relic stays: " + id)
 
 
 func _test_combat_attribute_relics() -> void:
@@ -288,11 +291,11 @@ func _test_combat_attribute_relics() -> void:
 		base_damage = weapon.get_base_attack_damage()
 		p.add_relic("relic_twin_chamber_magazine")
 		check(weapon.get_projectile_angles().size() == original_count + 1 and weapon.get_actual_attack_interval_seconds() > base_interval, "magazine adds actual shot and lengthens cooldown: " + weapon_id)
-		p.add_relic("relic_twin_chamber_magazine")
-		check(weapon.get_projectile_angles().size() == original_count + 2 and weapon.get_stat("attack_speed") == -30, "two magazines stack projectile outputs and attack speed cost: " + weapon_id)
+		check(not p.add_relic("relic_twin_chamber_magazine"), "magazine refuses a second copy at its shipped cap: " + weapon_id)
+		check(weapon.get_projectile_angles().size() == original_count + 1 and weapon.get_stat("attack_speed") == -15, "single magazine owns the whole projectile and attack speed change: " + weapon_id)
 		check(weapon._build_damage_event(weapon.get_attack_kind(), false, false).damage == maxi(1, roundi(base_damage)), "magazine affects cooldown but retains per-hit damage: " + weapon_id)
 		p.relic_system.remove_relic("relic_twin_chamber_magazine")
-		check(weapon.get_projectile_angles().size() == original_count + 1 and weapon.get_stat("attack_speed") == -15, "removing one magazine retains the other magazine output and cost: " + weapon_id)
+		check(weapon.get_projectile_angles().size() == original_count and weapon.get_stat("attack_speed") == 0, "removing the magazine restores base output and cost: " + weapon_id)
 		p.free()
 	p = make_player()
 	weapon = WeaponInstance.new()
@@ -317,7 +320,7 @@ func _test_combat_attribute_relics() -> void:
 	check(p.get_stat("control_power") == 100 and is_equal_approx(enemy._frozen_remaining, 2.0), "unlimited amber respects control cap and doubles base duration")
 	enemy.free()
 	p.free()
-	var ids := ["relic_falcon_sighting_pin", "relic_executioner_whetstone", "relic_crimson_execution_seal", "relic_faded_ward_talisman", "relic_twin_chamber_magazine", "relic_stilltime_amber"]
+	var ids := ["relic_falcon_sighting_pin", "relic_executioner_whetstone", "relic_crimson_execution_seal", "relic_faded_ward_talisman", "relic_stilltime_amber"]
 	var owned := {}
 	for id: String in ids: owned[id] = 100
 	var pool := ShopOfferGenerator.new().build_shop_candidate_pool({"luck": 350, "owned_relic_counts": owned})
@@ -654,9 +657,11 @@ func _test_sanity_and_dependencies() -> void:
 		modify(p, "humanity", -50)
 		modify(p, "divinity", 60)
 		for id in ids: p.add_relic(id)
-		check(p.get_stat("humanity") == 70 and p.get_stat("move_speed") == 170 and p.get_stat("armor") == 29, "dependency order independent " + str(ids))
+		# Base movement is 140: greave +18 (still above the 60-sanity gate) and
+		# shadowless +32 land on 190, whose derived armor is 19 plus the greave's 12.
+		check(p.get_stat("humanity") == 70 and p.get_stat("move_speed") == 190 and p.get_stat("armor") == 31, "dependency order independent " + str(ids))
 		modify(p, "divinity", 0)
-		check(p.get_stat("humanity") == 50 and p.get_stat("move_speed") == 152 and p.get_stat("armor") == 27, "dependency change recalculates condition and armor")
+		check(p.get_stat("humanity") == 50 and p.get_stat("move_speed") == 172 and p.get_stat("armor") == 29, "dependency change recalculates condition and armor")
 		p.free()
 
 

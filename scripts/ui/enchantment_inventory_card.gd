@@ -41,6 +41,8 @@ func _ready() -> void:
 	_inspect = TextureRect.new()
 	_inspect.texture = INSPECT_ICON
 	_inspect.custom_minimum_size = Vector2(12, 12)
+	# On phones the whole card opens details; keep the glass as its visible cue.
+	_inspect.visible = true
 	_inspect.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	_inspect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	_inspect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
@@ -59,7 +61,7 @@ func _ready() -> void:
 func configure(next_item: Dictionary, allow_drag: bool = true) -> void:
 	super.configure(next_item, allow_drag)
 	icon = null
-	custom_minimum_size = Vector2(180, 56) if MobileProfile.is_mobile() else CARD_SIZE
+	custom_minimum_size = Vector2(0, 56) if MobileProfile.is_mobile() else CARD_SIZE
 	size = custom_minimum_size
 	size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	size_flags_stretch_ratio = 1.0

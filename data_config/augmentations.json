@@ -1,5 +1,18 @@
 [
   {
+    "id": "scroll_tornado",
+    "release_locked": false,
+    "display_name": "龙卷",
+    "description": "命中时生成沿攻击方向移动的龙卷，持续3秒，每0.5秒造成25%元素伤害。经过火池变为火龙卷，经过冰场变为霜龙卷，分别施加燃烧或冰冷。",
+    "enchantment_type": "spell",
+    "category": "enchantment_scroll",
+    "rarity": "epic",
+    "effect_ids": ["tornado"],
+    "effect_parameters": {"duration": 3.0, "speed": 48.0, "radius": 42.0, "tick_interval": 0.5, "damage_multiplier": 0.25},
+    "modifiers": [],
+    "icon": "res://assets/ui/icons/augmentations/scroll_wind.png"
+  },
+  {
     "id": "scroll_radial",
     "release_locked": false,
     "display_name": "环射",
@@ -219,7 +232,7 @@
       "duration": 0.85,
       "pull_speed": 150.0,
       "damage_multiplier": 0.45,
-      "dark_duration": 2.0
+      "dark_duration": 0.5
     },
     "instance_parameter_ranges": [],
     "modifiers": [],

@@ -1,0 +1,155 @@
+{
+  "revision": "R04",
+  "clips": {
+    "tornado_air_back": {
+      "sheet": "tornado_air_back.png",
+      "width": 192,
+      "height": 184,
+      "count": 60,
+      "columns": 8,
+      "fps": 30,
+      "pivot": [
+        96,
+        158
+      ],
+      "alpha": "straight",
+      "grid": 1,
+      "palette": [
+        "#1e292e",
+        "#303d42",
+        "#435356",
+        "#5d6d6b",
+        "#7b8b80",
+        "#9ca992",
+        "#bec5a9",
+        "#e1dfbf"
+      ],
+      "sha256": "b1613d562f45e79f709afc38a636f6220bb20106e29fba4e5c391f0d3fb52290"
+    },
+    "tornado_air_front": {
+      "sheet": "tornado_air_front.png",
+      "width": 192,
+      "height": 184,
+      "count": 60,
+      "columns": 8,
+      "fps": 30,
+      "pivot": [
+        96,
+        158
+      ],
+      "alpha": "straight",
+      "grid": 1,
+      "palette": [
+        "#1e292e",
+        "#303d42",
+        "#435356",
+        "#5d6d6b",
+        "#7b8b80",
+        "#9ca992",
+        "#bec5a9",
+        "#e1dfbf"
+      ],
+      "sha256": "6fc53cf9bc5a7c075818a9ccc00a63a2bae88d4c767323a621881faca8209e6d"
+    },
+    "tornado_fire_back": {
+      "sheet": "tornado_fire_back.png",
+      "width": 192,
+      "height": 184,
+      "count": 60,
+      "columns": 8,
+      "fps": 30,
+      "pivot": [
+        96,
+        158
+      ],
+      "alpha": "straight",
+      "grid": 1,
+      "palette": [
+        "#492820",
+        "#753321",
+        "#a64b25",
+        "#cb672a",
+        "#e58d36",
+        "#f3b24e",
+        "#ffcf70",
+        "#ffe4a0"
+      ],
+      "sha256": "de5ec30a7bbc729e19842cde78f017bd63ae7a53772aa3df6e1cd81e4e18f2b2"
+    },
+    "tornado_fire_front": {
+      "sheet": "tornado_fire_front.png",
+      "width": 192,
+      "height": 184,
+      "count": 60,
+      "columns": 8,
+      "fps": 30,
+      "pivot": [
+        96,
+        158
+      ],
+      "alpha": "straight",
+      "grid": 1,
+      "palette": [
+        "#492820",
+        "#753321",
+        "#a64b25",
+        "#cb672a",
+        "#e58d36",
+        "#f3b24e",
+        "#ffcf70",
+        "#ffe4a0"
+      ],
+      "sha256": "542f306b0aace306ef05b4702f168c170b8f0ec3ca35468bb513fcdb2152eddd"
+    },
+    "tornado_frost_back": {
+      "sheet": "tornado_frost_back.png",
+      "width": 192,
+      "height": 184,
+      "count": 60,
+      "columns": 8,
+      "fps": 30,
+      "pivot": [
+        96,
+        158
+      ],
+      "alpha": "straight",
+      "grid": 1,
+      "palette": [
+        "#203943",
+        "#2a5365",
+        "#39788e",
+        "#509dac",
+        "#78bcc6",
+        "#a2d7da",
+        "#c7e9e3",
+        "#e6f4e6"
+      ],
+      "sha256": "9cceddab639056a6b836585f1f3051faf641d52346936450954aaecfc1499b60"
+    },
+    "tornado_frost_front": {
+      "sheet": "tornado_frost_front.png",
+      "width": 192,
+      "height": 184,
+      "count": 60,
+      "columns": 8,
+      "fps": 30,
+      "pivot": [
+        96,
+        158
+      ],
+      "alpha": "straight",
+      "grid": 1,
+      "palette": [
+        "#203943",
+        "#2a5365",
+        "#39788e",
+        "#509dac",
+        "#78bcc6",
+        "#a2d7da",
+        "#c7e9e3",
+        "#e6f4e6"
+      ],
+      "sha256": "1e425228f2d872811f861eaa5f22a30df447ba2ad7938871af578525548b5a54"
+    }
+  }
+}

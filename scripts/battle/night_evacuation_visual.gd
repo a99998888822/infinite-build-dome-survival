@@ -43,6 +43,10 @@ func initialize(owner_phase: NightEvacuation) -> void:
 	night_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	night_material = ShaderMaterial.new()
 	night_material.shader = NIGHT_SHADER
+	if MobileProfile.is_mobile():
+		# Preserve the cool night palette while keeping distant threats readable.
+		night_material.set_shader_parameter("ambient_tint",Vector3(.28,.32,.42))
+		night_material.set_shader_parameter("daylight_hero",true)
 	night_rect.material = night_material
 	night_layer.add_child(night_rect)
 	night_rect.hide()
@@ -220,7 +224,9 @@ func refresh() -> void:
 	night_material.set_shader_parameter("pixel_scale",guide_scale)
 	night_material.set_shader_parameter("hero",to_screen(phase.foot_position()+Vector2(0,-38)))
 	night_material.set_shader_parameter("bunker_light_enabled",lit and is_instance_valid(bank))
-	if glow_material != null: glow_material.set_shader_parameter("strength",lerpf(saved_glow_strength,.36,night))
+	if glow_material != null:
+		var night_glow := saved_glow_strength if MobileProfile.is_mobile() else .36
+		glow_material.set_shader_parameter("strength",lerpf(saved_glow_strength,night_glow,night))
 	if not lit or not is_instance_valid(bank): return
 	announcement.size = Vector2(size.x,50*guide_scale)
 	announcement.position = Vector2(0,180*guide_scale)

@@ -44,10 +44,11 @@ func run() -> void:
 		var enemy := result.enemy as EnemyController
 		check(enemy != null,"new enemy at night "+str(sample[0]))
 		if enemy == null: continue
-		check(absf(enemy.get_stat("max_hp")-float(result.hp)*float(sample[1]))<=1.0,"spawn HP factor at "+str(sample[0]))
+		check(absf(enemy.get_stat("max_hp")-float(result.hp)*(1.0+(float(sample[1])-1.0)*0.5))<=1.0,"spawn HP factor at "+str(sample[0]))
 		# Stats are integers, so an early-wave fractional base can differ by one
 		# point from the rounded spawn value multiplied by the night factor.
-		check(absf(enemy.get_stat("melee_damage")-float(result.damage)*float(sample[2]))<=1.0,"spawn attack factor at "+str(sample[0]))
+		var expected_damage := minf(float(result.damage)*float(sample[2]), enemy.night_damage_limit(float(result.damage)))
+		check(absf(enemy.get_stat("melee_damage")-expected_damage)<=1.0,"spawn attack factor at "+str(sample[0]))
 		check(enemy.current_hp==int(enemy.get_stat("max_hp")),"fresh enemy starts at its grown max HP")
 		if sample[0]<=50.0:
 			check(is_equal_approx(enemy.get_chase_speed(),result.speed),"no speed growth through night 50")
@@ -64,6 +65,7 @@ func run() -> void:
 			first_speed = enemy.get_chase_speed()
 	check(first.current_hp==first_hp and is_equal_approx(first.get_stat("melee_damage"),first_damage) and is_equal_approx(first.get_chase_speed(),first_speed),"older damaged enemies retain their birth stats and health")
 	await verify_speed_cap()
+	await verify_damage_cap()
 	await verify_flanks()
 	await boot()
 	check(not evacuation.visual.night_rect.visible and not evacuation.visual.lit and is_zero_approx(evacuation.elapsed),"new battle resets dusk and growth")
@@ -123,12 +125,13 @@ func verify_speed_cap() -> void:
 	fast.night_speed_player_ratio = 0.0
 	fast.enemy_data = fast.enemy_data.duplicate(true)
 	fast.enemy_data.base_stats.move_speed = 1000.0
+	fast.modifier_stack.set_base_stat("move_speed", 1000.0)
 	fast.modifier_stack.add_modifier_from_dictionary({"id":"fast_test","source_type":"test","source_id":"fast","target_scope":"enemy","stat":"move_speed","operation":"multiply","value":100.0,"duration":-1,"stack_rule":"unique"})
 	var original_speed := fast.get_chase_speed()
 	evacuation.apply_pressure(fast)
 	check(is_equal_approx(fast.get_chase_speed(),original_speed),"already fast enemies retain their pre-night chase speed")
-	evacuation.elapsed = 27.0
-	check(is_equal_approx(evacuation.reward_multiplier(),0.5),"night rewards halve by second 27")
+	evacuation.elapsed = 39.0
+	check(is_equal_approx(evacuation.reward_multiplier(),0.5),"night rewards halve by second 39")
 	clear_probe_enemies()
 	await frames()
 
@@ -193,3 +196,34 @@ func verify_flanks() -> void:
 func clear_probe_enemies() -> void:
 	# Production cleanup fades for 0.2 seconds; these samples need an empty registry now.
 	for enemy in EnemyRegistry.get_registered_enemies().duplicate(): enemy.free()
+
+
+func verify_damage_cap() -> void:
+	clear_probe_enemies()
+	player.modifier_stack.set_base_stat("max_hp", 101.0)
+	player.modifier_stack.set_base_stat("armor", 100.0)
+	var enemy := spawn_probe(100000.0).enemy as EnemyController
+	check(enemy != null, "long-night sample exists")
+	if enemy == null: return
+	check(enemy.get_stat("max_hp") > 1000.0, "half-speed health growth remains unbounded")
+	var raw := enemy.player_attack_damage("melee_damage")
+	var mitigation := player.get_stat("damage_taken_percent") / 100.0
+	check(roundi(raw * mitigation) <= 33, "night damage rounds below one third of max HP after armor")
+	player.current_hp = 101
+	player.current_shield = 0
+	player._invincibility_timer = 0.0
+	player.health_damage_filter = Callable()
+	player.evacuation_safety_check = Callable()
+	player.take_damage(raw, "night_cap_test")
+	check(101 - player.current_hp <= 33, "real player health loss obeys the one-third limit")
+	check(roundi(enemy.player_attack_damage("melee_damage", 1.2) * mitigation) <= 33, "skill multiplier cannot bypass night damage cap")
+	player.modifier_stack.set_base_stat("armor", -50.0)
+	mitigation = player.get_stat("damage_taken_percent") / 100.0
+	check(roundi(enemy.player_attack_damage("melee_damage") * mitigation) <= 33, "cap tracks changed negative armor")
+	enemy.night_base_damage.melee_damage = 100.0
+	check(enemy.player_attack_damage("melee_damage") == 100, "already-high pre-night attack stays at its original damage")
+	check(enemy.player_attack_damage("melee_damage", 1.2) == 120, "already-high skill keeps its original multiplier")
+	player.current_hp = 101
+	player._invincibility_timer = 0.0
+	await frames(60)
+	clear_probe_enemies()

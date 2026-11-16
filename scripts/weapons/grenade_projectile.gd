@@ -29,7 +29,7 @@ var _ground_visual: Node2D
 
 func initialize(source: WeaponInstance, event: DamageEvent, start: Vector2, target: Vector2) -> void:
 	weapon = source
-	damage_event = event
+	damage_event = event.duplicate_event()
 	start_position = start
 	target_position = target
 	flight_seconds = maxf(0.01, float(weapon.weapon_data.get("grenade_flight_seconds", 0.45)))

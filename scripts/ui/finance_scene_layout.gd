@@ -22,14 +22,16 @@ static func arrange(ui) -> void:
 	var bank_w := 340 * sx
 	var phone := MobileProfile.is_mobile()
 	# Retain the PC counter composition with room for the enlarged phone text.
-	if phone: bank_w = maxf(280.0, bank_w)
+	if phone: bank_w = maxf(280.0, bank_w) + BattleHud.DRAWER_SKIN.MOBILE_DISPLAY_WIDTH - BattleHud.DRAWER_SKIN.MOBILE_BANK_DISPLAY_WIDTH + 12.0
 	# Give the bank's former 170 pixels to both workspaces; retain the 80px gap.
 	var work_x := roundf(bank_x + bank_w + (28.0 if phone else 80 * sx))
-	var right := minf(1580 * sx, minf(viewport.x - 60, ui._safe_rect.end.x))
+	var right := viewport.x - BattleHud.DRAWER_SKIN.MOBILE_BANK_DISPLAY_WIDTH - 30.0 if phone else minf(1580 * sx, minf(viewport.x - 60, ui._safe_rect.end.x))
 	var work_w := maxf(260, right - work_x)
 	var loan_space: float = ui.loan_presentation.reserved_height()
 	var footer_y := viewport.y - 80 - loan_space
-	var content_bottom := minf(973 * sy, footer_y - 23)
+	var bank_y := 650 * sy
+	var bank_h := minf(BANK_FORM_HEIGHT, maxf(44, footer_y - bank_y - 10))
+	var content_bottom := bank_y + bank_h if phone else minf(973 * sy, footer_y - 23)
 	place(ui.main_panel, Rect2(Vector2.ZERO, viewport))
 	ui._compact = false
 	ui._bank_header.hide()
@@ -48,31 +50,34 @@ static func arrange(ui) -> void:
 	ui._title.add_theme_constant_override("shadow_offset_y", 0)
 	place(ui._title, Rect2(970 * sx, 187 * sy, 383 * sx, 60 * sy))
 	if phone:
-		FinanceUIStyle.label(ui._title, 32, Color("45352d"))
+		FinanceUIStyle.label(ui._title, 28, Color("45352d"))
 		# Centre in the exposed parchment, leaving breathing room by the drawer.
 		var title_left := 960 * sx
 		var title_right := minf(1360 * sx, viewport.x - BattleHud.DRAWER_SKIN.MOBILE_DISPLAY_WIDTH - 24.0)
-		place(ui._title, Rect2(title_left, 160 * sy, title_right - title_left, 88 * sy))
+		place(ui._title, Rect2(title_left, 170 * sy, title_right - title_left, 88 * sy))
 	ui._summary.hide()
-	var tabs_y := (313.0 if phone else 353.0) * sy
+	var tabs_y := (280.0 if phone else 353.0) * sy
 	place(ui._tabs, Rect2(work_x, tabs_y, work_w, 50))
 	var content_y := tabs_y + (58.0 if phone else 63.0)
 	var content_h := maxf(80, content_bottom - content_y)
-	place(ui._enchant_scroll, Rect2(work_x + 20, content_y + 20, work_w - 40, maxf(40, content_h - 40)))
-	ui.workbench.custom_minimum_size.y = 460
+	var enchant_inset := 12.0 if phone else 20.0
+	place(ui._enchant_scroll, Rect2(work_x + enchant_inset, content_y + enchant_inset, work_w - enchant_inset * 2, maxf(40, content_h - enchant_inset * 2)))
+	ui.workbench.custom_minimum_size.y = 0 if phone else 460
 	place(ui._scene_enchant_back, Rect2(work_x, content_y, work_w, content_h))
 	place(ui._shop, Rect2(work_x, content_y, work_w, content_h))
 	# Keep the stock count on the painted front rim, clear of the loan footer.
 	var stock_y := minf(900 * sy, footer_y - 70)
 	place(ui.shop_grid, Rect2(0, 0, work_w, maxf(40, stock_y - content_y - 12)))
-	place(ui._stock, Rect2(0, roundf(stock_y) - ui._shop.position.y, work_w - 233, 47))
-	ui._stock.show()
-	place(ui._refresh, Rect2(work_w - 227, stock_y - content_y - 1, 227, 50))
+	var stock_row_y := roundf(stock_y - content_y - 1)
+	var action_width := minf(227, (work_w - 12) * 0.5)
+	place(ui._stock, Rect2(0, stock_row_y, maxf(0, work_w - action_width * 2 - 24), 50))
+	ui._stock.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	ui._stock.visible = work_w >= 650
+	place(ui._buy_all, Rect2(work_w - action_width * 2 - 12, stock_row_y, action_width, 50))
+	place(ui._refresh, Rect2(work_w - action_width, stock_row_y, action_width, 50))
 	# All left-column frames share one pixel-aligned edge at every resolution.
-	var bank_y := 650 * sy
 	# Amount previews can contain many principal-dependent stat changes. Keep
 	# the frame stable while the existing scroll container reveals that content.
-	var bank_h := minf(BANK_FORM_HEIGHT, maxf(44, footer_y - bank_y - 10))
 	place(ui._scene_bank_back, Rect2(bank_x, bank_y, bank_w, bank_h))
 	place(ui._bank, Rect2(bank_x + 12, bank_y + 10, bank_w - 24, maxf(24, bank_h - 20)))
 	place(ui._scene_footer_back, Rect2(bank_x, footer_y, right - bank_x, 67))

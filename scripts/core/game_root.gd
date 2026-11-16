@@ -34,10 +34,18 @@ func _ready() -> void:
 		_taptap_account_panel = preload("res://scripts/ui/taptap_account_panel.gd").new()
 		add_child(_taptap_account_panel)
 		TapTapSession.state_changed.connect(_on_taptap_state_changed)
+		CloudSave.profile_replaced.connect(_on_cloud_profile_replaced)
 		_on_taptap_state_changed()
 	GameGlobal.set_game_mode("game")
 	GameGlobal.set_runtime_flag("game_root_ready", true)
 	GameGlobal.log_debug("game root ready")
+
+
+func _on_cloud_profile_replaced() -> void:
+	# A different account or restored metaprogression cannot inherit an old run.
+	_paused_before_taptap = false
+	if _main_flow_coordinator != null:
+		_main_flow_coordinator.enter_start_page()
 
 
 func _on_taptap_state_changed() -> void:

@@ -288,6 +288,9 @@ func _test_live_ui() -> void:
 	if flow.current_state == MainFlowCoordinator.STATE_WAVE_CHALLENGE:
 		flow.decide_wave_challenge(str(flow._bound_wave_manager.wave_challenges.offer.token), false)
 	m.add_exp_and_gold(0, 37)
+	# The earlier free reward grants upgrade immunity. This assertion tests
+	# death bookkeeping, so clear that unrelated timer before lethal damage.
+	m.player._invincibility_timer = 0.0
 	m.player.take_damage(999999, "economy_log_test")
 	await frames(6)
 	log = hud._economy_log

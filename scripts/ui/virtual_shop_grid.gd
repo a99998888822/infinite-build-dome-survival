@@ -16,13 +16,14 @@ var _columns := 4
 var _last_start := -1
 var _logical_focus := 0
 var _card_height := CARD_HEIGHT
-var _base_card_height := CARD_HEIGHT
 var _pending_card_height := 0.0
 var _height_update_queued := false
 var _card_min_width := CARD_MIN_WIDTH
+var _content_revision := 0
 
 
 func _ready() -> void:
+	L10n.locale_changed.connect(_invalidate_content)
 	scroll = preload("res://scripts/ui/touch_scroll_container.gd").new()
 	scroll.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	FinanceUIStyle.bank_scroll(scroll)
@@ -36,16 +37,11 @@ func _ready() -> void:
 
 
 func set_offers(next_offers: Array, reset_scroll: bool = false) -> void:
+	_content_revision += 1
 	offers = next_offers
-	_card_height = 200.0 if MobileProfile.is_mobile() else CARD_HEIGHT
+	_card_height = 220.0 if MobileProfile.is_mobile() else CARD_HEIGHT
 	_card_min_width = 172.0 if MobileProfile.is_mobile() else CARD_MIN_WIDTH
-	for offer: Dictionary in offers:
-		var texture := FinanceUIStyle.item_icon(str(offer.get("icon", "")), "relics" if str(offer.get("offer_type", "")) == "relic" else "weapons", str(offer.get("target_id", "")))
-		if FinanceUIStyle.is_native_relic_icon(texture):
-			var extent := FinanceUIStyle.relic_icon_size(texture, FinanceUIStyle.RELIC_LIST_ICON_SCALE)
-			_card_height = maxf(_card_height, 96.0 + extent.y)
-			_card_min_width = maxf(_card_min_width, 96.0 + extent.x)
-	_base_card_height = _card_height
+	_pending_card_height = 0.0
 	if reset_scroll:
 		_logical_focus = 0
 		scroll.scroll_vertical = 0
@@ -57,12 +53,17 @@ func refresh_availability() -> void:
 	_refresh_pool(true)
 
 
+func _invalidate_content() -> void:
+	_content_revision += 1
+	_refresh_pool(true)
+
+
 func _layout() -> void:
 	if scroll == null:
 		return
-	_card_height = _base_card_height
-	_pending_card_height = 0.0
-	var usable := maxf(100.0, size.x - 16.0)
+	# The stock grid shares its left and right edges with the purchase/enchant
+	# tabs. Cards own their spacing, so no hidden outer inset is needed here.
+	var usable := maxf(100.0, size.x)
 	_columns = clampi(floori((usable + GAP) / (_card_min_width + GAP)), 1, 3 if MobileProfile.is_mobile() else 4)
 	canvas.custom_minimum_size.y = maxf(0, ceilf(float(offers.size()) / float(_columns)) * (_card_height + GAP) - GAP)
 	_last_start = -1
@@ -89,7 +90,7 @@ func _refresh_pool(force: bool = false) -> void:
 		card.buy_button.gui_input.connect(_on_card_key.bind(card))
 		card.buy_button.focus_entered.connect(func(): _logical_focus = int(card.get_meta("offer_index", 0)))
 		_pool.append(card)
-	var width := (maxf(100, size.x - 16) - GAP * float(_columns - 1)) / float(_columns)
+	var width := (maxf(100, scroll.size.x - (scroll.get_v_scroll_bar().size.x if scroll.get_v_scroll_bar().visible else 0.0)) - GAP * float(_columns - 1)) / float(_columns)
 	for slot in _pool.size():
 		var index := start + slot
 		var card := _pool[slot]
@@ -97,7 +98,13 @@ func _refresh_pool(force: bool = false) -> void:
 		if not card.visible:
 			continue
 		card.set_meta("offer_index", index)
-		card.configure(offers[index], flow.get_offer_unavailable_reason(offers[index]) if flow != null else "", flow.get_current_gold() if flow != null else 0)
+		var reason := flow.get_offer_unavailable_reason(offers[index]) if flow != null else ""
+		var gold := flow.get_current_gold() if flow != null else 0
+		if card.get_meta("content_revision", -1) != _content_revision or card.offer != offers[index]:
+			card.configure(offers[index], reason, gold)
+			card.set_meta("content_revision", _content_revision)
+		else:
+			card.refresh_availability(reason, gold)
 		card.position = Vector2((index % _columns) * (width + GAP), (index / _columns) * (_card_height + GAP))
 		card.size = Vector2(width, _card_height)
 

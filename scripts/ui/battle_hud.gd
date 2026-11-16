@@ -835,15 +835,28 @@ func _uses_finance_scene_layout() -> bool:
 	return _flow != null and _flow.get_battle_display_state() in [MainFlowCoordinator.STATE_FINANCE_POPUP, MainFlowCoordinator.STATE_QUICK_ENCHANTMENT] and FinanceSceneLayout.supports(get_viewport().get_visible_rect().size)
 
 
+func _uses_compact_mobile_drawer() -> bool:
+	return _uses_finance_scene_layout() or (MobileProfile.is_mobile() and _flow != null and _flow.get_battle_display_state() == MainFlowCoordinator.STATE_SHARED_REWARD_SHOP_POPUP)
+
+
 func _apply_combat_layout() -> void:
 	if _economy_log != null:
-		_economy_log.apply_layout()
+		_economy_log.apply_layout(_flow != null and _flow.get_battle_display_state() == MainFlowCoordinator.STATE_SHARED_REWARD_SHOP_POPUP)
 	if get_viewport() == null:
 		return
 	var finance_scene := _uses_finance_scene_layout()
-	if not _drawer_layout_initialized or finance_scene != _drawer_scene_layout:
+	var compact_drawer := _uses_compact_mobile_drawer()
+	if MobileProfile.is_mobile():
+		for balance_label in [gold_label, finance_label]:
+			balance_label.add_theme_font_size_override("font_size", 20 if finance_scene else 23)
+			balance_label.add_theme_font_override("font", preload("res://assets/font/ark-pixel-12px-monospaced-zh_cn.otf") if finance_scene else preload("res://assets/font/native_hud/interface.res"))
+	var drawer_skin := stats_drawer.get_node_or_null("ParchmentPanelSkin")
+	if drawer_skin != null and drawer_skin.bank_layout != compact_drawer:
+		drawer_skin.bank_layout = compact_drawer
+		drawer_skin.queue_redraw()
+	if not _drawer_layout_initialized or compact_drawer != _drawer_scene_layout:
 		_drawer_layout_initialized = true
-		_drawer_scene_layout = finance_scene
+		_drawer_scene_layout = compact_drawer
 		# Keep the metal below the balances, but extend the paper to the bottom.
 		# Apply phone margins on the first layout as well as finance transitions.
 		var drawer_top := 90.0
@@ -851,21 +864,24 @@ func _apply_combat_layout() -> void:
 		stats_drawer.offset_top = drawer_top
 		stats_drawer.offset_bottom = -drawer_bottom
 		if MobileProfile.is_mobile():
+			_drawer_scroll_hint.add_theme_font_size_override("font_size", 16 if compact_drawer else 10)
+			for stat_label in stats_list.find_children("*", "Label", true, false):
+				stat_label.add_theme_font_size_override("font_size", 20 if compact_drawer else 22)
 			var margin := stats_drawer.get_node_or_null("DrawerPanel/DrawerBody/ContentMargin") as MarginContainer
 			if margin != null:
 				# Keep the parchment frame at 85%, while the readable text block
 				# uses a little more breathing room inside it (about 90% of the
 				# previous mobile content area).
-				margin.add_theme_constant_override("margin_left", 64)
-				margin.add_theme_constant_override("margin_right", 57)
+				margin.add_theme_constant_override("margin_left", 52 if compact_drawer else 64)
+				margin.add_theme_constant_override("margin_right", 45 if compact_drawer else 57)
 				margin.add_theme_constant_override("margin_top", 123)
 				margin.add_theme_constant_override("margin_bottom", 84)
 			_drawer_scroll_hint.offset_top = -58.0
 			_drawer_scroll_hint.offset_bottom = -44.0
 		# The toggle hangs on the drawer's left edge and is the only way back in
 		# once the drawer closes, so it stays inside the drawer width.
-		drawer_toggle_button.offset_left = 4 if finance_scene else 0
-		drawer_toggle_button.offset_right = 32 if finance_scene else 28
+		drawer_toggle_button.offset_left = 2 if compact_drawer else 0
+		drawer_toggle_button.offset_right = 30 if compact_drawer else 28
 		if MobileProfile.is_mobile():
 			drawer_toggle_button.offset_top = -30.0
 			drawer_toggle_button.offset_bottom = 30.0
@@ -1009,7 +1025,7 @@ func get_modal_safe_rect() -> Rect2:
 	var right := MODAL_FALLBACK_RIGHT_CLOSED
 	var compact_finance := state == MainFlowCoordinator.STATE_FINANCE_POPUP and viewport_size.x < 1000
 	if _drawer_open or (DRAWER_AUTO_OPEN_STATES.has(state) and not compact_finance):
-		right = MOBILE_DRAWER_WIDTH + 4.0 if MobileProfile.is_mobile() else MODAL_FALLBACK_RIGHT_OPEN
+		right = _mobile_drawer_width() + 4.0 if MobileProfile.is_mobile() else MODAL_FALLBACK_RIGHT_OPEN
 	if stats_drawer != null:
 		var drawer_rect := stats_drawer.get_global_rect()
 		if drawer_rect.size.x > 0.0 and drawer_rect.position.x < viewport_size.x:
@@ -1063,6 +1079,10 @@ func _refresh_visibility() -> void:
 		status_panel.visible = visible and not STATUS_HIDDEN_MODAL_STATES.has(state)
 
 
+func _mobile_drawer_width() -> float:
+	return 28.0 + (DRAWER_SKIN.MOBILE_BANK_DISPLAY_WIDTH if _uses_compact_mobile_drawer() else DRAWER_SKIN.MOBILE_DISPLAY_WIDTH)
+
+
 func _on_drawer_toggle_pressed() -> void:
 	if _drawer_locked_open:
 		return
@@ -1114,7 +1134,7 @@ func _set_drawer_open(open: bool, animated: bool) -> void:
 	# (open, the complete frame width) or leaves only its toggle on screen, and the toggle
 	# button reopens it.
 	if MobileProfile.is_mobile():
-		var drawer_width := MOBILE_DRAWER_WIDTH
+		var drawer_width := _mobile_drawer_width()
 		var toggle_width := 28.0
 		if drawer_toggle_button != null:
 			toggle_width = maxf(28.0, drawer_toggle_button.offset_right - drawer_toggle_button.offset_left)
@@ -1249,7 +1269,7 @@ func _ensure_stat_rows() -> void:
 		name_label.text = _get_stat_display_name(stat_id)
 		name_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		name_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
-		name_label.add_theme_font_size_override("font_size", 22)
+		name_label.add_theme_font_size_override("font_size", 20 if MobileProfile.is_mobile() and _uses_compact_mobile_drawer() else 22)
 		name_label.add_theme_color_override("font_color", DRAWER_TEXT_COLOR)
 		name_label.add_theme_constant_override("outline_size", 0)
 		name_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -1264,7 +1284,7 @@ func _ensure_stat_rows() -> void:
 		value_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		value_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 		value_label.custom_minimum_size = Vector2(44.0, 0.0)
-		value_label.add_theme_font_size_override("font_size", 22)
+		value_label.add_theme_font_size_override("font_size", 20 if MobileProfile.is_mobile() and _uses_compact_mobile_drawer() else 22)
 		value_label.add_theme_color_override("font_color", DRAWER_TEXT_COLOR)
 		value_label.add_theme_constant_override("outline_size", 0)
 

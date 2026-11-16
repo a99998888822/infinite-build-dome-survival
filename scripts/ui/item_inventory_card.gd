@@ -43,6 +43,7 @@ const EFFECT_LABELS: Dictionary = {
 	"electric_spark": "落雷",
 	"ice": "冰冻",
 	"wind": "风刃",
+	"tornado": "龙卷",
 	"light_sword": "光辉剑",
 	"black_hole": "黑洞",
 	"split": "分裂",

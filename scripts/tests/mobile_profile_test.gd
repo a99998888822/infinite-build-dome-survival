@@ -49,6 +49,14 @@ func _run() -> void:
 	check(resolved.has("weapon_void_blade"), "novice keeps the wooden bow")
 	check(resolved.has("weapon_dash_blade") == not mobile, "novice dash blade follows the platform")
 	starter.free()
+	for record in DataRegistry.get_table("enemies"):
+		var enemy := EnemyController.new()
+		enemy.initialize(str(record.id))
+		var expected_speed := float(record.base_stats.move_speed) + (15.0 if mobile else 0.0)
+		check(is_equal_approx(enemy.modifier_stack.get_stat("move_speed"), expected_speed), "all enemy types receive mobile base speed: " + str(record.id))
+		enemy.initialize(str(record.id))
+		check(is_equal_approx(enemy.modifier_stack.get_stat("move_speed"), expected_speed), "reinitializing never stacks mobile speed")
+		enemy.free()
 
 	# The shelf and the level-up rewards must not offer what the phone cannot aim.
 	var generator := ShopOfferGenerator.new()

@@ -64,7 +64,8 @@ func initialize(
 		return false
 	CombatRenderWorld.set_world_layer(self, CombatRenderWorld.ATTACK_Z)
 	weapon = source_weapon
-	damage_event = source_damage_event
+	damage_event = source_damage_event.duplicate_event()
+	if split_depth == 0 and not source_weapon.is_bounce_attack: damage_event.proc_budget = {}
 	projectile_id = source_projectile_id.strip_edges()
 	global_position = start_position
 	direction = flight_direction.normalized() if not flight_direction.is_zero_approx() else Vector2.RIGHT

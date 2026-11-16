@@ -223,7 +223,7 @@ func try_breath_pulse() -> void:
 	var body := target_player.get_node("CollisionShape2D") as CollisionShape2D
 	breath_shape.points = get_breath_polygon()
 	if body.disabled or not breath_shape.collide(Transform2D(0,breath_origin),body.shape,body.global_transform): return
-	var dealt := target_player.take_damage(roundi(get_stat("ranged_damage")*(1.0+get_stat("damage_percent")/100.0)),enemy_id+"_breath")
+	var dealt := target_player.take_damage(player_attack_damage("ranged_damage"),enemy_id+"_breath")
 	if dealt > 0:
 		breath_hits += 1
 		damage_events += 1
@@ -243,7 +243,8 @@ func area_damage(center: Vector2, radius: float, amount: int) -> void:
 		leap_shape.points = points
 		leap_shape_radius = radius
 	if not leap_shape.collide(Transform2D(0.0, center), body.shape, body.global_transform): return
-	var dealt := target_player.take_damage(roundi(amount * (1.0 + get_stat("damage_percent") / 100.0)), enemy_id + "_" + state)
+	var damage := player_attack_damage("element_damage") if night_base_damage.has("element_damage") else roundi(amount * (1.0 + get_stat("damage_percent") / 100.0))
+	var dealt := target_player.take_damage(damage, enemy_id + "_" + state)
 	if dealt > 0:
 		damage_events += 1
 		has_contact_damaged = true

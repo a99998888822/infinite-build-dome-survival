@@ -25,7 +25,7 @@ const OFFER_VISIBLE_ROWS: int = 2
 ## Phones pack the offer page from the cards' own density. Stretching a single
 ## row to the whole offer area left a tall empty gap under each description and
 ## made the cards read as oversized on a handheld.
-const MOBILE_CARD_HEIGHT: float = 260.0
+const MOBILE_CARD_HEIGHT: float = 220.0
 ## A handheld shows the same four-up page as the desktop; the narrower cell is
 ## what keeps each card small enough to compare offers at a glance.
 const MOBILE_OFFER_COLUMNS: int = 4
@@ -109,10 +109,12 @@ func _apply_hud_style() -> void:
 	backdrop.color = Color(PALETTE.SHADOW, 0.78)
 	for button in [skip_button, refresh_button]:
 		HUD_STYLE.apply_button(button, Vector4(14, 7, 14, 7))
+		if MobileProfile.is_mobile(): button.add_theme_font_size_override("font_size", 20)
 	if weapon_strip != null:
 		weapon_strip.icon_slot_theme = HUD_STYLE.weapon_slot_theme()
 		weapon_strip.get_node("StripPanel").add_theme_stylebox_override("panel", HUD_STYLE.skin(true, false, Vector4(2, 2, 2, 2)))
 		weapon_strip.load_label.add_theme_color_override("font_color", PALETTE.TEXT)
+		if MobileProfile.is_mobile(): weapon_strip.load_label.add_theme_font_size_override("font_size", 20)
 		weapon_strip.weapon_tooltip.add_theme_stylebox_override("panel", HUD_STYLE.skin(true, false, Vector4.ZERO))
 		weapon_strip.weapon_tooltip_label.add_theme_color_override("default_color", PALETTE.TEXT)
 	var scrollbar := offer_scroll.get_v_scroll_bar()
@@ -484,6 +486,7 @@ func _layout_popup() -> void:
 		backdrop.size = Vector2(safe.end.x, viewport_size.y)
 	if weapon_strip != null:
 		var strip_width := minf(WEAPON_STRIP_WIDTH, maxf(safe.size.x - 32.0, 0.0))
+		if MobileProfile.is_mobile(): strip_width = panel_width
 		weapon_strip.anchor_left = 0.0
 		weapon_strip.anchor_top = 0.0
 		weapon_strip.anchor_right = 0.0
@@ -546,6 +549,15 @@ func _fit_offer_grid() -> void:
 	# minimum. Restore the requested bounds after new card minima propagate.
 	center_container.set_deferred("size", _panel_layout_size)
 	center_container.queue_sort()
+	if MobileProfile.is_mobile(): _align_mobile_weapon_strip.call_deferred()
+
+
+func _align_mobile_weapon_strip() -> void:
+	# The panel container can add a few pixels while its child minima settle.
+	# Align to its final frame, rather than the earlier requested width.
+	if weapon_strip == null or main_panel == null: return
+	weapon_strip.global_position.x = main_panel.global_position.x
+	weapon_strip.size.x = main_panel.size.x
 
 
 func _get_prepared_offer_height() -> float:
@@ -589,7 +601,7 @@ func _get_layout_safe_rect(viewport_size: Vector2) -> Rect2:
 		return safe
 	# The stats drawer is above the shop layer, so reserve its full width even
 	# if the controller has not received the drawer animation's latest rect yet.
-	var reserved_right := minf(DRAWER_RESERVED_RIGHT, viewport_size.x * 0.30)
+	var reserved_right := minf(328.0 if MobileProfile.is_mobile() else DRAWER_RESERVED_RIGHT, viewport_size.x * 0.30)
 	var maximum_end_x := viewport_size.x - reserved_right
 	if safe.end.x > maximum_end_x:
 		safe.size.x = maxf(maximum_end_x - safe.position.x, 0.0)

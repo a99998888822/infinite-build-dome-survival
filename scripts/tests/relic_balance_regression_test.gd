@@ -168,30 +168,55 @@ func _test_combat_and_limits() -> void:
 
 func _test_offer_weight_decay() -> void:
 	var generator := ShopOfferGenerator.new()
-	var tome := DataRegistry.get_record("relics", "relic_compound_interest_tome")
-	check(not tome.is_empty() and int(tome.get("offer_weight_decay_percent", 100)) < 100, "compound tome carries a duplicate decay rule")
-	check(generator.get_relic_offer_weight(tome, 0) == 100, "unowned tome keeps the full candidate weight")
+	# The duplicate decay rule is data-optional, so the formula is covered directly.
+	var synthetic := {"offer_weight_decay_percent": 75, "offer_weight_floor": 10}
+	check(generator.get_relic_offer_weight(synthetic, 0) == 100, "unowned duplicate keeps the full candidate weight")
 	for expected in [[1, 75], [2, 56], [3, 42], [5, 24], [8, 10], [12, 10]]:
-		check(generator.get_relic_offer_weight(tome, int(expected[0])) == int(expected[1]), "tome weight decays to %d at %d copies" % [int(expected[1]), int(expected[0])])
+		check(generator.get_relic_offer_weight(synthetic, int(expected[0])) == int(expected[1]), "duplicate weight decays to %d at %d copies" % [int(expected[1]), int(expected[0])])
 	var previous := 1000
 	for owned in range(0, 13):
-		var weight := generator.get_relic_offer_weight(tome, owned)
-		check(weight <= previous and weight >= int(tome.get("offer_weight_floor", 1)), "tome weight never rises and respects the floor at %d copies" % owned)
+		var weight := generator.get_relic_offer_weight(synthetic, owned)
+		check(weight <= previous and weight >= 10, "duplicate weight never rises and respects the floor at %d copies" % owned)
 		previous = weight
-	for relic_id in ["relic_periodic_dividend_clock", "relic_void_market_key"]:
-		var record := DataRegistry.get_record("relics", relic_id)
-		check(int(record.get("max_stack", -1)) == 0 and int(record.get("offer_weight_decay_percent", 100)) < 100, "snowballing relic stays unlimited and decays: " + relic_id)
+	var plain := DataRegistry.get_record("relics", "relic_piggy_bank")
+	check(generator.get_relic_offer_weight(plain, 0) == 100 and generator.get_relic_offer_weight(plain, 9) == 100, "unconfigured relic keeps a flat candidate weight")
+	# Shipped hold caps bound the structural stats.
+	for expected_cap in [
+		["relic_twin_chamber_magazine", 1], ["relic_split_crystal_warhead", 1],
+		["relic_goblin_trade_charter", 2], ["relic_void_market_key", 2],
+		["relic_expanded_backpack_strap", 4], ["relic_void_storage_casket", 4],
+	]:
+		check(int(DataRegistry.get_record("relics", str(expected_cap[0])).get("max_stack", -1)) == int(expected_cap[1]), "shipped hold cap: " + str(expected_cap[0]))
+	# Soft limits: a relic that raises the stat loses weight as the live value grows.
+	var charter := DataRegistry.get_record("relics", "relic_goblin_trade_charter")
+	check(generator.get_relic_offer_weight(charter, 0, {"shop_offer_count_bonus": 0.0}) == 100, "shop bonus keeps full weight at zero")
+	var raised_weight := generator.get_relic_offer_weight(charter, 0, {"shop_offer_count_bonus": 2.0})
+	check(raised_weight >= 1 and raised_weight < 100, "shop bonus loses weight as the bonus grows")
+	var manager := DataRegistry.get_record("relics", "relic_finance_manager")
+	check(generator.get_relic_offer_weight(manager, 0, {"interest_rate": 15.0}) < generator.get_relic_offer_weight(manager, 0, {"interest_rate": 6.0}), "interest relic loses weight as the rate grows")
+	# Relics that LOWER a listed stat are excluded from the soft rule on purpose.
+	var cup := DataRegistry.get_record("relics", "relic_holy_silver_cup")
+	var ledger := DataRegistry.get_record("relics", "relic_travelers_ledger")
+	check(generator.get_soft_stat_gate_percent(cup, {"interest_rate": 30.0}) == 100, "rate penalty relic keeps its flat weight")
+	check(generator.get_soft_stat_gate_percent(ledger, {"load_capacity": 300.0}) == 100, "load penalty relic keeps its flat weight")
+	# Hard floors: predicted value below the floor removes the relic from the pool.
+	var floor_pool := generator.build_shop_candidate_pool({"luck": 350, "move_speed": 80.0})
+	check(floor_pool.all(func(offer): return str(offer.get("target_id", "")) != "relic_expanded_backpack_strap"), "backpack strap is withheld at the move speed floor")
+	var healthy_pool := generator.build_shop_candidate_pool({"luck": 350, "move_speed": 140.0})
+	check(healthy_pool.any(func(offer): return str(offer.get("target_id", "")) == "relic_expanded_backpack_strap"), "backpack strap stays available above the floor")
+	var pickup_pool := generator.build_shop_candidate_pool({"luck": 350, "pickup_radius": 105.0})
+	check(pickup_pool.all(func(offer): return str(offer.get("target_id", "")) != "relic_cracked_stone_bullet"), "stone bullet is withheld when pickup would drop below its floor")
+	var hp_pool := generator.build_shop_candidate_pool({"luck": 350, "max_hp": 8.0})
+	check(hp_pool.all(func(offer): return str(offer.get("target_id", "")) != "relic_corroded_blowpipe"), "blowpipe is withheld when max health would drop below its floor")
+	var legacy_pool := generator.build_shop_candidate_pool({"luck": 350})
+	check(legacy_pool.any(func(offer): return str(offer.get("target_id", "")) == "relic_corroded_blowpipe"), "missing live stats keep the previous offer behaviour")
+	var gated_pool := generator.build_shop_candidate_pool({"interest_rate": 15.0})
+	var gated_manager := gated_pool.filter(func(offer): return str(offer.get("target_id", "")) == "relic_finance_manager")
+	check(gated_manager.size() == 1 and int(gated_manager[0].get("weight", 0)) < 100, "candidate pool applies the soft interest weight")
 	# Interest multipliers are capped so the bank build cannot snowball forever.
 	var dividend := DataRegistry.get_record("relics", "relic_dividend_check")
 	check(int(dividend.get("max_stack", 0)) == 8 and int(dividend.runtime_effects[0].get("double_chance_percent", 0)) == 10, "dividend ticket caps at eight copies and rolls ten percent per copy")
 	check(int(DataRegistry.get_record("relics", "relic_compound_interest_tome").get("max_stack", 0)) == 8, "compound tome caps at eight copies")
-	var plain := DataRegistry.get_record("relics", "relic_piggy_bank")
-	check(generator.get_relic_offer_weight(plain, 0) == 100 and generator.get_relic_offer_weight(plain, 9) == 100, "unconfigured relic keeps a flat candidate weight")
-	var pool := generator.build_shop_candidate_pool({"owned_relic_counts": {"relic_compound_interest_tome": 3}})
-	var weighted := pool.filter(func(offer): return offer.get("target_id", "") == "relic_compound_interest_tome")
-	check(weighted.size() == 1 and int(weighted[0].get("weight", 0)) == 42, "candidate pool applies the duplicate weight")
-	var rival := pool.filter(func(offer): return offer.get("target_id", "") == "relic_periodic_dividend_clock")
-	check(rival.size() == 1 and int(rival[0].get("weight", 0)) == 100, "untouched same-rarity peer keeps the flat weight")
 
 
 func _test_validation() -> void:

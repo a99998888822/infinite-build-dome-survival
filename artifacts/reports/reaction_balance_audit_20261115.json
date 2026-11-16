@@ -1,0 +1,70 @@
+{
+  "base_damage": 100,
+  "checks": 14,
+  "failures": 0,
+  "overlap_fixture": true,
+  "results": [
+    {
+      "case": "thunder_fire",
+      "native": 60,
+      "reaction": 180,
+      "targets": 1,
+      "total": 240
+    },
+    {
+      "beams": 1,
+      "case": "reflection",
+      "reaction_without_exposure": 350,
+      "targets": 1
+    },
+    {
+      "case": "thunder_fire",
+      "native": 240,
+      "reaction": 2880,
+      "targets": 4,
+      "total": 3120
+    },
+    {
+      "beams": 4,
+      "case": "reflection",
+      "reaction_without_exposure": 5600,
+      "targets": 4
+    },
+    {
+      "case": "thunder_fire",
+      "native": 480,
+      "reaction": 11520,
+      "targets": 8,
+      "total": 12000
+    },
+    {
+      "beams": 8,
+      "case": "reflection",
+      "reaction_without_exposure": 22400,
+      "targets": 8
+    },
+    {
+      "beams": 3,
+      "case": "same_freeze_repeated_swords",
+      "freeze_remaining": 1.0,
+      "swords": 3
+    },
+    {
+      "admitted": 3,
+      "attempts": 4,
+      "burn_remaining": 0.0,
+      "case": "same_attack_water",
+      "dark_flame": false,
+      "total": 285
+    },
+    {
+      "admitted": 3,
+      "attempts": 4,
+      "burn_remaining": 10.0,
+      "case": "same_attack_water",
+      "dark_flame": true,
+      "total": 585
+    }
+  ],
+  "zero_defense": true
+}

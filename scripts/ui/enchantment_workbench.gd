@@ -41,7 +41,7 @@ func _ready() -> void:
 	set_process(false)
 	add_theme_constant_override("separation", 4)
 	var weapon_section := MarginContainer.new()
-	weapon_section.add_theme_constant_override("margin_bottom", 6)
+	weapon_section.add_theme_constant_override("margin_bottom", 2 if MobileProfile.is_mobile() else 6)
 	add_child(weapon_section)
 	var weapon_view := MarginContainer.new()
 	weapon_section.add_child(weapon_view)
@@ -89,7 +89,7 @@ func _ready() -> void:
 	_sell_weapon = _button("ui.enchantment.sell_weapon", heading)
 	_sell_weapon.pressed.connect(func(): sale_requested.emit("weapon", selected_weapon_id))
 	var slot_scroll := ScrollContainer.new()
-	slot_scroll.custom_minimum_size.y = 72
+	slot_scroll.custom_minimum_size.y = 56 if MobileProfile.is_mobile() else 72
 	FinanceUIStyle.bank_horizontal_scroll(slot_scroll)
 	add_child(slot_scroll)
 	_slots = HBoxContainer.new()
@@ -103,7 +103,7 @@ func _ready() -> void:
 	FinanceUIStyle.bank_scroll(_inventory_scroll)
 	_inventory_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
 	# Keep six columns even in small windows; allow access without squeezing art.
-	_inventory_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
+	_inventory_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	FinanceFrameSkin.scrollbar(_inventory_scroll.get_h_scroll_bar())
 	_inventory_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_inventory_scroll.custom_minimum_size.y = 52
@@ -113,12 +113,12 @@ func _ready() -> void:
 	inventory_padding.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	inventory_padding.add_theme_constant_override("margin_left", 0)
 	inventory_padding.add_theme_constant_override("margin_right", 0)
-	inventory_padding.add_theme_constant_override("margin_top", 12)
-	inventory_padding.add_theme_constant_override("margin_bottom", 12)
+	inventory_padding.add_theme_constant_override("margin_top", 4 if MobileProfile.is_mobile() else 12)
+	inventory_padding.add_theme_constant_override("margin_bottom", 4 if MobileProfile.is_mobile() else 12)
 	_inventory_scroll.add_child(inventory_padding)
 	_inventory = GridContainer.new()
 	_inventory.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_inventory.add_theme_constant_override("h_separation", 16)
+	_inventory.add_theme_constant_override("h_separation", 8)
 	_inventory.add_theme_constant_override("v_separation", 8)
 	inventory_padding.add_child(_inventory)
 	_selection = Label.new()
@@ -161,7 +161,7 @@ func refresh() -> void:
 		var button := WeaponSlotButton.new()
 		_weapon_row.add_child(button)
 		button.configure(weapon, true)
-		button.custom_minimum_size = Vector2(164, 54)
+		button.custom_minimum_size = Vector2(164, 44 if MobileProfile.is_mobile() else 54)
 		button.clip_text = false
 		button.icon = FinanceUIStyle.item_icon(str(weapon.weapon_data.get("icon", "")), "weapons", weapon.weapon_id)
 		button.expand_icon = true
@@ -224,7 +224,7 @@ func refresh() -> void:
 		empty.autowrap_mode = TextServer.AUTOWRAP_OFF
 		empty.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		empty.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		FinanceUIStyle.label(empty, 17, Color("8b9089"))
+		FinanceUIStyle.label(empty, 20 if MobileProfile.is_mobile() else 17, Color("8b9089"))
 		_inventory.add_child(empty)
 	_update_selection()
 	_sync_weapon_scroll_buttons.call_deferred()
@@ -459,7 +459,10 @@ func _operate(action: String, weapon_id: String, item_id: String, target_index: 
 
 
 func _layout_inventory() -> void:
-	_inventory.columns = maxi(1, floori((_inventory_scroll.size.x - 16.0) / 188.0)) if MobileProfile.is_mobile() else 6
+	# Four readable cards per row is the phone layout contract. Cards shrink to
+	# the available workbench width instead of creating a second horizontal
+	# scroll area inside the bank screen.
+	_inventory.columns = 4 if MobileProfile.is_mobile() else 6
 
 
 func _item_card(item: Dictionary, parent: Control) -> ItemInventoryCard:

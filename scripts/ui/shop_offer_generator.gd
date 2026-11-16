@@ -21,6 +21,28 @@ const WEAPON_UPGRADE_ROLL_CHANCE := 1.0 / 3.0
 # shrinks as the player stacks copies. Configured per relic in data_config and
 # deliberately absent from every player-facing string, tooltip and encyclopedia.
 const DEFAULT_CANDIDATE_WEIGHT: int = 100
+# Relics carrying this tag participate in stat-driven supply control. It is a
+# balance-only switch: no player-facing string, tooltip or encyclopedia entry may
+# mention it. Two independent rules are derived from each tagged relic's own
+# effects, so one tag covers every stat the relic touches:
+#   - soft limit: a relic that RAISES a listed stat loses candidate weight as the
+#     live stat climbs past its reference (snowballing becomes harder to repeat).
+#   - hard floor: a relic that LOWERS a listed stat is not offered once the
+#     predicted value would fall below the configured floor.
+const STAT_GATE_TAG: String = "stat_gate"
+const SOFT_STAT_GATE_FLOOR_PERCENT: int = 10
+const SOFT_STAT_GATE_RULES: Dictionary = {
+	"projectile_count": {"reference": 1.0, "step": 1.0, "decay_percent": 30},
+	"shop_offer_count_bonus": {"reference": 0.0, "step": 1.0, "decay_percent": 25},
+	# 15 x 1.5 = 22.5, rounded down so the last visible step stays at 12%.
+	"load_capacity": {"reference": 100.0, "step": 20.0, "decay_percent": 22},
+	"interest_rate": {"reference": 5.0, "step": 1.0, "decay_percent": 5},
+}
+const FLOOR_STAT_GATE_RULES: Dictionary = {
+	"move_speed": 80.0,
+	"pickup_radius": 100.0,
+	"max_hp": 6.0,
+}
 const BASE_TYPE_WEIGHTS: Dictionary = {
 	OFFER_NEW_WEAPON: 12,
 	OFFER_RELIC: 60,
@@ -83,6 +105,7 @@ func build_shop_candidate_pool(context: Dictionary) -> Array[Dictionary]:
 			"tags": weapon_tags,
 		}))
 
+	var gate_stats := _get_stat_gate_values(context)
 	for relic_data in DataRegistry.get_table("relics"):
 		var relic_id := str(relic_data.get("id", ""))
 		if relic_id.is_empty():
@@ -93,6 +116,8 @@ func build_shop_candidate_pool(context: Dictionary) -> Array[Dictionary]:
 		var owned_count := int(relic_counts.get(relic_id, 0))
 		if max_stack > 0 and owned_count >= max_stack:
 			continue
+		if is_stat_gate_blocked(relic_data, gate_stats):
+			continue
 		var relic_tags := _to_string_array(relic_data.get("tags", []))
 		var relic_rarity := str(relic_data.get("rarity", "common"))
 		candidates.append(_build_candidate_entry({
@@ -102,7 +127,7 @@ func build_shop_candidate_pool(context: Dictionary) -> Array[Dictionary]:
 			"total_relic_count": total_relic_count,
 			"relic_rarity_count": int(owned_relic_rarity_counts.get(relic_rarity, 0)),
 			"target_id": relic_id,
-			"weight": get_relic_offer_weight(relic_data, owned_count),
+			"weight": get_relic_offer_weight(relic_data, owned_count, gate_stats),
 			"display_name": str(relic_data.get("display_name", relic_id)),
 			"description": str(relic_data.get("description", "")),
 			"icon": str(relic_data.get("icon", "")),
@@ -152,16 +177,99 @@ func get_rarity_luck_requirement(rarity: String) -> int:
 	return maxi(0, int(RARITY_LUCK_REQUIREMENTS.get(rarity, 0)))
 
 
-func get_relic_offer_weight(relic_data: Dictionary, owned_count: int) -> int:
+func get_relic_offer_weight(relic_data: Dictionary, owned_count: int, stats: Dictionary = {}) -> int:
 	# Exponential duplicate pressure: weight = base * (percent/100)^owned, clamped
 	# by an absolute floor. Relics without offer_weight_decay_percent keep the flat
 	# base weight, so this rule never touches an unconfigured relic.
+	var weight := DEFAULT_CANDIDATE_WEIGHT
 	var decay_percent := int(relic_data.get("offer_weight_decay_percent", 100))
-	if owned_count <= 0 or decay_percent >= 100 or decay_percent <= 0:
-		return DEFAULT_CANDIDATE_WEIGHT
-	var weight_floor := maxi(1, int(relic_data.get("offer_weight_floor", 1)))
-	var decayed_weight := float(DEFAULT_CANDIDATE_WEIGHT) * pow(float(decay_percent) / 100.0, float(owned_count))
-	return maxi(weight_floor, roundi(decayed_weight))
+	if owned_count > 0 and decay_percent < 100 and decay_percent > 0:
+		var weight_floor := maxi(1, int(relic_data.get("offer_weight_floor", 1)))
+		var decayed_weight := float(DEFAULT_CANDIDATE_WEIGHT) * pow(float(decay_percent) / 100.0, float(owned_count))
+		weight = maxi(weight_floor, roundi(decayed_weight))
+	var soft_percent := get_soft_stat_gate_percent(relic_data, stats)
+	if soft_percent < 100:
+		weight = maxi(1, roundi(float(weight) * float(soft_percent) / 100.0))
+	return maxi(1, weight)
+
+
+func is_stat_gate_blocked(relic_data: Dictionary, stats: Dictionary) -> bool:
+	# Hard floor: never offer a relic whose own decrease would push a live stat
+	# below its configured floor. The predicted value is used instead of the
+	# current one so a single purchase can never end below the floor on its own.
+	if stats.is_empty() or not _has_stat_gate_tag(relic_data):
+		return false
+	var deltas := _collect_stat_deltas(relic_data)
+	for stat_id in deltas.keys():
+		if not FLOOR_STAT_GATE_RULES.has(stat_id) or not stats.has(stat_id):
+			continue
+		var predicted := float(stats[stat_id]) + float(deltas[stat_id])
+		if predicted < float(FLOOR_STAT_GATE_RULES[stat_id]):
+			return true
+	return false
+
+
+func get_soft_stat_gate_percent(relic_data: Dictionary, stats: Dictionary) -> int:
+	# Soft limit: only relics that RAISE a listed stat lose weight as it climbs.
+	# Relics that lower it (the interest and load penalties) are excluded on
+	# purpose, so they keep refreshing at their normal weight.
+	if stats.is_empty() or not _has_stat_gate_tag(relic_data):
+		return 100
+	var result := 100
+	var deltas := _collect_stat_deltas(relic_data)
+	for stat_id in deltas.keys():
+		if not SOFT_STAT_GATE_RULES.has(stat_id) or not stats.has(stat_id):
+			continue
+		if float(deltas[stat_id]) <= 0.0:
+			continue
+		result = mini(result, _resolve_soft_gate_percent(stat_id, float(stats[stat_id])))
+	return result
+
+
+func _has_stat_gate_tag(relic_data: Dictionary) -> bool:
+	var tags: Variant = relic_data.get("tags", [])
+	return tags is Array and (tags as Array).has(STAT_GATE_TAG)
+
+
+func _collect_stat_deltas(relic_data: Dictionary) -> Dictionary:
+	var deltas := {}
+	var effects: Variant = relic_data.get("effects", [])
+	if not (effects is Array):
+		return deltas
+	for effect in effects:
+		if not (effect is Dictionary):
+			continue
+		var stat_id := str(effect.get("stat", "")).strip_edges()
+		if stat_id.is_empty():
+			continue
+		deltas[stat_id] = float(deltas.get(stat_id, 0.0)) + float(effect.get("value", 0))
+	return deltas
+
+
+func _resolve_soft_gate_percent(stat_id: String, current_value: float) -> int:
+	var rule: Dictionary = SOFT_STAT_GATE_RULES.get(stat_id, {})
+	if rule.is_empty():
+		return 100
+	var reference := float(rule.get("reference", 0.0))
+	if current_value <= reference:
+		return 100
+	var step := maxf(0.001, float(rule.get("step", 1.0)))
+	var decay_percent := maxi(0, int(rule.get("decay_percent", 0)))
+	var steps := maxi(0, floori((current_value - reference) / step))
+	return maxi(SOFT_STAT_GATE_FLOOR_PERCENT, 100 - steps * decay_percent)
+
+
+func _get_stat_gate_values(context: Dictionary) -> Dictionary:
+	# Only live keys participate, so an incomplete context (tests, previews, older
+	# call sites) silently keeps the previous offer behaviour.
+	var values := {}
+	for stat_id in SOFT_STAT_GATE_RULES.keys():
+		if context.has(stat_id):
+			values[stat_id] = float(context[stat_id])
+	for stat_id in FLOOR_STAT_GATE_RULES.keys():
+		if context.has(stat_id):
+			values[stat_id] = float(context[stat_id])
+	return values
 
 
 func get_shop_rarity_weights(luck: int) -> Dictionary:

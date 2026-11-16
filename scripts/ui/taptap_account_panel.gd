@@ -3,6 +3,7 @@ extends CanvasLayer
 
 const ACCOUNT_FONT := preload("res://assets/font/ark-pixel-12px-monospaced-zh_cn.otf")
 var session: Node
+var cloud: Node
 var _overlay: Control
 var _status: Label
 var _consent: CheckBox
@@ -12,6 +13,13 @@ var _close: Button
 var _policy: Button
 var _agreement: Button
 var _last_state := ""
+var _last_can_enter := false
+var _panel: PanelContainer
+var _cloud_status: Label
+var _cloud_retry: Button
+var _cloud_offline: Button
+var _cloud_choices: VBoxContainer
+var _choice_signature := ""
 
 
 func _ready() -> void:
@@ -19,9 +27,13 @@ func _ready() -> void:
 	layer = 110
 	if session == null:
 		session = TapTapSession
+	if cloud == null:
+		cloud = CloudSave
 	_build_ui()
 	session.state_changed.connect(_refresh)
 	session.login_required.connect(show_panel)
+	cloud.state_changed.connect(_refresh)
+	get_viewport().size_changed.connect(_fit_panel)
 	_refresh()
 	if not session.can_enter_game():
 		show_panel()
@@ -55,7 +67,8 @@ func _build_ui() -> void:
 	center.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_overlay.add_child(center)
 	var panel := PanelContainer.new()
-	panel.custom_minimum_size = Vector2(1020, 0)
+	_panel = panel
+	_fit_panel()
 	var style := StyleBoxFlat.new()
 	style.bg_color = Color("282a23")
 	style.border_color = Color("b5ab7a")
@@ -67,9 +80,13 @@ func _build_ui() -> void:
 	panel.add_theme_stylebox_override("panel", style)
 	panel.add_theme_font_override("font", ACCOUNT_FONT)
 	center.add_child(panel)
+	var scroll := TouchScrollContainer.new()
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	panel.add_child(scroll)
 	var column := VBoxContainer.new()
+	column.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	column.add_theme_constant_override("separation", 16)
-	panel.add_child(column)
+	scroll.add_child(column)
 	var title := Label.new()
 	title.text = "TapTap 账号"
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -102,7 +119,24 @@ func _build_ui() -> void:
 	_primary = _button("TapTap 登录", column, _on_primary)
 	_logout = _button("切换 TapTap 账号", column, func(): session.logout())
 	_close = _button("返回游戏", column, handle_back)
+	_cloud_status = Label.new()
+	_cloud_status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_cloud_status.add_theme_font_override("font", ACCOUNT_FONT)
+	_cloud_status.add_theme_font_size_override("font_size", 26)
+	column.add_child(_cloud_status)
+	_cloud_retry = _button("同步云存档", column, func(): cloud.retry())
+	_cloud_offline = _button("使用本机存档继续", column, func(): cloud.continue_offline())
+	_cloud_choices = VBoxContainer.new()
+	_cloud_choices.add_theme_constant_override("separation", 12)
+	column.add_child(_cloud_choices)
 	_button("退出游戏", column, func(): get_tree().quit())
+	_fit_panel()
+
+
+func _fit_panel() -> void:
+	if _panel == null: return
+	var available := get_viewport().get_visible_rect().size
+	_panel.custom_minimum_size = Vector2(minf(1020, available.x - 48), maxf(200, minf(900, available.y - 48)))
 
 
 func _button(text: String, parent: Node, action: Callable) -> Button:
@@ -137,15 +171,39 @@ func _refresh() -> void:
 		_primary.text = "同意并继续"
 	_primary.disabled = session.is_busy() or not session.configuration_ready() \
 		or session.state == "unavailable" or (not session.has_consent() and not _consent.button_pressed)
+	var show_cloud: bool = cloud.enabled and session.is_authenticated()
+	_cloud_status.visible = show_cloud
+	_cloud_status.text = cloud.status_message
+	_cloud_retry.visible = show_cloud and cloud.state != "conflict"
+	_cloud_retry.disabled = cloud.is_busy() or cloud.state == "unavailable"
+	_cloud_offline.visible = show_cloud and cloud.can_continue_offline() and not session.can_enter_game()
+	_cloud_choices.visible = show_cloud and cloud.state == "conflict"
+	var choices: Array = cloud.conflict_options() if _cloud_choices.visible else []
+	var signature := JSON.stringify(choices)
+	if signature != _choice_signature:
+		_choice_signature = signature
+		for child in _cloud_choices.get_children():
+			_cloud_choices.remove_child(child)
+			child.queue_free()
+		for i in choices.size():
+			var choice: Dictionary = choices[i]
+			var progress: Dictionary = choice.progress
+			var label := "保留本机进度" if choice.get("local", false) else "恢复云端进度 %d" % i
+			label += " · 天赋点 %d · 已购天赋 %d" % [int(progress.currencies.camp_currency), progress.upgrade_levels.size()]
+			_button(label, _cloud_choices, cloud.choose_progress.bind(i))
+	if show_cloud:
+		_primary.text = "退出 TapTap 登录"
+		_logout.visible = false
 	if not session.can_enter_game():
 		_overlay.show()
-	elif session.state == "logged_in" and _last_state != "logged_in":
+	elif session.can_enter_game() and not _last_can_enter:
 		_overlay.hide()
 	_last_state = session.state
+	_last_can_enter = session.can_enter_game()
 
 
 func _on_primary() -> void:
-	if session.can_enter_game():
+	if session.is_authenticated():
 		session.logout()
 	elif not session.has_consent():
 		session.accept_consent()

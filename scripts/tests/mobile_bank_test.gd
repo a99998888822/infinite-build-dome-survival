@@ -89,6 +89,12 @@ func _run() -> void:
 	check(popup._shop.get_global_rect().end.x < (game.find_child("HUD", true, false) as BattleHud).stats_drawer.global_position.x, "workspace clears stats drawer")
 	check(not MobileProfile.is_mobile() or popup.amount_input.get_theme_font_size("font_size") >= 20, "bank amount is readable on phone")
 	check(not MobileProfile.is_mobile() or popup.shop_grid._columns == 3, "phone shop displays three columns")
+	var shelf_rect := popup.shop_grid.get_global_rect()
+	check(absf(shelf_rect.position.x - popup._tabs.global_position.x) < 1.0 and absf(shelf_rect.end.x - popup._tabs.get_global_rect().end.x) < 1.0, "shop shelf aligns with both tab edges")
+	for card: PreparationOfferCard in popup.shop_grid._pool:
+		if not card.visible: continue
+		check(card._icon_frame.custom_minimum_size == card._icon_frame_size() and card._icon.size.is_equal_approx(Vector2.ONE * (40 if MobileProfile.is_mobile() else 48)), "offers share frame and icon footprint")
+		check(card._name_label.get_theme_font_size("font_size") == card._kind_label.get_theme_font_size("font_size") and card._name_label.get_theme_font_size("font_size") == card._description.get_theme_font_size("normal_font_size"), "offer title kind and body use one text size")
 
 	# Every interactive anchor has to be on screen and tappable.
 	for control in [popup.start_button, popup._tabs, popup.shop_grid, popup._refresh]:
@@ -125,6 +131,13 @@ func _run() -> void:
 	await frames(8)
 	check(popup.workbench.is_visible_in_tree(), "workbench visible on the enchant tab")
 	check(viewport.encloses(popup._enchant_scroll.get_global_rect()), "enchantment scroll stays inside the viewport")
+	if MobileProfile.is_mobile():
+		check(absf(popup._scene_enchant_back.get_global_rect().end.y - popup._scene_bank_back.get_global_rect().end.y) < 1.0, "enchantment and deposit panels share their bottom edge")
+		check(popup.workbench._inventory.columns == 4, "phone enchantment inventory always has four columns")
+		check(popup.workbench._inventory_scroll.get_h_scroll_bar().max_value <= popup.workbench._inventory_scroll.get_h_scroll_bar().page, "four enchantments fit without horizontal scrolling")
+		check(popup._enchant_scroll.get_global_rect().encloses(popup.workbench._apply.get_global_rect()), "enchantment action is visible before outer scrolling")
+		var card := popup.workbench._inventory.get_child(0) as EnchantmentInventoryCard
+		check(card != null and card._inspect.is_visible_in_tree() and card.get_global_rect().encloses(card._inspect.get_global_rect()), "phone enchantment card shows an unclipped magnifying glass")
 	var enchant_clipped := 0
 	for node in popup.workbench.find_children("*", "Label", true, false):
 		var label := node as Label

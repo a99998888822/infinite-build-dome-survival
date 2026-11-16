@@ -28,6 +28,7 @@ func initialize(source: WeaponInstance) -> void:
 		for profile in profiles:
 			# One complete outer ring per split attachment; its count changes density.
 			pulses.append(_pulse(start + SPLIT_DELAY, true, float(profile.damage_multiplier), int(profile.enchantment_start), 9 * int(profile.child_count), index * 0.31))
+			pulses[-1].event.proc_budget = pulses[index * (1 + profiles.size())].event.proc_budget
 	duration = (maxi(1, int(source.get_stat("projectile_count"))) - 1) * PULSE_GAP + (SPLIT_DELAY + SPLIT_SECONDS if not profiles.is_empty() else FIRE_SECONDS)
 	_push_nearby()
 	_advance_pulses()

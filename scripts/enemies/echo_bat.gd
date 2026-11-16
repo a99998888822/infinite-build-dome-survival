@@ -115,7 +115,7 @@ func _process_special_behavior(delta: float) -> bool:
 				wave.direction = aim_direction
 				wave.max_distance = attack_range()
 				wave.speed = float(profile.get("sonic_speed", 300))
-				wave.damage = maxi(1, roundi(get_stat("ranged_damage", 7) * (1.0 + get_stat("damage_percent") / 100.0)))
+				wave.damage = maxi(1, player_attack_damage("ranged_damage"))
 				# Owner-scoped lifetime also clears every projectile on wave cleanup.
 				add_child(wave)
 				wave.global_position = shot_origin

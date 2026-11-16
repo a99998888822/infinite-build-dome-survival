@@ -3,9 +3,9 @@ extends Node2D
 # Share the lamp's 2px grid, four-color shading and 18fps visual cadence.
 # The player advances this clock so battle pause freezes the entire revival.
 const SHADER = preload("res://shaders/effects/revive_angel_wings.gdshader")
-const OPEN_SECONDS := 0.95
-const FADE_START := 1.05
-const DURATION := 1.5
+const OPEN_SECONDS := 0.35
+const FADE_START := 0.70
+const DURATION := 1.0
 var elapsed := 0.0
 var opening := 0.0
 var active := false
@@ -17,7 +17,7 @@ func _init() -> void:
 	material = _material
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	CombatRenderWorld.set_actor_local(self)
-	show_behind_parent = true
+	z_index = -1
 	position = Vector2(0, -5)
 	hide()
 

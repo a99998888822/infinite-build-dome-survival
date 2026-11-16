@@ -1,5 +1,7 @@
 extends RefCounted
 class_name CombatEffectWorld
+const TARGETS = preload("res://scripts/battle/combat_target_query.gd")
+const DIAGNOSTICS = preload("res://scripts/battle/combat_diagnostics.gd")
 
 const FIRE_SEED_SCRIPT = preload("res://scripts/effects/fire_seed.gd")
 const EXPLOSION_EFFECT_SCRIPT = preload("res://scripts/effects/explosion_effect.gd")
@@ -10,6 +12,7 @@ const WATER_WAVE_EFFECT_SCRIPT = preload("res://scripts/effects/water_wave_effec
 const LIGHT_SWORD_EFFECT_SCRIPT = preload("res://scripts/effects/light_sword_effect.gd")
 const BLACK_HOLE_EFFECT_SCRIPT = preload("res://scripts/effects/black_hole_effect.gd")
 const WIND_BLADE_EFFECT_SCRIPT = preload("res://scripts/effects/wind_blade_effect.gd")
+const TORNADO_EFFECT_SCRIPT = preload("res://scripts/effects/tornado_effect.gd")
 const ELEMENT_REACTION_RESOLVER_SCRIPT = preload("res://scripts/effects/element_reaction_resolver.gd")
 const EFFECT_PARAMETER_RESOLVER_SCRIPT = preload("res://scripts/effects/effect_parameter_resolver.gd")
 const PARTICLE_WORLD_SCRIPT = preload("res://scripts/effects/particle_world.gd")
@@ -24,6 +27,10 @@ static func trigger_weapon_impact(
 ) -> void:
 	if parent == null or weapon == null or damage_event == null:
 		return
+	var diagnostic_start := DIAGNOSTICS.begin()
+	DIAGNOSTICS.count(&"weapon_impacts")
+	if DIAGNOSTICS.enabled:
+		DIAGNOSTICS.count(StringName("source." + weapon.source_instance_id + "." + weapon.weapon_id))
 	AudioManager.begin_combat_audio()
 	var visual_parent := _get_visual_parent(parent)
 	var allow_bounce := not weapon.is_bounce_attack and not bool(damage_event.attack_context.get("bounce_used", false))
@@ -37,6 +44,17 @@ static func trigger_weapon_impact(
 				continue
 			if str(entry.effect_id) == skip_effect_id:
 				continue
+		# Structural split boundaries are always visited; they do not spawn spell contacts.
+		if str(entry.effect_id) != "split":
+			var key := item_id if not item_id.is_empty() else str(entry.effect_id)
+			var used := int(damage_event.proc_budget.get(key, 0))
+			if used >= 3:
+				DIAGNOSTICS.count(&"proc_rejected")
+				continue
+			damage_event.proc_budget[key] = used + 1
+			DIAGNOSTICS.count(&"proc_admitted")
+		if DIAGNOSTICS.enabled:
+			DIAGNOSTICS.count(StringName("enchantment." + str(entry.effect_id)))
 		match str(entry.effect_id):
 			"split":
 				# Native weapon runtimes create one generation of branches. Only
@@ -48,8 +66,11 @@ static func trigger_weapon_impact(
 					damage_event.attack_context["bounce_used"] = true
 					var replay := load("res://scripts/weapons/bounce_attack.gd").new() as Node2D
 					visual_parent.add_child(replay)
+					weapon.attack_context["proc_inherited"] = damage_event.proc_budget
 					replay.initialize(weapon, hit_position, direction, body)
+					weapon.attack_context.erase("proc_inherited")
 			"water": WATER_WAVE_EFFECT_SCRIPT.spawn(visual_parent, hit_position, weapon, damage_event, item_id)
+			"tornado": TORNADO_EFFECT_SCRIPT.spawn(visual_parent, hit_position, direction, weapon, damage_event, item_id)
 			"light_sword": LIGHT_SWORD_EFFECT_SCRIPT.spawn(visual_parent, hit_position, weapon, damage_event, item_id)
 			"black_hole": BLACK_HOLE_EFFECT_SCRIPT.spawn(visual_parent, hit_position, weapon, damage_event, item_id)
 			"fire":
@@ -71,6 +92,7 @@ static func trigger_weapon_impact(
 				elif body is EnemyController:
 					_apply_wind(visual_parent, body, weapon, damage_event, hit_position, direction, item_id)
 	AudioManager.end_combat_audio()
+	DIAGNOSTICS.finish(&"weapon_impacts", diagnostic_start)
 
 
 static func trigger_ground_weapon_impact(parent: Node, weapon: WeaponInstance, event: DamageEvent, point: Vector2, direction: Vector2, only_effect_id: String = "", skip_effect_id: String = "") -> void:
@@ -82,8 +104,10 @@ static func _ground_chain_target(weapon: WeaponInstance, point: Vector2, item_id
 	var radius := maxf(32, context.get_resolved_parameter("jump_radius", 170) * context.get_resolved_parameter("attack_range_multiplier", 1))
 	var nearest: EnemyController
 	var distance := radius * radius + 0.001
-	for node in EnemyRegistry.get_registered_enemies():
-		var enemy := node as EnemyController
+	var registry := EnemyRegistry.get_registered_enemies()
+	# The old nearest comparison permits a squared-distance tolerance of 0.001.
+	for index in TARGETS.radius_candidates(point, sqrt(radius * radius + 0.001)).indices:
+		var enemy := registry[index] as EnemyController
 		if not is_instance_valid(enemy) or not enemy.is_alive():
 			continue
 		var next := point.distance_squared_to(enemy.global_position)
@@ -161,6 +185,9 @@ static func _apply_wind(parent: Node, enemy: EnemyController, weapon: WeaponInst
 		if propagation_limit == 0:
 			return
 		var propagated := 0
+		# Each reaction callback may move later targets. Keep this scan live;
+		# a prefiltered radius snapshot could miss a target moved into range.
+		DIAGNOSTICS.count(&"wind_live_scans")
 		for node in EnemyRegistry.get_registered_enemies():
 			var other := node as EnemyController
 			if other == null or other == enemy or not other.is_alive() or enemy.global_position.distance_to(other.global_position) > propagation_radius:

@@ -162,12 +162,16 @@ func _run() -> void:
 		pull.position = unit.position + Vector2(100, 0)
 		pull._targets = [unit]
 		old_position = unit.position
-		for i in 10: pull._process(0.01)
+		for i in 10:
+			await get_tree().process_frame
+			pull._process(0.01)
 		check(unit.position != old_position and not unit.is_control_immune(), label + "per-frame pull cannot instantly trigger armor")
 		unit._tick_super_armor(0.31)
+		await get_tree().process_frame
 		pull._process(0.01)
 		unit._tick_super_armor(0.31)
 		old_position = unit.position
+		await get_tree().process_frame
 		pull._process(0.01)
 		check(unit.is_control_immune() and unit.position == old_position, label + "sustained pull eventually triggers armor and stops on triggering frame")
 		pull.queue_free()

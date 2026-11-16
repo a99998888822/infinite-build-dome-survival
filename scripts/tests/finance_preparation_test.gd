@@ -464,12 +464,30 @@ func _test_bank_and_trades() -> void:
 
 
 func _test_large_shelf() -> void:
+	# The offer-count stat is capped at the eight-card reward contract, so the
+	# stress shelf is injected directly. This test owns shop grid virtualization.
 	modifier("shop_offer_count_bonus", 997)
+	check(StatDefinitions.calculate_shop_offer_count(3, manager.player.get_stat("shop_offer_count_bonus")) == 8, "offer bonus clamps to the eight-card contract")
 	manager.apply_gold_delta(5000, "test")
-	check(flow.request_shop_refresh().success, "refresh after banking remains available")
+	var template_pool := ShopOfferGenerator.new().build_shop_candidate_pool(flow._build_shop_context())
+	check(not template_pool.is_empty(), "shop pool is available for the large shelf fixture")
+	var template: Dictionary = template_pool[0]
+	var shelf: Array = []
+	flow._active_shop_offers.clear()
+	flow._active_shop_offer_ids.clear()
+	for index in 1000:
+		var offer: Dictionary = template.duplicate(true)
+		offer["offer_id"] = "large_shelf_%d" % index
+		offer["purchased"] = false
+		shelf.append(offer)
+		flow._active_shop_offers[offer["offer_id"]] = offer
+		flow._active_shop_offer_ids.append(offer["offer_id"])
+	flow._preparation_offers = shelf
+	flow._shop_generation += 1
+	flow._notify_preparation_changed()
 	await frames(15)
 	var grid := popup.shop_grid
-	check(grid.offers.size() == 1000, "one thousand goods without count cap")
+	check(grid.offers.size() == 1000, "one thousand goods render on the shelf")
 	var ids := {}
 	for offer in grid.offers: ids[offer.offer_id] = true
 	check(ids.size() == 1000, "all shelf slots have unique identity")
@@ -505,7 +523,7 @@ func _test_large_shelf() -> void:
 	await capture("04_large_shelf_bottom")
 	check(flow.request_shop_refresh().success, "refresh works after exhausting distinct catalog")
 	await frames(10)
-	check(grid.offers.size() == 1000 and grid.scroll.scroll_vertical == 0, "refresh resets scroll and retains bonus count")
+	check(grid.offers.size() == 8 and grid.scroll.scroll_vertical == 0, "refresh resets scroll and rebuilds the clamped eight-card shelf")
 
 
 func _test_resolutions(hud: BattleHud) -> void:

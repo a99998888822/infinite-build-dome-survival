@@ -1,6 +1,7 @@
 extends DirectedWeaponRuntime
 class_name PatternFlightRuntime
 ## One recipe owns its bodies, hit budgets and hierarchy. Child procs never recompile it.
+const DIAGNOSTICS = preload("res://scripts/battle/combat_diagnostics.gd")
 var plan: AttackPatternPlan
 var live_source: WeaponInstance
 var units: Array[Dictionary] = []
@@ -179,12 +180,45 @@ func _contact(unit: Dictionary, start: Vector2, end: Vector2) -> void:
 	var plasma := str(weapon.weapon_data.get("projectile_behavior", "")) == "plasma"
 	if plasma and float(unit.tick_left) > 0: return
 	var hits: Array[Dictionary] = []
+	var pose := Transform2D(0, start)
+	var motion := end - start
+	var bounds := Rect2(start - Vector2.ONE * _shape.radius, Vector2.ONE * _shape.radius * 2.0)
+	bounds = bounds.merge(Rect2(bounds.position + motion, bounds.size)).grow(0.001)
+	var profiling := DIAGNOSTICS.enabled
+	var started := DIAGNOSTICS.begin() if profiling else 0
+	var candidates := 0
+	var rejected := 0
+	var rays := 0
+	var exact := 0
 	for enemy in EnemyRegistry.get_registered_enemies():
 		if not is_instance_valid(enemy) or not enemy.is_alive(): continue
 		if not plasma and unit.hits.has(enemy.get_instance_id()): continue
-		if plan.orbit and not clear_path(self, weapon.owner_player.global_position, enemy.global_position): continue
-		var entry := AttackFootprint.body_entry_fraction(_shape, Transform2D(0, start), end - start, enemy)
-		if not is_inf(entry): hits.append({"enemy": enemy, "entry": entry})
+		if profiling: candidates += 1
+		# Read live transformed collider bounds for every segment. No center-only
+		# index or cross-hit cache: callbacks may move/disable/resize any target.
+		if not enemy.is_inside_tree() or (enemy.collision_layer & 2) == 0: continue
+		var body := enemy.get_node_or_null("CollisionShape2D") as CollisionShape2D
+		if body == null or body.disabled or body.shape == null: continue
+		if not bounds.intersects(body.global_transform * body.shape.get_rect(), true):
+			if profiling: rejected += 1
+			continue
+		if profiling: exact += 1
+		var entry := AttackFootprint.body_entry_fraction(_shape, pose, motion, enemy)
+		if is_inf(entry): continue
+		# Geometry and line-of-sight queries have no gameplay callbacks. Delay rays
+		# until exact contact is known, preserving registry order and entry sorting.
+		if plan.orbit:
+			if profiling: rays += 1
+			if not clear_path(self, weapon.owner_player.global_position, enemy.global_position): continue
+		hits.append({"enemy": enemy, "entry": entry})
+	if profiling:
+		DIAGNOSTICS.count(&"pattern_segments")
+		DIAGNOSTICS.count(&"pattern_candidates", candidates)
+		DIAGNOSTICS.count(&"pattern_bounds_rejected", rejected)
+		DIAGNOSTICS.count(&"pattern_rays", rays)
+		DIAGNOSTICS.count(&"pattern_exact_entries", exact)
+		DIAGNOSTICS.count(&"pattern_contacts", hits.size())
+		DIAGNOSTICS.finish(&"pattern_candidate_queries", started)
 	hits.sort_custom(func(a, b): return a.entry < b.entry)
 	for hit in hits:
 		var enemy: EnemyController = hit.enemy

@@ -37,6 +37,7 @@ public final class TapTapGodotPlugin extends GodotPlugin {
     private TapTapComplianceCallback complianceCallback;
     private int complianceGeneration;
     private boolean complianceInProgress;
+    private final TapTapCloudSaveBridge cloud = new TapTapCloudSaveBridge(this::deliver);
 
     public TapTapGodotPlugin(Godot godot) { super(godot); }
 
@@ -51,7 +52,10 @@ public final class TapTapGodotPlugin extends GodotPlugin {
             new SignalInfo("loginCancelled"),
             new SignalInfo("logoutCompleted"),
             new SignalInfo("logoutFailed", Integer.class, String.class),
-            new SignalInfo("complianceResult", Integer.class, Integer.class)
+            new SignalInfo("complianceResult", Integer.class, Integer.class),
+            new SignalInfo("cloudCompleted", Integer.class, String.class, String.class),
+            new SignalInfo("cloudFailed", Integer.class, Integer.class),
+            new SignalInfo("cloudStatus", Integer.class)
         ));
     }
 
@@ -80,6 +84,7 @@ public final class TapTapGodotPlugin extends GodotPlugin {
                 @Override public void onInitSuccess() {
                     initializing = false;
                     initialized = true;
+                    cloud.initialize();
                     TapTapSdk.removeInitCallback(this);
                     audit("initialized", 0, 0);
                     deliver("initializationCompleted", true, 0, "");
@@ -208,6 +213,7 @@ public final class TapTapGodotPlugin extends GodotPlugin {
             try {
                 // Invalidate callbacks before exit(), which can itself emit 1000.
                 clearComplianceCallback();
+                cloud.invalidate();
                 TapTapCompliance.exit();
                 TapTapLogin.logout();
                 deliver("logoutCompleted");
@@ -228,8 +234,22 @@ public final class TapTapGodotPlugin extends GodotPlugin {
         return result.toString();
     }
 
+    @UsedByGodot public void cloudList(String owner, int requestId) {
+        runOnUiThread(() -> cloud.list(owner, requestId));
+    }
+
+    @UsedByGodot public void cloudDownload(String owner, int requestId, String uuid, String fileId) {
+        runOnUiThread(() -> cloud.download(owner, requestId, uuid, fileId));
+    }
+
+    @UsedByGodot public void cloudUpload(String owner, int requestId, String uuid,
+            String name, String payload, String extra) {
+        runOnUiThread(() -> cloud.upload(getActivity(), owner, requestId, uuid, name, payload, extra));
+    }
+
     @Override public void onMainDestroy() {
         destroyed = true;
+        cloud.destroy();
         clearComplianceCallback();
         if (initCallback != null) TapTapSdk.removeInitCallback(initCallback);
         super.onMainDestroy();

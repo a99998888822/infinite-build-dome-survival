@@ -32,6 +32,7 @@ enum ElectricContact { NONE = 0, BURNING_DETONATED = 1, EXTRA_TRIGGER = 2 }
 ## result dictionaries for every victim; complex reactions keep the generic API.
 static func apply_water_contact(enemy: EnemyController, parent: Node, event: DamageEvent,
 		wet_duration: float, wet_slow_multiplier: float) -> void:
+	preload("res://scripts/battle/combat_diagnostics.gd").count(&"contacts.water")
 	if not is_instance_valid(enemy) or not enemy.is_alive(): return
 	if enemy.has_status("burning") or (enemy.has_status("slowed") and not enemy.has_status("frozen")):
 		apply_element(enemy, "water", {
@@ -61,6 +62,7 @@ static func apply_water_contact(enemy: EnemyController, parent: Node, event: Dam
 ## Keep each live state check and audio scope: callbacks can change the enemy.
 static func apply_electric_contact(enemy: EnemyController, parent: Node, hit_position: Vector2,
 		stun_duration: float, control_power: float, detonate_burning: float) -> int:
+	preload("res://scripts/battle/combat_diagnostics.gd").count(&"contacts.electric")
 	if not is_instance_valid(enemy) or not enemy.is_alive(): return ElectricContact.NONE
 	AudioManager.begin_combat_audio()
 	var was_holy := enemy.has_status("holy_flame")
@@ -92,6 +94,8 @@ static func _apply_electric_statuses(enemy: Node, parent: Node, hit_position: Ve
 
 
 static func apply_element(enemy: Node, element_id: String, reaction_data: Dictionary = {}) -> Dictionary:
+	if preload("res://scripts/battle/combat_diagnostics.gd").enabled:
+		preload("res://scripts/battle/combat_diagnostics.gd").count(StringName("element_attempts." + element_id))
 	var result := {
 		"element_id": element_id,
 		"extra_trigger": false,
@@ -209,7 +213,12 @@ static func apply_element(enemy: Node, element_id: String, reaction_data: Dictio
 				result["neutralized"] = true
 				emit_feedback(parent, "cancel", hit_position)
 			else:
-				enemy.apply_blind(maxf(float(reaction_data.get("dark_duration", DEFAULT_DARK_DURATION)), 0.1), control_power)
+				var blind_duration := maxf(float(reaction_data.get("dark_duration", DEFAULT_DARK_DURATION)), 0.1)
+				var blind_interval := maxf(float(reaction_data.get("blind_retrigger_interval", 0.0)), 0.0)
+				if blind_interval > 0.0:
+					enemy.apply_blind(blind_duration, control_power, blind_interval)
+				else:
+					enemy.apply_blind(blind_duration, control_power)
 	if not was_holy and enemy.has_status("holy_flame"):
 		emit_feedback(parent, "holy", hit_position)
 	if not was_dark_flame and enemy.has_status("dark_flame"):

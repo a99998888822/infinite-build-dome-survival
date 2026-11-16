@@ -163,6 +163,15 @@ func _run() -> void:
 	check(popup._offer_cards.size() == 8, "bonus produces eight reward choices")
 	verify_layout("eight_choices_en")
 	await capture("eight_choices_en")
+	# Both expansion relics plus the three-level camp upgrade would reach ten
+	# offers, so the stat is capped at five: the widest reachable shelf has to stay
+	# inside the fixed four-by-two card contract below.
+	battle.player.modifier_stack.set_base_stat("shop_offer_count_bonus", 7)
+	check(bool(flow.request_shop_refresh().get("success", false)), "refresh the widest reachable reward shelf")
+	await get_tree().create_timer(1.0).timeout
+	check(popup._offer_cards.size() == 8, "offer count is clamped to the eight-card layout")
+	verify_layout("clamped_choices_en")
+	await capture("clamped_choices_en")
 	battle.player.modifier_stack.set_base_stat("shop_offer_count_bonus", 0)
 	L10n.set_locale("zh_CN", false)
 	await click(popup.skip_button)

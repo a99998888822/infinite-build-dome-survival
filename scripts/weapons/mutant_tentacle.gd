@@ -59,8 +59,9 @@ func _physics_process(delta: float) -> void:
 	queue_redraw()
 
 
-func _contact(direction: Vector2, reach: float, power: float, child: bool, continuation: int = 0) -> void:
+func _contact(direction: Vector2, reach: float, power: float, child: bool, continuation: int = 0, inherited_budget: Dictionary = {}) -> void:
 	var event := weapon.calculate_damage_events()[0]
+	if child: event.proc_budget = inherited_budget
 	event.split_child = child
 	event.enchantment_start = continuation
 	event.damage = maxi(1, roundi(event.damage * power))
@@ -77,7 +78,7 @@ func _contact(direction: Vector2, reach: float, power: float, child: bool, conti
 				var angle := lerpf(-float(profile.spread_angle), float(profile.spread_angle), float(i + 1) / float(int(profile.child_count) + 1))
 				var side := direction.rotated(deg_to_rad(angle))
 				branches.append({"direction": side, "age": 0.0})
-				_contact(side, 0.65, float(profile.damage_multiplier), true, int(profile.enchantment_start))
+				_contact(side, 0.65, float(profile.damage_multiplier), true, int(profile.enchantment_start), event.proc_budget)
 	AudioManager.end_combat_audio()
 
 

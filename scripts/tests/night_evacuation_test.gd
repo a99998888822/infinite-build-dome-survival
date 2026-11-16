@@ -112,14 +112,14 @@ func run() -> void:
 	manager._process(50)
 	check(evacuation.elapsed==before_pause,"reward popup freezes evacuation")
 	flow.close_shared_reward_shop_popup()
-	evacuation.elapsed = 27.0
-	check(is_equal_approx(evacuation.reward_multiplier(),.5),"late reinforcements have half rewards after twenty-seven seconds")
+	evacuation.elapsed = 39.0
+	check(is_equal_approx(evacuation.reward_multiplier(),.5),"late reinforcements have half rewards after thirty-nine seconds")
 	var reward_actions: Array[Dictionary] = [{"type":"exp_orb","amount":1}]
 	var first := evacuation.scale_reward_actions(reward_actions)
 	var second := evacuation.scale_reward_actions(reward_actions)
 	check(first.is_empty() and second.size()==1 and second[0].amount==1,"fractional rewards accumulate without rounding to full drops")
 	evacuation.elapsed = 120.0
-	check(is_equal_approx(evacuation.reward_multiplier(),0.1),"long-night rewards stop decaying at ten percent")
+	check(is_equal_approx(evacuation.reward_multiplier(),0.2),"long-night rewards stop decaying at twenty percent")
 	for i in 100: manager._process(.3)
 	check(manager.get_living_enemy_count()<=int(manager._difficulty.enemy_limit),"long overtime obeys enemy cap")
 	check(EnemyRegistry.get_registered_enemies().any(func(e): return bool(e.get_meta("evacuation_hunter",false))),"prolonged overtime introduces announced hunters")

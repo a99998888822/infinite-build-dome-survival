@@ -1,5 +1,6 @@
 extends Node2D
 class_name IceFieldEffect
+const TARGETS = preload("res://scripts/battle/combat_target_query.gd")
 const BAKED = preload("res://scripts/effects/baked_pixel_frames.gd")
 
 const PARTICLE_WORLD_SCRIPT = preload("res://scripts/effects/particle_world.gd")
@@ -95,7 +96,7 @@ func _damage_enemies() -> void:
 		_ground_shape.points = FOOTPRINT.shape(get_terminal_footprint_axes()).points
 		_shape_radius = _radius
 	_query.transform = Transform2D(0.0, global_position)
-	var results := get_world_2d().direct_space_state.intersect_shape(_query, maxi(64, EnemyRegistry.get_registered_enemies().size()))
+	var results := TARGETS.intersect_shape(get_world_2d(), _query, maxi(64, EnemyRegistry.get_registered_enemies().size()), &"ice")
 	var previous_excluded_count := _excluded_bodies.size()
 	var damage := maxi(1, int(roundi(_context.get_resolved_parameter("damage", 1.0))))
 	for result in results:

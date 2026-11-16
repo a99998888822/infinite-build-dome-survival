@@ -49,10 +49,22 @@ def verify_apk(path):
             if token not in dex:
                 raise ValueError("APK missing SDK/bridge component: " + token.decode("ascii"))
         checks.append("compliance_sdk_and_bridge_v2")
+        for token in [
+            b"Lcom/taptap/sdk/cloudsave/TapTapCloudSave;",
+            b"Lcom/octopus/goblin/taptap/TapTapCloudSaveBridge;",
+            b"cloudList", b"cloudDownload", b"cloudUpload", b"cloudCompleted",
+        ]:
+            if token not in dex:
+                raise ValueError("APK missing cloud-save SDK/bridge component: " + token.decode("ascii"))
+        if not any(name.endswith("/libcloudsave_sdk.so") for name in names):
+            raise ValueError("APK missing cloud-save native library")
+        checks.append("cloud_save_sdk_and_bridge")
         scripts = {
             "autoloads/taptap_session": {
-                "_compliance_passed", "_on_compliance_result", "can_enter_game", "_start_compliance",
+                "_compliance_passed", "_on_compliance_result", "can_enter_game", "_start_compliance", "_cloud_ready",
             },
+            "autoloads/cloud_save": {"_reconcile", "_valid_snapshot", "choose_progress", "continue_offline", "_base_revision"},
+            "autoloads/camp_progression": {"activate_cloud_account", "restore_cloud_progress", "cloud_progress"},
             "scripts/core/game_root": {"_on_taptap_state_changed", "_battle_runtime_pause_requested"},
             "scripts/core/main_flow_coordinator": {"_battle_runtime_pause_requested", "can_enter_game"},
         }
@@ -65,6 +77,9 @@ def verify_apk(path):
         if b"autoload/TapTapSession" not in project:
             raise ValueError("TapTapSession autoload not registered in APK")
         checks.append("session_autoload_registered")
+        if b"autoload/CloudSave" not in project:
+            raise ValueError("CloudSave autoload not registered in APK")
+        checks.append("cloud_save_autoload_registered")
         config = json.loads(apk.read("assets/data_config/platform/taptap.json"))
         if not all(config.get(key) for key in ["client_id", "client_token", "privacy_policy_url"]):
             raise ValueError("Missing required SDK configuration")

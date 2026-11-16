@@ -27,6 +27,7 @@
     "rarity": "common",
     "max_stack": 0,
     "tags": [
+      "stat_gate",
       "finance"
     ],
     "effects": [
@@ -217,6 +218,7 @@
     "rarity": "epic",
     "max_stack": 8,
     "tags": [
+      "stat_gate",
       "finance"
     ],
     "effects": [
@@ -267,6 +269,7 @@
     "rarity": "epic",
     "max_stack": 1,
     "tags": [
+      "stat_gate",
       "finance"
     ],
     "effects": [
@@ -319,6 +322,7 @@
     "rarity": "epic",
     "max_stack": 1,
     "tags": [
+      "stat_gate",
       "finance",
       "surplus_value"
     ],
@@ -371,6 +375,7 @@
     "rarity": "epic",
     "max_stack": 1,
     "tags": [
+      "stat_gate",
       "finance",
       "surplus_value"
     ],
@@ -423,6 +428,7 @@
     "rarity": "epic",
     "max_stack": 1,
     "tags": [
+      "stat_gate",
       "finance",
       "surplus_value"
     ],
@@ -465,6 +471,7 @@
     "rarity": "epic",
     "max_stack": 1,
     "tags": [
+      "stat_gate",
       "finance",
       "surplus_value"
     ],
@@ -517,6 +524,7 @@
     "rarity": "mythic",
     "max_stack": 1,
     "tags": [
+      "stat_gate",
       "finance"
     ],
     "effects": [
@@ -544,6 +552,7 @@
     "rarity": "mythic",
     "max_stack": 1,
     "tags": [
+      "stat_gate",
       "finance"
     ],
     "effects": [
@@ -1017,7 +1026,7 @@
     "icon": "res://assets/ui/icons/relics/relic_cracked_stone_bullet.png",
     "rarity": "common",
     "max_stack": 0,
-    "tags": ["combat", "projectile"],
+    "tags": ["combat", "projectile", "stat_gate"],
     "effects": [
       {"id": "mod_relic_cracked_stone_bullet_ranged_damage", "source_type": "relic", "source_id": "relic_cracked_stone_bullet", "target_scope": "player", "stat": "ranged_damage", "operation": "add_flat", "value": 2, "duration": -1},
       {"id": "mod_relic_cracked_stone_bullet_pickup_radius", "source_type": "relic", "source_id": "relic_cracked_stone_bullet", "target_scope": "player", "stat": "pickup_radius", "operation": "add_flat", "value": -10, "duration": -1}
@@ -1031,7 +1040,7 @@
     "icon": "res://assets/ui/icons/relics/relic_hasty_spring_trigger.png",
     "rarity": "common",
     "max_stack": 0,
-    "tags": ["combat", "movement"],
+    "tags": ["combat", "movement", "stat_gate"],
     "effects": [
       {"id": "mod_relic_hasty_spring_trigger_attack_speed", "source_type": "relic", "source_id": "relic_hasty_spring_trigger", "target_scope": "player", "stat": "attack_speed", "operation": "add_flat", "value": 5, "duration": -1},
       {"id": "mod_relic_hasty_spring_trigger_move_speed", "source_type": "relic", "source_id": "relic_hasty_spring_trigger", "target_scope": "player", "stat": "move_speed", "operation": "add_flat", "value": -2, "duration": -1}
@@ -1143,7 +1152,7 @@
     "icon": "res://assets/ui/icons/relics/relic_corroded_blowpipe.png",
     "rarity": "rare",
     "max_stack": 0,
-    "tags": ["combat", "survival"],
+    "tags": ["combat", "survival", "stat_gate"],
     "effects": [
       {"id": "mod_relic_corroded_blowpipe_ranged_damage", "source_type": "relic", "source_id": "relic_corroded_blowpipe", "target_scope": "player", "stat": "ranged_damage", "operation": "add_flat", "value": 7, "duration": -1},
       {"id": "mod_relic_corroded_blowpipe_max_hp", "source_type": "relic", "source_id": "relic_corroded_blowpipe", "target_scope": "player", "stat": "max_hp", "operation": "add_flat", "value": -3, "duration": -1}
@@ -1173,7 +1182,7 @@
     "icon": "res://assets/ui/icons/relics/relic_executioner_bracer.png",
     "rarity": "epic",
     "max_stack": 0,
-    "tags": ["combat", "movement"],
+    "tags": ["combat", "movement", "stat_gate"],
     "effects": [
       {"id": "mod_relic_executioner_bracer_melee_damage", "source_type": "relic", "source_id": "relic_executioner_bracer", "target_scope": "player", "stat": "melee_damage", "operation": "add_flat", "value": 11, "duration": -1},
       {"id": "mod_relic_executioner_bracer_move_speed", "source_type": "relic", "source_id": "relic_executioner_bracer", "target_scope": "player", "stat": "move_speed", "operation": "add_flat", "value": -10, "duration": -1}
@@ -1223,6 +1232,7 @@
     "rarity": "mythic",
     "max_stack": 1,
     "tags": [
+      "stat_gate",
       "combat",
       "projectile"
     ],
@@ -1314,8 +1324,8 @@
     "description": "负载 + 10；移动速度 - 12；拾取范围 - 10",
     "icon": "res://assets/ui/icons/relics/relic_expanded_backpack_strap.png",
     "rarity": "uncommon",
-    "max_stack": 0,
-    "tags": ["reward", "movement", "build"],
+    "max_stack": 4,
+    "tags": ["reward", "movement", "build", "stat_gate"],
     "effects": [
       {"id": "mod_relic_expanded_backpack_strap_load_capacity", "source_type": "relic", "source_id": "relic_expanded_backpack_strap", "target_scope": "player", "stat": "load_capacity", "operation": "add_flat", "value": 10, "duration": -1},
       {"id": "mod_relic_expanded_backpack_strap_move_speed", "source_type": "relic", "source_id": "relic_expanded_backpack_strap", "target_scope": "player", "stat": "move_speed", "operation": "add_flat", "value": -12, "duration": -1},
@@ -1347,6 +1357,7 @@
     "rarity": "rare",
     "max_stack": 0,
     "tags": [
+      "stat_gate",
       "reward",
       "survival"
     ],
@@ -1428,8 +1439,8 @@
     "description": "幸运 + 36；负载 + 10；拾取范围 + 10；侵蚀度 + 25",
     "icon": "res://assets/ui/icons/relics/relic_void_storage_casket.png",
     "rarity": "epic",
-    "max_stack": 0,
-    "tags": ["reward", "eldritch", "build"],
+    "max_stack": 4,
+    "tags": ["reward", "eldritch", "build", "stat_gate"],
     "effects": [
       {"id": "mod_relic_void_storage_casket_luck", "source_type": "relic", "source_id": "relic_void_storage_casket", "target_scope": "player", "stat": "luck", "operation": "add_flat", "value": 36, "duration": -1},
       {"id": "mod_relic_void_storage_casket_load_capacity", "source_type": "relic", "source_id": "relic_void_storage_casket", "target_scope": "player", "stat": "load_capacity", "operation": "add_flat", "value": 10, "duration": -1},
@@ -1478,7 +1489,7 @@
     "icon": "res://assets/ui/icons/relics/relic_sleepless_ledger.png",
     "rarity": "rare",
     "max_stack": 1,
-    "tags": ["finance", "eldritch"],
+    "tags": ["finance", "eldritch", "stat_gate"],
     "effects": [
       {"id": "mod_relic_sleepless_ledger_interest_rate", "source_type": "relic", "source_id": "relic_sleepless_ledger", "target_scope": "player", "stat": "interest_rate", "operation": "add_flat", "value": 4, "duration": -1}
     ],
@@ -1945,8 +1956,8 @@
     "description": "商店选择数量 +1；商店折扣 +5%",
     "icon": "res://assets/ui/icons/relics/relic_goblin_trade_charter.png",
     "rarity": "mythic",
-    "max_stack": 0,
-    "tags": ["finance", "reward"],
+    "max_stack": 2,
+    "tags": ["finance", "reward", "stat_gate"],
     "effects": [
       {"id": "mod_relic_goblin_trade_charter_shop_offer_count_bonus", "source_type": "relic", "source_id": "relic_goblin_trade_charter", "target_scope": "player", "stat": "shop_offer_count_bonus", "operation": "add_flat", "value": 1, "duration": -1},
       {"id": "mod_relic_goblin_trade_charter_shop_price_percent", "source_type": "relic", "source_id": "relic_goblin_trade_charter", "target_scope": "player", "stat": "shop_price_percent", "operation": "add_flat", "value": 5, "duration": -1}
@@ -1959,8 +1970,8 @@
     "description": "商店选择数量 +1；利率 +2 个百分点",
     "icon": "res://assets/ui/icons/relics/relic_void_market_key.png",
     "rarity": "legendary",
-    "max_stack": 0,
-    "tags": ["finance", "reward", "eldritch"],
+    "max_stack": 2,
+    "tags": ["finance", "reward", "eldritch", "stat_gate"],
     "effects": [
       {"id": "mod_relic_void_market_key_shop_offer_count_bonus", "source_type": "relic", "source_id": "relic_void_market_key", "target_scope": "player", "stat": "shop_offer_count_bonus", "operation": "add_flat", "value": 1, "duration": -1},
       {"id": "mod_relic_void_market_key_interest_rate", "source_type": "relic", "source_id": "relic_void_market_key", "target_scope": "player", "stat": "interest_rate", "operation": "add_flat", "value": 2, "duration": -1}
@@ -2032,7 +2043,7 @@
     "icon": "res://assets/ui/icons/relics/relic_crimson_execution_seal.png",
     "rarity": "epic",
     "max_stack": 0,
-    "tags": ["attack", "eldritch"],
+    "tags": ["attack", "eldritch", "stat_gate"],
     "effects": [
       {"id": "mod_relic_crimson_execution_seal_crit_damage", "source_type": "relic", "source_id": "relic_crimson_execution_seal", "target_scope": "player", "stat": "crit_damage", "operation": "add_flat", "value": 30, "duration": -1},
       {"id": "mod_relic_crimson_execution_seal_damage_percent", "source_type": "relic", "source_id": "relic_crimson_execution_seal", "target_scope": "player", "stat": "damage_percent", "operation": "add_flat", "value": 10, "duration": -1},
@@ -2059,8 +2070,8 @@
     "description": "投射物数量 +1；攻击速度 -15%；仅影响支持投射物数量的攻击，部分攻击不会对同一目标重复命中",
     "icon": "res://assets/ui/icons/relics/relic_twin_chamber_magazine.png",
     "rarity": "mythic",
-    "max_stack": 0,
-    "tags": ["attack"],
+    "max_stack": 1,
+    "tags": ["attack", "stat_gate"],
     "effects": [
       {"id": "mod_relic_twin_chamber_magazine_projectile_count", "source_type": "relic", "source_id": "relic_twin_chamber_magazine", "target_scope": "player", "stat": "projectile_count", "operation": "add_flat", "value": 1, "duration": -1},
       {"id": "mod_relic_twin_chamber_magazine_attack_speed", "source_type": "relic", "source_id": "relic_twin_chamber_magazine", "target_scope": "player", "stat": "attack_speed", "operation": "add_flat", "value": -15, "duration": -1}
@@ -2074,7 +2085,7 @@
     "icon": "res://assets/ui/icons/relics/relic_stilltime_amber.png",
     "rarity": "epic",
     "max_stack": 0,
-    "tags": ["control", "eldritch"],
+    "tags": ["control", "eldritch", "stat_gate"],
     "effects": [
       {"id": "mod_relic_stilltime_amber_control_power", "source_type": "relic", "source_id": "relic_stilltime_amber", "target_scope": "player", "stat": "control_power", "operation": "add_flat", "value": 20, "duration": -1},
       {"id": "mod_relic_stilltime_amber_element_damage", "source_type": "relic", "source_id": "relic_stilltime_amber", "target_scope": "player", "stat": "element_damage", "operation": "add_flat", "value": 5, "duration": -1},

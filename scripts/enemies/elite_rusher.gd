@@ -188,7 +188,7 @@ func _try_dash_damage(from_distance: float, to_distance: float) -> void:
 	if not _sweep_overlaps_player(rect):
 		return
 	_dash_hit = true
-	var damage := roundi(get_stat("melee_damage") * (1.0 + get_stat("damage_percent") / 100.0) * float(_profile.get("dash_damage_percent", 120)) / 100.0)
+	var damage := player_attack_damage("melee_damage", float(_profile.get("dash_damage_percent", 120)) / 100.0)
 	var dealt := target_player.take_damage(damage, enemy_id + "_dash")
 	if dealt > 0:
 		has_contact_damaged = true

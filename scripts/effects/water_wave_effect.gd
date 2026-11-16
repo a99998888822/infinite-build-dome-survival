@@ -1,5 +1,6 @@
 extends Node2D
 class_name WaterWaveEffect
+const TARGETS = preload("res://scripts/battle/combat_target_query.gd")
 
 const EFFECT_PARAMETER_RESOLVER_SCRIPT = preload("res://scripts/effects/effect_parameter_resolver.gd")
 const ELEMENT_REACTION_RESOLVER_SCRIPT = preload("res://scripts/effects/element_reaction_resolver.gd")
@@ -96,7 +97,7 @@ func _apply_wave() -> void:
 	query.transform = Transform2D(0.0, global_position)
 	query.collision_mask = 2
 	query.collide_with_bodies = true
-	var results := get_world_2d().direct_space_state.intersect_shape(query, maxi(64, EnemyRegistry.get_registered_enemies().size()))
+	var results := TARGETS.intersect_shape(get_world_2d(), query, maxi(64, EnemyRegistry.get_registered_enemies().size()), &"water")
 	var damage := _damage_event.get_elemental_damage(_context.get_resolved_parameter("damage_multiplier", DEFAULT_DAMAGE_MULTIPLIER))
 	var wet_duration: float = _context.get_resolved_parameter("wet_duration", 5.0)
 	var wet_slow_multiplier: float = _context.get_resolved_parameter("wet_slow_multiplier", 0.8)

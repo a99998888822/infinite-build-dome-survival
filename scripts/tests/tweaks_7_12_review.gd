@@ -32,15 +32,15 @@ func run() -> void:
 	if not rewards._offer_cards.is_empty():
 		var offer: Dictionary = rewards._offer_cards[0].offer_data
 		check(bool(flow.submit_shop_purchase(offer,"free").get("success",false)),"select actual upgrade reward")
-	check(player._invincibility_timer >= 1.49 and player._revive_blink_active,"upgrade selection grants short invincibility and blinking")
+	check(player._invincibility_timer >= 0.99 and player.is_control_immune() and not player._revive_blink_active and player._protection_effect.active,"upgrade selection grants one-second damage and control immunity with gold effect")
 	check(player._revive_wings == null,"upgrade protection creates no wings")
 	var hp := player.current_hp
 	player.take_damage(100,"review")
 	check(player.current_hp == hp,"upgrade protection blocks damage")
-	player._invincibility_timer = 1.35
+	player._invincibility_timer = 0.85
 	player._update_revive_blink()
 	await snap("03_upgrade_blink")
-	player._invincibility_timer = 1.50
+	player._invincibility_timer = 1.0
 	player._update_revive_blink()
 	await snap("04_upgrade_visible")
 	manager.wave_time_left = 0.0

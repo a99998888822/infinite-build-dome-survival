@@ -57,6 +57,9 @@ var _effects: Control
 
 func _ready() -> void:
 	L10n.locale_changed.connect(_refresh_language)
+	if CloudSave.enabled:
+		CloudSave.state_changed.connect(func():
+			if not report.is_empty() and _status != null: seek(_elapsed))
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
@@ -264,6 +267,8 @@ func seek(seconds: float) -> void:
 	var pulse := maxf(0, 1 - absf(seconds - float(_config.presentation.stage_times[4]) - 0.3) / 0.3)
 	_total_value.scale = Vector2.ONE * (1 + pulse * 0.07)
 	_status.text = ("ui.settlement.saved" if bool(report.get("paid", false)) else "ui.settlement.save_failed") if _progress(4) >= 1 else "ui.settlement.counting"
+	if CloudSave.enabled and bool(report.get("paid", false)) and _progress(4) >= 1:
+		_status.text = "已保存到本机 · " + ("已同步到云端" if CloudSave.state == "synced" else "云端同步中" if CloudSave.is_busy() else "云端待同步")
 	_conversion.text = "ui.settlement.base_conversion_hint"
 	if _progress(4) >= 1:
 		_conversion.text = _number(int(report.camp_currency))

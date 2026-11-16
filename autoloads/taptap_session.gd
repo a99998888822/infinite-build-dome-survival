@@ -19,6 +19,7 @@ var _initialized := false
 var _login_after_init := false
 var _compliance_passed := false
 var _compliance_request := 0
+var _cloud_ready := true
 
 
 func _ready() -> void:
@@ -74,7 +75,17 @@ func is_required() -> bool:
 
 
 func can_enter_game() -> bool:
-	return not _required or (state == "logged_in" and _compliance_passed and has_account())
+	return not _required or (is_authenticated() and _cloud_ready)
+
+
+func is_authenticated() -> bool:
+	return state == "logged_in" and _compliance_passed and has_account()
+
+
+func set_cloud_ready(ready: bool) -> void:
+	if _cloud_ready == ready: return
+	_cloud_ready = ready
+	state_changed.emit()
 
 
 func has_account() -> bool:

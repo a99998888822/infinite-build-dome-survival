@@ -30,6 +30,8 @@ var hit_position: Vector2 = Vector2.ZERO
 var attack_context: Dictionary = {}
 var enchantment_start: int = 0
 var split_child: bool = false
+# Shared across copies and split descendants of one real attack unit.
+var proc_budget: Dictionary = {}
 
 
 static func create(data: Dictionary) -> DamageEvent:
@@ -48,6 +50,7 @@ static func create(data: Dictionary) -> DamageEvent:
 	event.hit_position = data.get("hit_position", Vector2.ZERO)
 	event.attack_context = data.get("attack_context", {})
 	event.enchantment_start = int(data.get("enchantment_start", 0))
+	event.proc_budget = data.get("proc_budget", {})
 	event.split_child = bool(data.get("split_child", false))
 	return event
 
@@ -69,6 +72,7 @@ func to_dictionary() -> Dictionary:
 		"attack_context": attack_context,
 		"enchantment_start": enchantment_start,
 		"split_child": split_child,
+		"proc_budget": proc_budget,
 	}
 
 
@@ -94,6 +98,7 @@ func duplicate_event() -> DamageEvent:
 	event.attack_context = attack_context
 	event.enchantment_start = enchantment_start
 	event.split_child = split_child
+	event.proc_budget = proc_budget
 	return event
 
 

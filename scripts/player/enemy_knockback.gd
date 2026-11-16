@@ -17,6 +17,9 @@ func _ready() -> void:
 
 func impulse(source: PhysicsBody2D, direction: Vector2, strength: float, duration: float) -> void:
 	if not is_instance_valid(player) or not player.alive: return
+	if player.is_control_immune():
+		cancel()
+		return
 	cancel()
 	if is_instance_valid(source):
 		player.add_collision_exception_with(source)
@@ -31,7 +34,7 @@ func impulse(source: PhysicsBody2D, direction: Vector2, strength: float, duratio
 
 func _physics_process(delta: float) -> void:
 	if bool(GameGlobal.get_runtime_flag("battle_runtime_paused",false)): return
-	if not is_instance_valid(player) or not player.alive:
+	if not is_instance_valid(player) or not player.alive or player.is_control_immune():
 		cancel()
 		return
 	if remaining <= 0: return

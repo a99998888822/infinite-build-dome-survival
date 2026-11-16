@@ -239,8 +239,11 @@ func pressure_multiplier(start_seconds: float) -> float:
 func apply_pressure(enemy: EnemyController) -> void:
 	# Capture growth once at birth: living enemies never heal or gain damage.
 	var damage := pressure_multiplier(float(config.damage_growth_start))
-	var factors := {"max_hp":pressure_multiplier(float(config.health_growth_start)),
+	var health := 1.0 + (pressure_multiplier(float(config.health_growth_start)) - 1.0) * float(config.health_growth_rate)
+	var factors := {"max_hp":health,
 		"melee_damage":damage,"ranged_damage":damage,"element_damage":damage}
+	for stat in ["melee_damage", "ranged_damage", "element_damage"]:
+		enemy.night_base_damage[stat] = enemy.modifier_stack.get_stat(stat)
 	var base_speed := enemy.get_chase_speed()
 	var speed_progress := smoothstep(0.0,float(config.speed_growth_seconds),elapsed-float(config.speed_growth_start))
 	var speed_limit := maxf(0.0,player.get_stat("move_speed")-float(config.speed_player_gap))

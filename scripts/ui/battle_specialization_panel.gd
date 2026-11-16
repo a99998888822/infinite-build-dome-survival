@@ -154,6 +154,9 @@ func refresh() -> void:
 
 func arrange() -> void:
 	if heading == null or size.x < 1 or size.y < 1: return
+	if MobileProfile.is_mobile():
+		_arrange_phone()
+		return
 	# Only very short loan layouts scroll. The approved normal layout stays intact.
 	_body.custom_minimum_size.y = 154
 	var width := _body.size.x
@@ -188,6 +191,46 @@ func arrange() -> void:
 	note.visible = not short
 	_place(confirm, Rect2(margin, height - 34, width - margin * 2, 28))
 	confirm.add_theme_font_size_override("font_size", 12 if compact else 14)
+
+
+func _arrange_phone() -> void:
+	# Use one text tier, with room around each line instead of tall empty cards.
+	var font_size := 20
+	var margin := 12.0
+	var row_h := ceilf(heading.get_theme_font("font").get_height(font_size)) + 8.0
+	var line_count := 1
+	for i in cards.size():
+		if cards[i].visible: line_count = maxi(line_count, details[i].text.count("\n") + 1)
+	var detail_h := (row_h - 8.0) * line_count + 8.0 * (line_count - 1)
+	var card_h := 24.0 + row_h * 2 + detail_h + 16.0
+	var cards_y := margin + row_h + 12.0
+	var quote_y := cards_y + card_h + 12.0
+	var note_y := quote_y + row_h + 8.0
+	var confirm_y := note_y + row_h * 2 + 8.0
+	_body.custom_minimum_size.y = confirm_y + 44.0 + margin
+	var width := _body.size.x
+	for label in [heading, quote, note]:
+		FinanceUIStyle.label(label, font_size, FinanceUIStyle.TEXT if label == heading else (FinanceUIStyle.GOLD if label == quote else FinanceUIStyle.MUTED))
+	_place(heading, Rect2(margin, margin, width - margin * 2, row_h))
+	var card_width := (width - margin * 2) * 0.92
+	_place(card_row, Rect2((width - card_width) * 0.5, cards_y, card_width, card_h))
+	card_row.add_theme_constant_override("separation", 12)
+	for i in cards.size():
+		var w := cards[i].size.x
+		FinanceUIStyle.label(names[i], font_size, FinanceUIStyle.TEXT)
+		FinanceUIStyle.label(details[i], font_size, FinanceUIStyle.GREEN)
+		FinanceUIStyle.label(marks[i], font_size, FinanceUIStyle.GOLD if i == selected else FinanceUIStyle.MUTED)
+		details[i].add_theme_constant_override("line_spacing", 8)
+		_place(names[i], Rect2(10, 12, w - 20, row_h))
+		_place(details[i], Rect2(10, 12 + row_h + 8, w - 20, detail_h))
+		_place(marks[i], Rect2(10, card_h - 12 - row_h, w - 20, row_h))
+		marks[i].show()
+	_place(quote, Rect2(margin, quote_y, width - margin * 2, row_h))
+	note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	note.show()
+	_place(note, Rect2(margin, note_y, width - margin * 2, row_h * 2))
+	_place(confirm, Rect2(margin, confirm_y, width - margin * 2, 44))
+	confirm.add_theme_font_size_override("font_size", font_size)
 
 
 func _place(control: Control, rect: Rect2) -> void:

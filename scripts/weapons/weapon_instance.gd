@@ -204,6 +204,7 @@ func make_bounce_copy(point: Vector2) -> WeaponInstance:
 	copy._rebuild_attachment_effects()
 	copy.begin_attack()
 	copy.attack_context["hit_feedback_id"] = DamageEvent.feedback_attack_id(attack_context)
+	if attack_context.has("proc_inherited"): copy.attack_context["proc_inherited"] = attack_context.proc_inherited
 	return copy
 
 
@@ -804,6 +805,7 @@ func calculate_damage_events(force_critical: bool = false) -> Array[DamageEvent]
 	if get_attack_kind() in [DAMAGE_KIND_RANGED, DAMAGE_KIND_ELEMENT, DAMAGE_KIND_MELEE]:
 		events.append(_build_damage_event(get_attack_kind(), force_critical))
 	for event in events:
+		if attack_context.has("proc_inherited"): event.proc_budget = attack_context.proc_inherited
 		event.damage = maxi(1, roundi(event.damage * pattern_damage_scale))
 		event.original_damage = maxi(1, roundi(event.original_damage * pattern_damage_scale))
 		event.element_damage_bonus = roundi(event.element_damage_bonus * pattern_damage_scale)

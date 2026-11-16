@@ -15,7 +15,7 @@ signal stats_changed
 signal blink_completed
 
 const DEFAULT_CHARACTER_ID: String = "character_void_hunter"
-const DEFAULT_INVINCIBILITY_SECONDS: float = 0.1
+const DEFAULT_INVINCIBILITY_SECONDS: float = 0.5
 const REVIVE_HEALTH_PERCENT: float = 0.5
 const REVIVE_INVINCIBILITY_SECONDS: float = 1.0
 const REVIVE_BLINK_STEP_SECONDS: float = 0.1
@@ -67,6 +67,9 @@ var start_weapon_ids: Array[String] = []
 
 var _invincibility_timer: float = 0.0
 var _revive_blink_active := false
+var _damage_blink_duration := DEFAULT_INVINCIBILITY_SECONDS
+var _control_immunity_timer := 0.0
+var _protection_effect: Node2D
 var _revive_wings: Node2D
 var _configured_revive_count: int = 0
 var _walk_animation_time: float = 0.0
@@ -158,7 +161,10 @@ func _physics_process(delta: float) -> void:
 		return
 	modifier_stack.tick(delta)
 	_invincibility_timer = maxf(_invincibility_timer - delta, 0.0)
+	_control_immunity_timer = maxf(_control_immunity_timer - delta, 0.0)
 	_update_revive_blink()
+	if _protection_effect != null:
+		_protection_effect.advance(delta, _invincibility_timer)
 	if _revive_wings != null:
 		_revive_wings.advance(delta)
 	_process_regeneration(delta)
@@ -190,8 +196,9 @@ func initialize_from_character(target_character_id: String, outgame_modifiers: A
 	_configured_revive_count = 0
 	remaining_revives = 0
 	modifier_stack.set_base_stats(data.get("base_stats", {}))
-	if MobileProfile.is_mobile() and character_id == "character_void_hunter":
-		modifier_stack.set_base_stat("move_speed", float(data.get("base_stats", {}).get("move_speed", 0.0)) + 15.0)
+	if MobileProfile.is_mobile():
+		var mobile_speed_bonus := 30.0 if character_id == "character_void_hunter" else 15.0
+		modifier_stack.set_base_stat("move_speed", float(data.get("base_stats", {}).get("move_speed", 0.0)) + mobile_speed_bonus)
 	_apply_modifier_list(data.get("passive_modifiers", []))
 	_apply_modifier_list(outgame_modifiers)
 
@@ -207,6 +214,7 @@ func initialize_from_character(target_character_id: String, outgame_modifiers: A
 	_configured_revive_count = remaining_revives
 	alive = true
 	_invincibility_timer = 0.0
+	_control_immunity_timer = 0.0
 	_clear_revive_blink()
 	_clear_revive_wings()
 	_hp_regen_remainder = 0.0
@@ -486,6 +494,9 @@ func take_damage(raw_damage: int, source_id: String = "") -> int:
 	if health_damage > 0:
 		health_damage_taken.emit(previous_hp, current_hp, damage_maximum_hp)
 	_invincibility_timer = invincibility_seconds
+	_damage_blink_duration = invincibility_seconds
+	_revive_blink_active = true
+	_update_revive_blink()
 	_apply_damage_flash()
 	_refresh_relic_dynamic_effects()
 	hp_changed.emit(current_hp, int(get_stat("max_hp")), current_shield)
@@ -510,9 +521,21 @@ func _apply_damage_flash() -> void:
 
 func grant_upgrade_protection() -> void:
 	if not alive: return
-	_invincibility_timer = maxf(_invincibility_timer, 1.5)
-	_revive_blink_active = true
-	_update_revive_blink()
+	_invincibility_timer = maxf(_invincibility_timer, 1.0)
+	_grant_control_immunity(1.0)
+	_clear_revive_blink()
+	_start_protection_effect("upgrade")
+
+
+func is_control_immune() -> bool:
+	return alive and _control_immunity_timer > 0.0
+
+
+func _grant_control_immunity(seconds: float) -> void:
+	_control_immunity_timer = maxf(_control_immunity_timer, seconds)
+	var knockback := get_node_or_null("EnemyKnockback")
+	if knockback != null:
+		knockback.cancel()
 
 
 func _update_revive_blink() -> void:
@@ -522,7 +545,7 @@ func _update_revive_blink() -> void:
 		_clear_revive_blink()
 		return
 	if sprite != null:
-		var elapsed := REVIVE_INVINCIBILITY_SECONDS - _invincibility_timer
+		var elapsed := _damage_blink_duration - _invincibility_timer
 		var phase := int(floorf((elapsed + 0.00001) / REVIVE_BLINK_STEP_SECONDS))
 		# Keep damage tint and animation independent from the revive alpha.
 		sprite.self_modulate.a = 0.25 if phase % 2 == 0 else 1.0
@@ -545,6 +568,15 @@ func _start_revive_wings() -> void:
 func _clear_revive_wings() -> void:
 	if _revive_wings != null:
 		_revive_wings.clear()
+	if _protection_effect != null:
+		_protection_effect.clear()
+
+
+func _start_protection_effect(kind: String) -> void:
+	if _protection_effect == null:
+		_protection_effect = preload("res://scripts/effects/player_protection_effect.gd").new()
+		visual_anchor.add_child(_protection_effect)
+	_protection_effect.restart(kind, _invincibility_timer)
 
 
 func heal(amount: int) -> int:
@@ -1212,8 +1244,9 @@ func revive_from_lethal_damage(health_percent: float) -> bool:
 	current_hp = maxi(1, ceili(get_stat("max_hp") * clampf(health_percent / 100.0, 0.0, 1.0)))
 	current_shield = 0
 	_invincibility_timer = REVIVE_INVINCIBILITY_SECONDS
-	_revive_blink_active = true
-	_update_revive_blink()
+	_grant_control_immunity(REVIVE_INVINCIBILITY_SECONDS)
+	_clear_revive_blink()
+	_start_protection_effect("revive")
 	_start_revive_wings()
 	_update_after_stat_change()
 	revived.emit(remaining_revives)

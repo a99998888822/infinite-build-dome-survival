@@ -209,13 +209,13 @@ func _apply_layout_density() -> void:
 		type_badge.custom_minimum_size = Vector2(28.0, 12.0) if _small_layout else Vector2(48.0, 24.0)
 	if type_label != null:
 		type_label.add_theme_font_size_override("font_size", 9 if _small_layout else 14)
-		if MobileProfile.is_mobile(): type_label.add_theme_font_size_override("font_size", 13)
+		if MobileProfile.is_mobile(): type_label.add_theme_font_size_override("font_size", 16)
 	if not offer_data.is_empty():
 		var offer_type := str(offer_data.get("offer_type", ""))
 		_update_type_badge_layout(offer_type)
 	if _rarity_label != null:
 		_rarity_label.add_theme_font_size_override("font_size", 9 if _small_layout else 12)
-		if MobileProfile.is_mobile(): _rarity_label.add_theme_font_size_override("font_size", 13)
+		if MobileProfile.is_mobile(): _rarity_label.add_theme_font_size_override("font_size", 16)
 	_update_icon_frame_size()
 	if name_label != null:
 		name_label.add_theme_font_size_override("font_size", _get_name_font_size())
@@ -226,14 +226,20 @@ func _apply_layout_density() -> void:
 		description_label.custom_minimum_size.y = 28.0 if _small_layout else (76.0 if _compact_layout else 98.0)
 		if MobileProfile.is_mobile():
 			for font_kind in ["normal_font_size", "bold_font_size", "italics_font_size", "bold_italics_font_size"]:
-				description_label.add_theme_font_size_override(font_kind, 18)
-			description_label.custom_minimum_size.y = 100
-			description_label.fit_content = true
+				description_label.add_theme_font_size_override(font_kind, _get_name_font_size())
+			var body_font := name_label.get_theme_font("font")
+			for font_kind in ["normal_font", "bold_font", "italics_font", "bold_italics_font"]:
+				description_label.add_theme_font_override(font_kind, body_font)
+			description_label.custom_minimum_size.y = 48
+			description_label.fit_content = false
+			description_label.scroll_active = true
+			description_label.mouse_filter = Control.MOUSE_FILTER_STOP
+			description_label.add_theme_constant_override("line_separation", 4)
 	if select_button != null:
 		select_button.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 		select_button.custom_minimum_size = _get_select_button_size()
 		select_button.add_theme_font_size_override("font_size", 10 if _small_layout else 18)
-		if MobileProfile.is_mobile(): select_button.add_theme_font_size_override("font_size", 18)
+		if MobileProfile.is_mobile(): select_button.add_theme_font_size_override("font_size", 20)
 	_update_card_minimum_size()
 	_update_interaction_style()
 
@@ -354,8 +360,13 @@ func _refresh_visual(explicit_cost: int = -1) -> void:
 	_update_type_badge_layout(offer_type)
 	if name_label != null:
 		name_label.text = L10n.record_text(offer_data, "display_name", str(offer_data.get("target_id", "")))
+		name_label.add_theme_font_size_override("font_size", _get_name_font_size())
 	if description_label != null:
 		description_label.text = _build_description_text(offer_data)
+		if MobileProfile.is_mobile():
+			# Pooled cards can change between relic and weapon offers.
+			for font_kind in ["normal_font_size", "bold_font_size", "italics_font_size", "bold_italics_font_size"]:
+				description_label.add_theme_font_size_override(font_kind, _get_name_font_size())
 	if select_button != null:
 		select_button.text = get_button_text_for_offer(offer_data, entry_mode, explicit_cost)
 		select_button.icon = COIN_TEXTURE if entry_mode == ENTRY_SHOP else null
@@ -369,8 +380,7 @@ func _refresh_visual(explicit_cost: int = -1) -> void:
 
 
 func _get_name_font_size() -> int:
-	# Keep relic, new-weapon, and weapon-upgrade titles at the same visual size.
-	if MobileProfile.is_mobile(): return 20
+	if MobileProfile.is_mobile(): return 18 if str(offer_data.get("offer_type", "")) == "relic" else 20
 	return 10 if _small_layout else 18
 
 
@@ -399,6 +409,7 @@ func _update_interaction_style() -> void:
 
 func _update_panel_style() -> void:
 	var padding := Vector4(6, 6, 6, 6) if _small_layout else Vector4(12, 14, 12, 12)
+	if MobileProfile.is_mobile(): padding = Vector4(12, 12, 12, 12)
 	add_theme_stylebox_override("panel", HUD_STYLE.skin(true, _is_highlighted(), padding))
 
 
@@ -449,6 +460,7 @@ func _update_rarity_lines(rarity_color: Color) -> void:
 		_rarity_label.text = L10n.text("rarity." + str(offer_data.get("rarity", "common")))
 		_rarity_label.add_theme_color_override("font_color", rarity_color)
 	if _rarity_rule != null: _rarity_rule.color = rarity_color
+	if MobileProfile.is_mobile() and _rarity_rule != null: _rarity_rule.hide()
 
 
 func _update_icon(icon_path: String) -> void:

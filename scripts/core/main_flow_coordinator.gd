@@ -82,6 +82,7 @@ var _shop_generation: int = 0
 var _paid_purchase_count: int = 0
 var _preparation_offers: Array = []
 var _transaction_busy: bool = false
+var _bulk_purchase_busy := false
 var _trade_service := InventoryTradeService.new()
 
 var _bound_player: PlayerController = null
@@ -605,6 +606,31 @@ func return_to_main_menu_from_settings() -> void:
 	present_battle_result(false, {"reason": "retreat"})
 
 
+func purchase_all_shop_offers() -> Dictionary:
+	if current_state != STATE_FINANCE_POPUP or _transaction_busy or _bulk_purchase_busy:
+		return {"success": false, "reason": "shop_not_active"}
+	if is_loan_dialog_open():
+		return {"success": false, "reason": "loan_dialog_open"}
+	_bulk_purchase_busy = true
+	var purchased := 0
+	var spent := 0
+	# Snapshot IDs, not prices: each purchase can change prices and eligibility.
+	var ids := _active_shop_offer_ids.duplicate()
+	for id in ids:
+		if not _active_shop_offers.has(id): continue
+		var offer: Dictionary = _active_shop_offers[id]
+		ShopPricing.apply(offer, _build_shop_pricing_context())
+		if not get_offer_unavailable_reason(offer).is_empty(): continue
+		var cost := int(offer.get("shop_cost", 0))
+		var result := submit_shop_purchase(offer.duplicate(true), "shop")
+		if bool(result.get("success", false)):
+			purchased += 1
+			spent += cost
+	_bulk_purchase_busy = false
+	_notify_preparation_changed()
+	return {"success": true, "purchased": purchased, "spent": spent}
+
+
 func submit_shop_purchase(offer: Dictionary, mode: String) -> Dictionary:
 	if is_loan_dialog_open(): return {"success":false,"reason":"loan_dialog_open"}
 	if current_state not in [STATE_FINANCE_POPUP, STATE_SHOP_POPUP, STATE_SHARED_REWARD_SHOP_POPUP] or _transaction_busy:
@@ -619,7 +645,7 @@ func submit_shop_purchase(offer: Dictionary, mode: String) -> Dictionary:
 	var canonical_offer: Dictionary = _active_shop_offers.get(offer_id, {})
 	if sanitized_mode == "shop":
 		var shown_cost := int(offer.get("shop_cost", 0))
-		ShopPricing.apply(canonical_offer, _build_shop_context())
+		ShopPricing.apply(canonical_offer, _build_shop_pricing_context())
 		if shown_cost != int(canonical_offer.get("shop_cost", 0)):
 			_notify_preparation_changed()
 			return {"success": false, "reason": "shop_price_changed"}
@@ -630,6 +656,7 @@ func submit_shop_purchase(offer: Dictionary, mode: String) -> Dictionary:
 	var unavailable := get_offer_unavailable_reason(canonical_offer, false)
 	if not unavailable.is_empty():
 		return {"success": false, "reason": unavailable}
+	var previous_offer_count := _get_paid_shop_offer_count()
 	_transaction_busy = true
 	if sanitized_mode == "shop" and not _try_pay_shop_cost(canonical_offer):
 		_transaction_busy = false
@@ -651,6 +678,8 @@ func submit_shop_purchase(offer: Dictionary, mode: String) -> Dictionary:
 		_paid_purchase_count += 1
 	if sanitized_mode == "shop" and int(canonical_offer.get("shop_cost", 0)) > 0 and _bound_wave_manager != null:
 		_bound_wave_manager.goblin_trades.record_paid_purchase(_bound_player)
+	if sanitized_mode == "shop":
+		_append_shop_bonus_offers(_get_paid_shop_offer_count() - previous_offer_count)
 	_transaction_busy = false
 	clear_stat_preview()
 	if sanitized_mode == "free":
@@ -1064,6 +1093,41 @@ func _build_shared_reward_shop_payload(level: int, source: String, queued: bool,
 	return payload
 
 
+func _get_paid_shop_offer_count() -> int:
+	if _bound_wave_manager != null and _bound_wave_manager.goblin_trades.single_slot_wave == current_wave_index + 1:
+		return 1
+	return maxi(3, StatDefinitions.calculate_shop_offer_count(BASE_SHOP_OFFER_COUNT, _get_shop_stat("shop_offer_count_bonus")))
+
+
+func _append_shop_bonus_offers(count: int) -> void:
+	if count <= 0:
+		return
+	# Extend this shelf without rerolling existing goods or refilling sold slots.
+	var context := _build_shop_context()
+	if context.is_empty():
+		return
+	context["offer_mode"] = "shop"
+	var generator := ShopOfferGenerator.new()
+	var candidates := generator.build_shop_candidate_pool(context)
+	context["candidate_pool"] = candidates
+	var previous_ids: Array = []
+	for id in _active_shop_offer_ids:
+		var offer: Dictionary = _active_shop_offers.get(id, {})
+		previous_ids.append(str(offer.get("candidate_id", "")))
+	_shop_generation += 1
+	var additions := generator.roll_paid_offers(generator.get_shop_rarity_weights(int(context.get("luck", 0))),
+		generator.get_shop_type_weights(context), candidates, count, _shop_generation, previous_ids)
+	for offer in additions:
+		if str(offer.get("offer_type", "")) == ShopOfferGenerator.OFFER_WEAPON_UPGRADE:
+			var weapon := _bound_loadout.get_weapon_instance(str(offer.get("target_id", "")))
+			if weapon != null: offer["weapon_instance_id"] = weapon.instance_id
+		var id := str(offer.offer_id)
+		_active_shop_offer_ids.append(id)
+		_active_shop_offers[id] = offer
+		if current_state == STATE_FINANCE_POPUP:
+			_preparation_offers.append(offer)
+
+
 func _build_shop_payload(mode: String, level: int, exclude_offer_ids: Array = [], strong: bool = false) -> Dictionary:
 	var context := _build_shop_context()
 	if not context.is_empty(): context["offer_mode"] = mode
@@ -1076,7 +1140,7 @@ func _build_shop_payload(mode: String, level: int, exclude_offer_ids: Array = []
 	var offer_count := StatDefinitions.calculate_shop_offer_count(BASE_SHOP_OFFER_COUNT, _get_shop_stat("shop_offer_count_bonus"))
 	_shop_generation += 1
 	if mode == "shop":
-		offer_count = maxi(3, offer_count)
+		offer_count = _get_paid_shop_offer_count()
 		if _bound_wave_manager != null and _bound_wave_manager.goblin_trades.single_slot_wave == current_wave_index + 1:
 			offer_count = 1
 			if strong: guarantee_weapon = false
@@ -1166,6 +1230,13 @@ func _build_shop_context() -> Dictionary:
 		"shop_wave_number": maxi(1, current_wave_index + 1),
 		"paid_purchase_count": _paid_purchase_count,
 		"wave_gold_earned": _bound_wave_manager.collected_gold_this_wave if _bound_wave_manager != null else 0,
+		# Live stat values for the relic supply gates (soft limits and hard floors).
+		"move_speed": _get_shop_stat("move_speed"),
+		"pickup_radius": _get_shop_stat("pickup_radius"),
+		"max_hp": _get_shop_stat("max_hp"),
+		"projectile_count": _get_shop_stat("projectile_count"),
+		"shop_offer_count_bonus": _get_shop_stat("shop_offer_count_bonus"),
+		"interest_rate": _get_shop_stat("interest_rate"),
 	}
 
 
@@ -1203,9 +1274,16 @@ func _try_pay_shop_cost(offer: Dictionary) -> bool:
 	return _bound_wave_manager.apply_gold_delta(-cost, "shop_purchase")
 
 
+func _build_shop_pricing_context() -> Dictionary:
+	# Pricing needs no candidate pool, weapon snapshots or relic-count copies.
+	return {"humanity": _get_shop_stat("humanity"), "shop_price_discounts": _get_shop_discount_layers(),
+		"shop_wave_number": maxi(1, current_wave_index + 1), "paid_purchase_count": _paid_purchase_count,
+		"wave_gold_earned": _bound_wave_manager.collected_gold_this_wave if _bound_wave_manager != null else 0}
+
+
 func get_preparation_payload() -> Dictionary:
 	var payload := _bound_wave_manager.get_finance_popup_payload("preparation") if _bound_wave_manager != null else {}
-	var pricing_context := _build_shop_context()
+	var pricing_context := _build_shop_pricing_context()
 	for offer in _preparation_offers:
 		ShopPricing.apply(offer, pricing_context)
 	payload["offers"] = _preparation_offers
@@ -1230,13 +1308,14 @@ func get_preparation_payload() -> Dictionary:
 
 
 func _notify_preparation_changed() -> void:
+	if _bulk_purchase_busy: return
 	if current_state == STATE_QUICK_ENCHANTMENT:
 		preparation_changed.emit({"quick_enchantment": true, "offers": []})
 	elif current_state == STATE_FINANCE_POPUP:
 		preparation_changed.emit(get_preparation_payload())
 	elif current_state == STATE_SHOP_POPUP:
 		var offers: Array = []
-		var context := _build_shop_context()
+		var context := _build_shop_pricing_context()
 		for id in _active_shop_offer_ids:
 			if _active_shop_offers.has(id):
 				var offer: Dictionary = _active_shop_offers[id]

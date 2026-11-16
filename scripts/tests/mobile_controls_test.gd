@@ -148,7 +148,7 @@ func _run() -> void:
 	battle.wave_manager.clear_enemies()
 	battle.player.set_physics_process(false)
 	check(not battle.loadout.has_weapon("weapon_dash_blade"), "pointer-steered weapon never enters phone loadout")
-	check(is_equal_approx(float(battle.player.modifier_stack.base_stats.move_speed), 155.0), "phone novice starts with fifteen extra base speed")
+	check(is_equal_approx(float(battle.player.modifier_stack.base_stats.move_speed), 170.0), "phone novice retains its bonus plus the shared fifteen base speed")
 	var combat_hud := battle.hud as BattleHud
 	combat_hud._set_drawer_open(true, false)
 	await frames()
@@ -264,7 +264,8 @@ func _run() -> void:
 	check(rewards != null and rewards.visible and rewards.offer_grid.columns <= 4, "phone rewards use up to four columns")
 	check(rewards.title_label.get_theme_font_size("font_size") == 24, "reward heading is smaller on phone")
 	for card: RewardOption in rewards._offer_cards:
-		check(card.name_label.get_theme_font_size("font_size") >= 20 and card.description_label.get_theme_font_size("normal_font_size") >= 18, "reward text is readable")
+		var expected_size := 18 if str(card.offer_data.get("offer_type", "")) == "relic" else 20
+		check(card.name_label.get_theme_font_size("font_size") == expected_size and card.description_label.get_theme_font_size("normal_font_size") == expected_size, "reward text uses requested relic or weapon size")
 		check(card.icon_frame.size.y <= 70 and card.select_button.size.y >= 40, "reward icon shrinks and touch action remains large")
 	await get_tree().create_timer(0.6).timeout
 	await check_reward_scroll(rewards, "level reward")

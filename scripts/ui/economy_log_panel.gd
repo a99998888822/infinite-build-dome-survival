@@ -12,10 +12,14 @@ var _journal: EconomyJournal
 var _last_sequence := 0
 var _open := false
 var _finance_style := false
+var _entries_dirty := true
 
 
 func _ready() -> void:
 	L10n.locale_changed.connect(_refresh_entries)
+	visibility_changed.connect(func():
+		if _entries_dirty: _refresh_entries()
+	)
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	toggle_button = Button.new()
 	toggle_button.name = "EconomyLogToggle"
@@ -82,16 +86,22 @@ func set_open(open: bool) -> void:
 	FinanceUIStyle.button(toggle_button, open)
 	if _finance_style: FinanceUIStyle.bank_button(toggle_button, open)
 	if open:
+		if _entries_dirty: _refresh_entries()
 		_scroll_to_end.call_deferred()
 
 
-func apply_layout() -> void:
+func apply_layout(reward_layout: bool = false) -> void:
 	if toggle_button == null:
 		return
 	var viewport_size := get_viewport().get_visible_rect().size
 	var mobile := MobileProfile.is_mobile()
 	var button_y := maxf(50, viewport_size.y - (200 if mobile else 82))
-	toggle_button.position = Vector2(LEFT_INSET, button_y)
+	# Reward panels start at x=64: keep the 52-wide button in the left gutter.
+	var button_x := LEFT_INSET
+	if mobile and reward_layout:
+		button_x = 8.0
+		button_y = viewport_size.y - 48.0
+	toggle_button.position = Vector2(button_x, button_y)
 	toggle_button.size = Vector2(52, 32)
 	var height := minf(_panel_height_limit(), maxf(0, button_y - 60))
 	panel.position = Vector2(LEFT_INSET, button_y - height - 6)
@@ -119,14 +129,19 @@ func _panel_height_limit() -> float:
 
 
 func _refresh_entries() -> void:
+	_entries_dirty = true
 	if _journal == null or log_text == null:
 		return
-	var bar := log_text.get_v_scroll_bar()
-	var follow := bar.value >= bar.max_value - bar.page - 4
 	var latest := int(_journal.entries[-1].sequence) if not _journal.entries.is_empty() else 0
 	if latest < _last_sequence:
 		set_open(false)
 	_last_sequence = latest
+	# Both battle and finance own a journal view. Collapsed/hidden views must
+	# not repeatedly translate and shape the full late-run history.
+	if not _open or not is_visible_in_tree(): return
+	_entries_dirty = false
+	var bar := log_text.get_v_scroll_bar()
+	var follow := bar.value >= bar.max_value - bar.page - 4
 	var lines: PackedStringArray = []
 	for entry in _journal.entries:
 		lines.append(L10n.text("ui.economy_log.entry") % [int(entry.get("wave", 1)), L10n.render_message(entry.get("message", entry.get("text", "")))])

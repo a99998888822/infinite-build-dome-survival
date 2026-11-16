@@ -1,4 +1,7 @@
 keys,zh_CN,en
+ui.shop.buy_all,一键购买,Buy all
+ui.shop.buy_all_tooltip,按货架顺序购买所有当前可购买的商品；每件按最新价格结算，跳过余额不足或不可购买的商品。,Buy eligible items in shelf order at current prices. Skip unaffordable or unavailable items.
+ui.shop.buy_all_done,已购买 %d 件商品，共花费 %d 金币,Bought %d items for %d gold
 ui.settings.disable_screen_shake,去除屏幕震动,Disable screen shake
 ui.loading.dungeon,正在进入地下城,Entering the dungeon
 ui.evacuation.title,夜幕降临,NIGHTFALL

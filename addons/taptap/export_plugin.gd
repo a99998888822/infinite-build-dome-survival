@@ -29,7 +29,8 @@ class TapTapAndroidExport extends EditorExportPlugin:
 
 	func _get_android_dependencies(_platform: EditorExportPlatform, _debug: bool) -> PackedStringArray:
 		return PackedStringArray([
-			"com.taptap.sdk:tap-core:4.11.0",
-			"com.taptap.sdk:tap-login:4.11.0",
-			"com.taptap.sdk:tap-compliance:4.11.0",
+			"com.taptap.sdk:tap-core:4.11.1",
+			"com.taptap.sdk:tap-login:4.11.1",
+			"com.taptap.sdk:tap-compliance:4.11.1",
+			"com.taptap.sdk:tap-cloudsave:4.11.1",
 		])

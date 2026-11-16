@@ -6,7 +6,10 @@ signal preview_requested(offer: Dictionary)
 signal preview_cleared
 signal minimum_height_requested(height: float)
 const ICON_FRAME_SIZE := Vector2(72, 72)
-const DESCRIPTION_FONT_SIZE := 18
+const MOBILE_ICON_FRAME_SIZE := Vector2(56, 56)
+const TITLE_FONT_SIZE := 16
+const KIND_FONT_SIZE := 16
+const DESCRIPTION_FONT_SIZE := 16
 const DESCRIPTION_MIN_FONT_SIZE := 16
 const TEXT_LEFT_PADDING := 8
 var offer: Dictionary = {}
@@ -36,6 +39,7 @@ func _ready() -> void:
 	_icon_frame = Panel.new()
 	_icon_frame.add_theme_stylebox_override("panel", FinanceFrameSkin.box("slot"))
 	_icon_frame.custom_minimum_size = _icon_frame_size()
+	_icon_frame.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
 	_icon_frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	heading.add_child(_icon_frame)
 	var gradient := Gradient.new()
@@ -73,12 +77,14 @@ func _ready() -> void:
 	_name_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	_name_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_name_label.max_lines_visible = 2
-	FinanceUIStyle.label(_name_label, 20)
+	FinanceUIStyle.label(_name_label, TITLE_FONT_SIZE)
 	titles.add_child(_name_label)
 	_kind_label = Label.new()
 	_kind_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	_kind_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_kind_label.custom_minimum_size.y = 50 if MobileProfile.is_mobile() else 40
 	_kind_label.mouse_filter = Control.MOUSE_FILTER_PASS
-	FinanceUIStyle.label(_kind_label, 17, FinanceUIStyle.MUTED)
+	FinanceUIStyle.label(_kind_label, KIND_FONT_SIZE, FinanceUIStyle.MUTED)
 	titles.add_child(_kind_label)
 	var description_margin := MarginContainer.new()
 	description_margin.add_theme_constant_override("margin_top", 8)
@@ -93,6 +99,9 @@ func _ready() -> void:
 	_description.custom_minimum_size.y = 32
 	_description.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_description.add_theme_font_size_override("normal_font_size", DESCRIPTION_FONT_SIZE)
+	var text_font := _name_label.get_theme_font("font")
+	for key in ["normal_font", "bold_font", "italics_font", "bold_italics_font", "mono_font"]:
+		_description.add_theme_font_override(key, text_font)
 	_description.add_theme_color_override("default_color", FinanceUIStyle.MUTED)
 	description_margin.add_child(_description)
 	_description.resized.connect(_queue_description_fit)
@@ -104,7 +113,7 @@ func _ready() -> void:
 	_price = WrappedTooltipLabel.new()
 	_price.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_price.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
-	FinanceUIStyle.label(_price, 18, FinanceUIStyle.GOLD)
+	FinanceUIStyle.label(_price, 20, FinanceUIStyle.GOLD)
 	footer.add_child(_price)
 	buy_button = Button.new()
 	buy_button.custom_minimum_size = Vector2(58, 26)
@@ -144,20 +153,32 @@ func configure(value: Dictionary, unavailable: String, gold: int) -> void:
 	tooltip_text = ""
 	_name_label.tooltip_text = "" if new_weapon else title + "\n" + _description.get_parsed_text()
 	var path := str(offer.get("icon", ""))
-	var item_scale := FinanceUIStyle.RELIC_LIST_ICON_SCALE if str(offer.get("offer_type", "")) == "relic" else 1.0
-	FinanceUIStyle.set_item_icon(_icon, FinanceUIStyle.item_icon(path, "relics" if str(offer.get("offer_type", "")) == "relic" else "weapons", str(offer.get("target_id", ""))), item_scale)
-	_icon_frame.custom_minimum_size = _icon_frame_size().max(_icon.custom_minimum_size)
-	if ItemIconArt.is_weapon(_icon.texture):
-		ItemIconArt.bind_texture(_icon, _icon.texture, false, 32.0, _icon_frame, _icon_frame_size().x)
+	var texture := FinanceUIStyle.item_icon(path, "relics" if str(offer.get("offer_type", "")) == "relic" else "weapons", str(offer.get("target_id", "")))
+	# Every offer reserves the same frame and art footprint, including pooled
+	# cards switching between weapons, upgrades and native relic artwork.
+	_icon_frame.custom_minimum_size = _icon_frame_size()
+	_icon.custom_minimum_size = Vector2.ZERO
+	_icon.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
+	var extent := 40.0 if MobileProfile.is_mobile() else 48.0
+	_icon.offset_left = -extent * 0.5
+	_icon.offset_top = -extent * 0.5
+	_icon.offset_right = extent * 0.5
+	_icon.offset_bottom = extent * 0.5
+	ItemIconArt.bind_texture(_icon, texture)
 	var rarity := str(offer.get("rarity", "common"))
 	var rarity_color: Color = ItemInventoryCard.RARITY_COLORS.get(rarity, ItemInventoryCard.RARITY_COLORS["common"])
 	_rarity_glow.visible = str(offer.get("offer_type", "")) == "relic"
 	_rarity_glow.modulate = rarity_color
 	var rarity_label := L10n.source(str(ItemInventoryCard.RARITY_LABELS.get(rarity, L10n.text("rarity.common"))))
-	_kind_label.text = rarity_label if str(offer.get("offer_type", "")) == "relic" else _kind_label.text + " · " + rarity_label
+	_kind_label.text = rarity_label if str(offer.get("offer_type", "")) == "relic" else _kind_label.text + ("\n" if MobileProfile.is_mobile() else " · ") + rarity_label
 	_kind_label.tooltip_text = _kind_label.text
 	_kind_label.add_theme_color_override("font_color", rarity_color)
 	_update_frame()
+	refresh_availability(unavailable, gold)
+	_queue_description_fit()
+
+
+func refresh_availability(unavailable: String, gold: int) -> void:
 	var cost := int(offer.get("shop_cost", 0))
 	_price.text = L10n.text("ui.shop.gold_price") % HumanityEconomy.price_text(cost, int(offer.get("shop_cost_without_humanity", cost)))
 	_price.mouse_filter = Control.MOUSE_FILTER_PASS
@@ -171,12 +192,14 @@ func configure(value: Dictionary, unavailable: String, gold: int) -> void:
 	buy_button.tooltip_text = ""
 	if unavailable == "insufficient_gold":
 		buy_button.text = L10n.text("ui.shop.gold_shortfall") % maxi(0, cost - gold)
-	modulate = Color(0.62, 0.62, 0.62) if bool(offer.get("purchased", false)) else Color.WHITE
-	_queue_description_fit()
+	var next_modulate := Color(0.62, 0.62, 0.62) if bool(offer.get("purchased", false)) else Color.WHITE
+	if modulate != next_modulate:
+		modulate = next_modulate
+		_update_frame()
 
 
 func _icon_frame_size() -> Vector2:
-	return Vector2(48, 48) if MobileProfile.is_mobile() else ICON_FRAME_SIZE
+	return MOBILE_ICON_FRAME_SIZE if MobileProfile.is_mobile() else ICON_FRAME_SIZE
 
 
 func _update_pointer_frame() -> void:
@@ -205,6 +228,7 @@ func _fit_description() -> void:
 	# Measure shaped, wrapped text after layout; character counts miss newlines,
 	# translation lengths and changes in the available card width.
 	var available_height := floorf(_description.size.y)
+	_description.scroll_active = false
 	for font_size in range(DESCRIPTION_FONT_SIZE, DESCRIPTION_MIN_FONT_SIZE - 1, -1):
 		for font_key in ["normal_font_size", "bold_font_size", "italics_font_size", "bold_italics_font_size", "mono_font_size"]:
 			_description.add_theme_font_size_override(font_key, font_size)

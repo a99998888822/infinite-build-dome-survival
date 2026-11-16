@@ -1,5 +1,6 @@
 extends Node2D
 class_name LightningParticleEffect
+const TARGETS = preload("res://scripts/battle/combat_target_query.gd")
 const GROUND = preload("res://scripts/effects/ground_projection_r05.gd")
 const FOOTPRINT = preload("res://scripts/effects/spell_footprint.gd")
 
@@ -254,7 +255,7 @@ func _damage_ground_enemies(ground_position: Vector2) -> void:
 	query.transform = transform
 	query.collision_mask = 2
 	query.collide_with_bodies = true
-	for result in get_world_2d().direct_space_state.intersect_shape(query, 64):
+	for result in TARGETS.intersect_shape(get_world_2d(), query, 64, &"ground_lightning"):
 		var enemy := result.get("collider") as EnemyController
 		if enemy != null and enemy.is_alive() and not candidate_enemies.has(enemy.get_instance_id()) and FOOTPRINT.ATTACK.body_overlaps(shape, transform, enemy):
 			candidate_enemies[enemy.get_instance_id()] = enemy
