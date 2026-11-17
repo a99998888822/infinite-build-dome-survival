@@ -20,6 +20,11 @@ const SPAWN_CLUSTER_HALF_ANGLE: float = PI / 22.5 # Eight degrees either side.
 const SPAWN_POSITION_ATTEMPTS: int = 24
 const MIN_SPAWN_INTERVAL_MS: float = 300.0
 const SPAWN_COUNT_PRECISION: int = 10000
+## Spawns that the population limit refused are owed, not lost. They are paid out
+## as soon as the player frees a slot, at a capped rate so the refill never turns
+## into one frame of hitching.
+const PENDING_SPAWN_LIMIT: int = 600
+const PENDING_SPAWN_DRAIN_PER_FRAME: int = 6
 const DROP_REWARD_SYSTEM_SCRIPT: Script = preload("res://scripts/rewards/drop_reward_system.gd")
 const BATTLE_FINANCE_SYSTEM_SCRIPT: Script = preload("res://scripts/rewards/battle_finance_system.gd")
 const EXP_ORB_FIELD_SCRIPT: Script = preload("res://scripts/pickups/exp_orb_field.gd")
@@ -34,6 +39,8 @@ var current_wave: Dictionary = {}
 var wave_time_left: float = 0.0
 var spawn_timers_ms: Array[float] = []
 var _enemy_spawn_remainder_units: int = 0
+## Enemy ids owed while the population limit was full, oldest first.
+var _pending_spawns: Array[String] = []
 var running: bool = false
 const CLEANUP_SECONDS := 10.0
 var cleanup_active := false
@@ -145,10 +152,12 @@ func _process(delta: float) -> void:
 		wave_challenges.sample_health(delta, player.current_hp, int(player.get_stat("max_hp")))
 	if wave_time_left > 0.0 and not cleanup_active:
 		_process_spawn_timers(delta)
+		_drain_pending_spawns()
 	if finance_system != null:
 		finance_system.tick(delta)
 	if evacuating:
 		evacuation.advance(delta)
+		_drain_pending_spawns()
 		return
 	if wave_time_left <= 0.0:
 		if is_instance_valid(evacuation) and not is_final_wave():
@@ -277,6 +286,7 @@ func initialize(target_player: PlayerController, selected_difficulty: String = B
 	_elite_erosion_snapshot = 0.0
 	_wave_erosion_pressure = calculate_enemy_erosion_pressure(0.0)
 	_pending_relic_choices.clear()
+	_pending_spawns.clear()
 	if not drop_reward_system.relic_choice_collected.is_connected(_on_relic_choice_collected):
 		drop_reward_system.relic_choice_collected.connect(_on_relic_choice_collected)
 	if finance_system != null:
@@ -308,6 +318,7 @@ func start_next_wave() -> bool:
 	cleanup_active = false
 	cleanup_time_left = 0.0
 	_wave_finish_queued = false
+	_pending_spawns.clear()
 	goblin_loans.leave_preparation(run_statistics)
 	current_wave_index += 1
 	enemy_pressure.begin_wave(current_wave_index + 1)
@@ -835,6 +846,66 @@ func _on_interest_settled(result: Dictionary) -> void:
 	interest_settled.emit(result.duplicate(true))
 
 
+## Population slots left for ordinary wave bodies. Challenge elites and debt
+## targets do not consume the ordinary quota.
+func ordinary_spawn_room() -> int:
+	var population := EnemyRegistry.get_registered_enemies()
+	var ordinary_population := population.size()
+	for enemy in population:
+		if is_instance_valid(enemy) and (enemy.has_meta("wave_challenge_elite") or enemy.has_meta("debt_challenge_target")):
+			ordinary_population -= 1
+	return maxi(0, int(_difficulty.enemy_limit) - ordinary_population)
+
+
+## Bodies the population limit refused. Kept in order and bounded, so a long
+## capped stretch cannot become an unbounded burst later.
+func defer_spawn(enemy_id: String, count: int) -> void:
+	if enemy_id.is_empty() or count <= 0:
+		return
+	for _index in count:
+		if _pending_spawns.size() >= PENDING_SPAWN_LIMIT:
+			return
+		_pending_spawns.append(enemy_id)
+
+
+func pending_spawn_count() -> int:
+	return _pending_spawns.size()
+
+
+func clear_pending_spawns() -> void:
+	_pending_spawns.clear()
+
+
+## Pays owed spawns once the player frees slots. Bounded per frame so the refill
+## never lands as a single hitch, and it stops on the first failed placement so a
+## blocked route cannot spin.
+func _drain_pending_spawns() -> void:
+	if _pending_spawns.is_empty() or not running or _wave_finish_queued:
+		return
+	var evacuating_phase: bool = is_instance_valid(evacuation) and evacuation.is_active()
+	if cleanup_active and not evacuating_phase:
+		return
+	var room := maxi(0, int(_difficulty.enemy_limit) - get_living_enemy_count()) if evacuating_phase else ordinary_spawn_room()
+	var budget := mini(mini(room, _pending_spawns.size()), PENDING_SPAWN_DRAIN_PER_FRAME)
+	if budget <= 0:
+		return
+	var batch_positions: Array[Vector2] = []
+	for _index in budget:
+		if _pending_spawns.is_empty():
+			return
+		var pending_id := _pending_spawns[0]
+		var spawned: EnemyController = null
+		# Owed bodies keep the wave's composition: the variant mix applies on the way
+		# in, so a capped night still returns the ranged variant.
+		if evacuating_phase:
+			spawned = evacuation.spawn_deferred(_select_spawn_variant(pending_id))
+		else:
+			spawned = spawn_enemy(_select_spawn_variant(pending_id), _get_batch_spawn_position(batch_positions))
+		if spawned == null:
+			return
+		_pending_spawns.pop_front()
+
+
 func _process_spawn_timers(delta: float) -> void:
 	if cleanup_active or _wave_finish_queued or (running and wave_time_left <= 0.0):
 		return
@@ -844,12 +915,7 @@ func _process_spawn_timers(delta: float) -> void:
 	# All spawns due in this update share a cluster, including elite replacements.
 	var batch_positions: Array[Vector2] = []
 	_process_challenge_elites(batch_positions)
-	var population := EnemyRegistry.get_registered_enemies()
-	var ordinary_population := population.size()
-	for enemy in population:
-		if is_instance_valid(enemy) and (enemy.has_meta("wave_challenge_elite") or enemy.has_meta("debt_challenge_target")):
-			ordinary_population -= 1
-	var available := maxi(0, int(_difficulty.enemy_limit) - ordinary_population)
+	var available := ordinary_spawn_room()
 	var spawn_groups: Array = current_wave.get("spawn_groups", [])
 	for index in range(spawn_groups.size()):
 		var group: Dictionary = spawn_groups[index]
@@ -857,7 +923,12 @@ func _process_spawn_timers(delta: float) -> void:
 		if spawn_timers_ms[index] > 0.0:
 			continue
 		spawn_timers_ms[index] = calculate_spawn_interval(float(group.get("spawn_interval_ms", 1000)))
-		var spawn_count := mini(available, _take_enemy_spawn_count(int(group.get("count_per_spawn", 1))))
+		var wanted := _take_enemy_spawn_count(int(group.get("count_per_spawn", 1)))
+		var spawn_count := mini(available, wanted)
+		if wanted > spawn_count:
+			# A full population does not cancel the spawn: it becomes owed and is
+			# released as soon as the player clears a slot.
+			defer_spawn(str(group.get("enemy_id", "")), wanted - spawn_count)
 		for count_index in range(spawn_count):
 			var id := str(group.get("enemy_id", ""))
 			var replacement := str(DataRegistry.get_record("enemies", id).get("elite_replacement_id", ""))
@@ -998,8 +1069,8 @@ func calculate_enemy_spawn_count(base_count: int) -> float:
 func _take_enemy_spawn_count(base_count: int) -> int:
 	# Two integer percentages multiply to ten-thousandths. Retain both bonuses
 	# exactly (e.g. 1.33 * 1.01 = 1.3433) until the scheduled batch is consumed.
-	# All groups share one wave's remainder. Capped whole enemies are discarded,
-	# never saved as a backlog to burst out when population falls again.
+	# All groups share one wave's remainder. Bodies the population limit refuses
+	# are owed by the caller through defer_spawn, not discarded.
 	var units := roundi(calculate_enemy_spawn_count(base_count) * SPAWN_COUNT_PRECISION) + _enemy_spawn_remainder_units
 	_enemy_spawn_remainder_units = units % SPAWN_COUNT_PRECISION
 	return floori(float(units) / SPAWN_COUNT_PRECISION)

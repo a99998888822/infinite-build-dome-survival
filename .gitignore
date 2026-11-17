@@ -15,6 +15,7 @@ artifacts/previews/
 artifacts/reviews/
 artifacts/validation/
 artifacts/performance/
+artifacts/reports/
 artifacts/maintenance/
 # Disposable capture frames and logs; keep only curated review outputs.
 artifacts/**/[0-9][0-9][0-9].png

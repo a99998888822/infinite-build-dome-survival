@@ -15,4 +15,10 @@ static func claim_visual(parent: Node, kind: String, point: Vector2) -> int:
 		budget.metadata_key = key
 		parent.add_child(budget)
 		parent.set_meta(key, budget)
-	return budget.claim(point)
+	var admitted: int = budget.claim(point)
+	# A pressed frame budget tightens every decorative family by the same amount.
+	# Damage, control and hit resolution never pass through this gate.
+	var shift := PerformanceBudget.admission_shift()
+	if shift <= 0:
+		return admitted
+	return mini(admitted + shift, int(Tier.SUPPRESSED))

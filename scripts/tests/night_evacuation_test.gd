@@ -123,6 +123,10 @@ func run() -> void:
 	for i in 100: manager._process(.3)
 	check(manager.get_living_enemy_count()<=int(manager._difficulty.enemy_limit),"long overtime obeys enemy cap")
 	check(EnemyRegistry.get_registered_enemies().any(func(e): return bool(e.get_meta("evacuation_hunter",false))),"prolonged overtime introduces announced hunters")
+	# Night reinforcements keep the wave's composition: the ranged spawn variant of
+	# the ordinary group must keep appearing after dark, not just the melee base.
+	var nocturnal_ranged := EnemyRegistry.get_registered_enemies().any(func(e): return str(e.get("enemy_id")) == "enemy_echo_bat")
+	check(nocturnal_ranged,"night reinforcements include the ranged variant")
 	check(manager.running and flow.current_state==MainFlowCoordinator.STATE_WAVE_COMBAT,"long overtime never auto-opens finance")
 	manager.clear_enemies()
 	await frames()

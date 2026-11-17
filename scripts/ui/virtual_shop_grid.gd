@@ -27,6 +27,7 @@ func _ready() -> void:
 	scroll = preload("res://scripts/ui/touch_scroll_container.gd").new()
 	scroll.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	FinanceUIStyle.bank_scroll(scroll)
+	scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_SHOW_NEVER
 	add_child(scroll)
 	canvas = Control.new()
 	canvas.size_flags_horizontal = Control.SIZE_EXPAND_FILL

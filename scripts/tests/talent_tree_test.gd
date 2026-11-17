@@ -167,7 +167,7 @@ func _run() -> void:
 	check(page._currency_label.text == "天赋点：10000" and page._currency_label.get_parent() == page._content, "talent points appear in a fixed top label")
 	check(page._hint.text == "滚轮缩放 · 鼠标点击拖动", "navigation hint describes mouse dragging")
 	var version: Label = game.get_node("UiRoot/MainMenuUIController/StartPage/VersionLabel")
-	check(version.tr(version.text) == "版本 v.0106.261018", "main menu displays requested version")
+	check(version.tr(version.text) == "版本 v.0106.261117", "main menu displays requested version")
 	check(page._tree.edges.size() == 4 and visible_summary_count() == 0 and page._summary_empty.visible, "initial view: four direct branches and no unearned attributes")
 	check(page._node_levels[ids.damage].text == "0/10" and page._node_levels[ids.armory].text == "1/3", "upgrade and building levels appear on node lower edges")
 	check(not page._nodes[ids.damage].lit and not page._nodes[ids.crit].visible, "unbought node gray, successor hidden")

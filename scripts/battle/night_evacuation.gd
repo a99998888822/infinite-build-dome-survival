@@ -193,12 +193,22 @@ func advance(delta: float) -> void:
 		var available := maxi(0,int(manager._difficulty.enemy_limit)-manager.get_living_enemy_count())
 		# Reserve one slot for announced pursuit; never exceed the population budget.
 		if elapsed>=30.0 and elapsed>=next_hunter_at-3.0: available = maxi(0,available-1)
-		var count := mini(available,manager._take_enemy_spawn_count(int(groups[i].count_per_spawn)))
+		var wanted: int = manager._take_enemy_spawn_count(int(groups[i].count_per_spawn))
+		var count := mini(available,wanted)
+		# Night reinforcements come from the wave's own composition, so the ranged
+		# variant keeps appearing after dark instead of being replaced by the melee
+		# base id. Variant mixing is decided per body, exactly like daylight waves.
+		var base_id := str(groups[i].get("enemy_id","enemy_mutated_grub"))
+		if wanted>count:
+			# A full crowd does not cancel the reinforcement batch: those bodies stay
+			# owed and the manager pays them out when the player clears a slot.
+			manager.defer_spawn(base_id,wanted-count)
 		for j in mini(count,12):
+			var spawn_id := manager._select_spawn_variant(base_id)
 			var point := choose_spawn_position()
 			if not point.is_finite(): continue
 			spawn_authorized = true
-			var enemy := manager.spawn_enemy("enemy_mutated_grub",point)
+			var enemy := manager.spawn_enemy(spawn_id,point)
 			spawn_authorized = false
 			if enemy == null: continue
 			spawned_count += 1
@@ -317,6 +327,22 @@ func choose_flank_spawn_position() -> Vector2:
 		if is_instance_valid(scenery) and not scenery._clear_of_large(point,scenery._nearby_landmarks(point),32): continue
 		return point
 	return Vector2(INF,INF)
+
+## Pays one owed body during the evacuation. The manager owns the queue and the
+## population budget; this only supplies the rear-cone placement and pressure.
+func spawn_deferred(enemy_id: String) -> EnemyController:
+	if not active or enemy_id.is_empty(): return null
+	var point := choose_spawn_position()
+	if not point.is_finite(): return null
+	spawn_authorized = true
+	var enemy := manager.spawn_enemy(enemy_id,point)
+	spawn_authorized = false
+	if enemy == null: return null
+	enemy.set_meta("evacuation_enemy",true)
+	apply_pressure(enemy)
+	spawned_count += 1
+	return enemy
+
 
 func _process_flank_spawn() -> void:
 	if elapsed<next_flank_at: return

@@ -33,6 +33,7 @@ static func clear_path(source: Node2D, from: Vector2, to: Vector2) -> bool:
 
 
 static func nearest(source: WeaponInstance, radius: float) -> EnemyController:
+	var diagnostic_start := preload("res://scripts/battle/combat_diagnostics.gd").begin()
 	var origin := source.get_attack_origin()
 	var best: EnemyController
 	var distance := INF
@@ -54,6 +55,7 @@ static func nearest(source: WeaponInstance, radius: float) -> EnemyController:
 		if clear_path(source.owner_player, origin, enemy.global_position):
 			best = enemy
 			distance = next
+	preload("res://scripts/battle/combat_diagnostics.gd").finish(&"directed_nearest", diagnostic_start)
 	return best
 
 

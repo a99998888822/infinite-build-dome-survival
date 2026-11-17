@@ -13,6 +13,12 @@ const SCALE_ARG_PREFIX := "--mobile-ui-scale="
 const DEFAULT_UI_SCALE := 1.45
 ## Clearance above the handheld home-indicator strip, in logical pixels.
 const BOTTOM_INSET := 16.0
+## Handhelds run the simulation at the rate they can afford instead of paying for
+## a full 60 Hz tick set on every rendered frame. Measured on the seven-weapon
+## stress scene: 60 Hz/2 steps 39 FPS, 30 Hz/1 step 51 FPS, and the catch-up loop
+## that produced the 150-330 ms spikes disappears at both settings.
+const MOBILE_PHYSICS_TICKS_PER_SECOND := 30
+const MOBILE_MAX_PHYSICS_STEPS := 1
 
 var ui_scale := 1.0
 
@@ -27,8 +33,22 @@ func _ready() -> void:
 		if arg.begins_with(SCALE_ARG_PREFIX):
 			_scale_override = float(arg.trim_prefix(SCALE_ARG_PREFIX))
 	ui_scale = _scale_override if _scale_override > 0.0 else DEFAULT_UI_SCALE if is_mobile() else 1.0
+	apply_simulation_budget()
 	if get_tree() != null and get_tree().root != null:
 		apply_to_window(get_tree().root)
+
+
+## Keeps the simulation inside the frame the device can actually render. One
+## allowed physics step means a slow frame slows simulated time instead of
+## queueing more physics work behind it, which is what turns a 45 ms frame into a
+## 300 ms one. Desktop keeps the authored tick rate and gets a two-step catch-up.
+func apply_simulation_budget() -> void:
+	if is_mobile():
+		Engine.physics_ticks_per_second = MOBILE_PHYSICS_TICKS_PER_SECOND
+		Engine.max_physics_steps_per_frame = MOBILE_MAX_PHYSICS_STEPS
+	else:
+		# Desktop keeps the project's authored tick rate; only the catch-up is capped.
+		Engine.max_physics_steps_per_frame = 2
 
 
 func apply_to_window(window: Window) -> void:

@@ -17,6 +17,9 @@ const RARITY_COLORS: Dictionary = {
 ## Behaviours that move the player; a phone has no aim pointer for them.
 const MOBILITY_BEHAVIORS: Array[String] = ["dash_blade", "hand_cannon", "star_tome", "saber"]
 const MIN_ATTACK_INTERVAL_SECONDS: float = 0.05
+## Lamp combines two range scores; halve their positive bonus once more.
+## Other weapons and negative range penalties retain their existing scaling.
+const LAMP_POSITIVE_RANGE_BONUS_SCALE := 0.5
 const ATTACHMENT_ICON_SIZE := 32
 const ATTACHMENT_ICON_GAP := " "
 const EMPTY_ATTACHMENT_ICON := "res://assets/ui/finance/empty_enchantment_slot.svg"
@@ -589,6 +592,11 @@ func get_attack_range() -> float:
 	var bonus := get_stat("area_size")
 	if use_active_range_rules and has_combat_tag(L10n.text("combat.tag.cone")) and has_combat_tag(L10n.text("combat.tag.area")):
 		bonus += get_stat("damage_area_size")
+		if is_copper_lamp() and bonus > 0.0:
+			# Scale the resulting multiplier, not the integer stat score; halving
+			# an odd combined score must not round it up before applying range.
+			var multiplier := StatDefinitions.calculate_attack_range_multiplier(bonus)
+			return get_base_attack_range() * (1.0 + (multiplier - 1.0) * LAMP_POSITIVE_RANGE_BONUS_SCALE)
 	return StatDefinitions.calculate_attack_radius(get_base_attack_range(), bonus)
 
 

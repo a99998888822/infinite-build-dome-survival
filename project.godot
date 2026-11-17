@@ -22,6 +22,7 @@ config/icon="res://icon.png"
 [autoload]
 
 MobileProfile="*res://autoloads/mobile_profile.gd"
+PerformanceBudget="*res://autoloads/performance_budget.gd"
 L10n="*res://autoloads/localization.gd"
 DataRegistry="*res://autoloads/data_registry.gd"
 GameGlobal="*res://autoloads/game_global.gd"
@@ -59,6 +60,7 @@ locale/fallback="zh_CN"
 [physics]
 
 3d/physics_engine="Jolt Physics"
+common/max_physics_steps_per_frame=2
 
 [rendering]
 

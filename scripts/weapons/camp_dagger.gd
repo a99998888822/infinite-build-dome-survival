@@ -8,6 +8,11 @@ const SLASH := preload("res://assets/sprites/weapons/effects/camp_dagger_slash.p
 const EFFECTS := preload("res://scripts/effects/combat_effect_world.gd")
 const GRIP := Vector2(7, 15)
 const BASE_REACH := 40.0
+## Inscribed cap sampling must stay under a quarter pixel of the ideal ellipse;
+## smaller contact radii then need far fewer polygon vertices per query.
+const CAP_SAGITTA_PX := 0.25
+const MIN_CAP_SAMPLES := 5
+const MAX_CAP_SAMPLES := 17
 
 var weapon: WeaponInstance
 var cancelled := false
@@ -21,6 +26,18 @@ var cuts: Array[Dictionary] = []
 var split_profiles: Array[Dictionary] = []
 var _shape := ConvexPolygonShape2D.new()
 var _query := PhysicsShapeQueryParameters2D.new()
+## Per-tick geometry cache. Stat reads chain through player modifiers and
+## localized combat tags, so reading them per contact step dominated the sweep.
+var _reach := 0.0
+var _hit_radius := 1.0
+var _raw_hit_radius := 0.0
+var _outer_radius := 0.0
+var _segment_scale := 1.0
+var _ground_heading := Vector2.RIGHT
+var _body_scale := Vector2.ONE
+var _arc_half_angle := 0.0
+var _cap_samples := MAX_CAP_SAMPLES
+var _cap_samples_radius := -1.0
 
 
 static func find_target(source: WeaponInstance) -> EnemyController:
@@ -72,7 +89,31 @@ func initialize(source: WeaponInstance, direction: Vector2) -> void:
 	CombatRenderWorld.set_world_layer(self, CombatRenderWorld.ATTACK_Z)
 	add_to_group("camp_daggers")
 	add_to_group("weapon_runtime_effects")
+	_refresh_geometry()
 	queue_redraw()
+
+
+## Reads every stat the sweep, the contact test and the blade drawing need, once
+## per tick. Direct callers outside the tick refresh lazily through the guards.
+func _refresh_geometry() -> void:
+	_reach = weapon.get_attack_range()
+	_raw_hit_radius = weapon.get_hit_radius()
+	_hit_radius = maxf(_raw_hit_radius, 1.0)
+	_outer_radius = weapon.get_dagger_outer_radius()
+	_segment_scale = _reach / BASE_REACH
+	_ground_heading = AttackFootprint.ground_direction(heading)
+	_body_scale = weapon.get_dagger_body_scale()
+	_arc_half_angle = deg_to_rad(float(weapon.weapon_data.get("dagger_arc_degrees", 130))) * 0.5
+	if not is_equal_approx(_hit_radius, _cap_samples_radius):
+		_cap_samples_radius = _hit_radius
+		_cap_samples = _cap_sample_count(_hit_radius)
+
+
+func _cap_sample_count(radius: float) -> int:
+	var samples := MIN_CAP_SAMPLES
+	while samples < MAX_CAP_SAMPLES and radius * (1.0 - cos(PI / float(2 * (samples - 1)))) > CAP_SAGITTA_PX:
+		samples += 1
+	return samples
 
 
 ## Enable before the first tick for active casts and their native replays.
@@ -80,6 +121,8 @@ func configure_continuous_combo() -> void:
 	if continuous_combo:
 		return
 	continuous_combo = true
+	# Stats may have moved since initialize; the next tick re-reads them.
+	_reach = 0.0
 	time_scale *= 1.25
 	var windup := float(weapon.weapon_data.get("dagger_windup_ms", 60)) / 1000.0
 	var sweep := float(weapon.weapon_data.get("dagger_sweep_ms", 100)) / 1000.0
@@ -116,17 +159,19 @@ func cut_opacity(cut: Dictionary, at: float) -> float:
 
 
 func blade_direction(cut: Dictionary, at: float) -> Vector2:
+	if _reach <= 0.0:
+		_refresh_geometry()
 	var t := clampf((at - float(cut.start) - float(cut.windup)) / float(cut.sweep), 0, 1)
-	var half_angle := deg_to_rad(float(weapon.weapon_data.get("dagger_arc_degrees", 130))) * 0.5
-	return AttackFootprint.ground_direction(heading).rotated(lerpf(-half_angle, half_angle, smoothstep(0, 1, t)) * float(cut.sign))
+	return _ground_heading.rotated(lerpf(-_arc_half_angle, _arc_half_angle, smoothstep(0, 1, t)) * float(cut.sign))
 
 
 func blade_segment(cut: Dictionary, at: float) -> PackedVector2Array:
+	if _reach <= 0.0:
+		_refresh_geometry()
 	var radial := blade_direction(cut, at)
-	var scale_factor := weapon.get_attack_range() / BASE_REACH
 	# Keep the inner slash reachable when extending the outer arc: increased
 	# range must not create a blind ring where touching enemies cannot be hit.
-	return PackedVector2Array([AttackFootprint.project(radial * 21.0 * minf(scale_factor, 1.0)), AttackFootprint.project(radial * (weapon.get_dagger_outer_radius() - weapon.get_hit_radius()))])
+	return PackedVector2Array([AttackFootprint.project(radial * 21.0 * minf(_segment_scale, 1.0)), AttackFootprint.project(radial * (_outer_radius - _raw_hit_radius))])
 
 
 func _physics_process(delta: float) -> void:
@@ -137,6 +182,7 @@ func _physics_process(delta: float) -> void:
 		return
 	if bool(GameGlobal.get_runtime_flag("battle_runtime_paused", false)):
 		return
+	_refresh_geometry()
 	var previous := age
 	var old_origin := global_position
 	age += delta / maxf(time_scale, 0.001)
@@ -151,7 +197,7 @@ func _physics_process(delta: float) -> void:
 			var first := maxf(previous, begin)
 			var last := minf(age, end)
 			var angular_steps := ceili((last - first) / float(cut.sweep) * 32.0)
-			var motion_steps := ceili(old_origin.distance_to(global_position) / maxf(weapon.get_hit_radius(), 1.0))
+			var motion_steps := ceili(old_origin.distance_to(global_position) / maxf(_hit_radius, 1.0))
 			var steps := maxi(1, maxi(angular_steps, motion_steps))
 			for step in range(steps + 1):
 				var at := lerpf(first, last, float(step) / steps)
@@ -168,27 +214,38 @@ func _contact(cut: Dictionary, origin: Vector2, at: float) -> void:
 	var first := AttackFootprint.unproject(segment[0])
 	var last := AttackFootprint.unproject(segment[1])
 	var angle := (last - first).angle()
-	var radius := maxf(weapon.get_hit_radius(), 1.0)
+	var radius := _hit_radius
 	var points := PackedVector2Array()
 	# Bake the projected capsule so physics never receives a scaled transform.
-	for i in 17:
-		points.append(AttackFootprint.project(last + Vector2.from_angle(angle - PI / 2 + PI * i / 16.0) * radius))
-	for i in 17:
-		points.append(AttackFootprint.project(first + Vector2.from_angle(angle + PI / 2 + PI * i / 16.0) * radius))
+	# Narrowphase cost scales with vertex count, so the caps are sampled to the
+	# quarter-pixel budget instead of a fixed 17 points.
+	var arc := PI / float(_cap_samples - 1)
+	for i in _cap_samples:
+		points.append(AttackFootprint.project(last + Vector2.from_angle(angle - PI / 2 + arc * i) * radius))
+	for i in _cap_samples:
+		points.append(AttackFootprint.project(first + Vector2.from_angle(angle + PI / 2 + arc * i) * radius))
 	_shape.points = points
 	_query.transform = Transform2D(0, origin)
 	ProjectileGuard.intercept(self, weapon, _shape, _query.transform)
 	var contacts := get_world_2d().direct_space_state.intersect_shape(_query, maxi(32, EnemyRegistry.get_registered_enemies().size()))
-	var registry_order: Dictionary = {}
-	var registry := EnemyRegistry.get_registered_enemies()
-	for i in registry.size(): registry_order[registry[i].get_instance_id()] = i
-	contacts.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return int(registry_order.get(a.collider.get_instance_id(), 2147483647)) < int(registry_order.get(b.collider.get_instance_id(), 2147483647)))
+	if contacts.size() > 1:
+		var registry_order := EnemyRegistry.get_registry_order()
+		# Registry order keeps hit resolution deterministic. An inline insertion
+		# sort avoids a per-call GDScript lambda on top of the physics query.
+		for index in range(1, contacts.size()):
+			var pending: Dictionary = contacts[index]
+			var pending_rank := int(registry_order.get(pending.collider.get_instance_id(), 2147483647))
+			var scan := index - 1
+			while scan >= 0 and int(registry_order.get(contacts[scan].collider.get_instance_id(), 2147483647)) > pending_rank:
+				contacts[scan + 1] = contacts[scan]
+				scan -= 1
+			contacts[scan + 1] = pending
 	AudioManager.begin_combat_audio()
 	for result in contacts:
 		var enemy := result.collider as EnemyController
 		if not is_instance_valid(enemy) or not enemy.is_alive() or cut.hits.has(enemy.get_instance_id()):
 			continue
-		if AttackFootprint.unproject(weapon.get_auto_target_position(enemy) - origin).dot(AttackFootprint.ground_direction(heading)) < 0:
+		if AttackFootprint.unproject(weapon.get_auto_target_position(enemy) - origin).dot(_ground_heading) < 0:
 			continue
 		var ray := PhysicsRayQueryParameters2D.create(origin, enemy.global_position, 4)
 		if not get_world_2d().direct_space_state.intersect_ray(ray).is_empty():
@@ -245,7 +302,9 @@ func _draw() -> void:
 	preload("res://scripts/effects/aligned_atlas.gd").begin(self)
 	if cancelled or weapon == null:
 		return
-	var scale_factor := weapon.get_attack_range() / BASE_REACH
+	if _reach <= 0.0:
+		_refresh_geometry()
+	var scale_factor := _segment_scale
 	var tint := Color.WHITE
 	if weapon.has_effect("fire"): tint = Color("ffc38a")
 	elif weapon.has_effect("ice"): tint = Color("b4efff")
@@ -259,16 +318,16 @@ func _draw() -> void:
 		var fade := cut_opacity(cut, age)
 		if age >= begin:
 			# Reveal the approved crescent only behind the moving edge, then fade it.
-			var angle := AttackFootprint.ground_direction(heading).angle_to(radial)
+			var angle := _ground_heading.angle_to(radial)
 			var edge_y := clampi(roundi(32 + 29 * sin(angle)), 0, 64)
 			var y0 := 0 if float(cut.sign) > 0 else edge_y
 			var height := edge_y if float(cut.sign) > 0 else 64 - edge_y
-			var slash_scale := weapon.get_attack_range() / 29.0
+			var slash_scale := _reach / 29.0
 			preload("res://scripts/effects/aligned_atlas.gd").draw(self,SLASH,Rect2(Vector2(-22,y0-32)*slash_scale,Vector2(64,height)*slash_scale),
 				Rect2(0,y0,64,height),Color(tint,0.58*fade),AttackFootprint.ground_transform(heading))
 		var screen_radial := AttackFootprint.project(radial).normalized()
 		var grip := AttackFootprint.project(radial * 14.0 * scale_factor)
-		var body_scale := weapon.get_dagger_body_scale()
+		var body_scale := _body_scale
 		if weapon.use_active_range_rules:
 			# Move the fixed-size blade out to the new arc; only the slash trail grows.
 			grip = blade_segment(cut, age)[1] - screen_radial * 22.0 * body_scale.x

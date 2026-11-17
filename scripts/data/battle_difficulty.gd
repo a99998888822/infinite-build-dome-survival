@@ -19,9 +19,14 @@ const EARLY_DAMAGE_SCALE: Array[float] = [0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
 # Wave six onward retains the existing elite progression.
 const EARLY_ELITE_HP_SCALE: Array[float] = [0.65, 0.65, 0.75, 0.85, 0.95, 1.0]
 # Health and density drive progression; contact damage grows slowly.
+## Every difficulty shares this on-screen population limit; the profiles differ
+## only in what their own text promises (stat multiplier, spawn density, elite
+## frequency). A "denser" difficulty therefore refills the same crowd faster
+## instead of raising the crowd size, which keeps frame cost predictable.
+const ENEMY_LIMIT := 72
 const BASELINE := {
 	"health": 0.8, "damage": 0.45, "speed": 0.85, "armor": 1.0,
-	"spawn_count": 0.15, "spawn_count_multiplier": 1, "spawn_interval": 2.70, "opening_delay": 2.0, "enemy_limit": 48,
+	"spawn_count": 0.15, "spawn_count_multiplier": 1, "spawn_interval": 2.70, "opening_delay": 2.0, "enemy_limit": ENEMY_LIMIT,
 	"hp_growth": 0.24, "damage_growth": 1.5, "speed_growth": 0.5, "armor_growth": 0.5,
 	# Ordinary HP: standard wave 1 = 24, wave 12 = 140; elites keep hp_growth.
 	"normal_hp_growth": 200.0 / (24.0 * 19.0),
@@ -31,17 +36,18 @@ const PROFILES := {
 	"1": {
 		"title": "标准难度", "color": Color("#83b77c"), "stat_multiplier": 1.0,
 		"description": "",
-		"spawn_count_multiplier": 1, "enemy_limit": 48,
+		"spawn_count_multiplier": 1, "enemy_limit": ENEMY_LIMIT,
 	},
 	"2": {
 		"title": "怪物属性加强20%", "color": Color("#c8ae54"), "stat_multiplier": 1.2,
 		"description": "怪物更多",
-		"spawn_count": 0.22, "spawn_interval": 2.40, "enemy_limit": 72, "elite_count": 1.15,
+		"spawn_count": 0.22, "spawn_interval": 2.40, "enemy_limit": ENEMY_LIMIT,
+		"elite_count": 1.15,
 	},
 	"3": {
 		"title": "怪物属性加强30%", "color": Color("#c8794f"), "stat_multiplier": 1.3,
 		"description": "怪物密集 · 精英更频繁",
-		"spawn_count": 0.30, "spawn_interval": 2.10, "enemy_limit": 96,
+		"spawn_count": 0.30, "spawn_interval": 2.10, "enemy_limit": ENEMY_LIMIT,
 		"first_elite_wave": 2, "elite_count": 1.3,
 	},
 }

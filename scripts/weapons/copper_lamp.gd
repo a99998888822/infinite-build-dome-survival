@@ -75,8 +75,12 @@ func _physics_process(delta: float) -> void:
 					heading = Vector2.from_angle(rotate_toward(heading.angle(), relative.angle(), turn))
 			# A started burst burns for its full duration, even with no target.
 			_build_beams()
-			for beam in beams:
-				ProjectileGuard.intercept(self, weapon, AttackFootprint.lamp_shape(beam.direction, beam.reach, weapon.get_lamp_cone_degrees()), Transform2D(0, global_position))
+			# Build shield geometry only when this cast actually has a shield.
+			# Damage still performs its original cone test on every settlement.
+			if weapon.has_effect("guard"):
+				for beam_index in beams.size():
+					var query := _beam_query(beam_index)
+					ProjectileGuard.intercept(self, weapon, query.shape, Transform2D(0, global_position))
 			var available := maxf(0, (1.0 - heat) * burst_duration)
 			var firing_delta := minf(delta, available)
 			heat = minf(1, heat + firing_delta / burst_duration)
@@ -130,14 +134,11 @@ func _ordered_damage_targets() -> Array[Node]:
 
 
 func _tick_damage() -> void:
+	var diagnostic_start := preload("res://scripts/battle/combat_diagnostics.gd").begin()
 	var can_proc := proc_left <= 0
 	var enemies := _ordered_damage_targets()
 	AudioManager.begin_combat_audio()
 	weapon.reset_hit_sfx_state()
-	while _beam_queries.size() < beams.size():
-		_beam_queries.append(WeaponContactQuery.new())
-	if _beam_queries.size() > beams.size():
-		_beam_queries.resize(beams.size())
 	for beam_index in beams.size():
 		var beam := beams[beam_index]
 		var proc_used := false
@@ -147,8 +148,7 @@ func _tick_damage() -> void:
 		event.damage = maxi(1, roundi(event.damage * float(beam.power)))
 		event.elemental_damage_scale *= float(beam.power)
 		var direction: Vector2 = beam.direction
-		var query := _beam_queries[beam_index]
-		query.configure_lamp(direction, float(beam.reach), weapon.get_lamp_cone_degrees())
+		var query := _beam_query(beam_index)
 		query.place(Transform2D(0, global_position))
 		for node in enemies:
 			var enemy := node as EnemyController
@@ -166,6 +166,16 @@ func _tick_damage() -> void:
 				proc_left = float(weapon.weapon_data.lamp_proc_ms) / 1000.0
 			deal_hit(enemy, event, direction, bool(beam.child), false)
 	AudioManager.end_combat_audio()
+	preload("res://scripts/battle/combat_diagnostics.gd").finish(&"lamp_damage", diagnostic_start)
+
+
+func _beam_query(index: int) -> WeaponContactQuery:
+	while _beam_queries.size() <= index:
+		_beam_queries.append(WeaponContactQuery.new())
+	var beam := beams[index]
+	var query := _beam_queries[index]
+	query.configure_lamp(beam.direction, float(beam.reach), weapon.get_lamp_cone_degrees())
+	return query
 
 
 func _draw() -> void:
@@ -177,6 +187,7 @@ func _draw() -> void:
 
 
 func _sync_flame_visuals() -> void:
+	var diagnostic_start := preload("res://scripts/battle/combat_diagnostics.gd").begin()
 	var needed := beams.size() if firing else 0
 	while flame_visuals.size() < needed:
 		var visual := FLAME_VISUAL.new()
@@ -187,3 +198,4 @@ func _sync_flame_visuals() -> void:
 		if i < needed:
 			var beam := beams[i]
 			flame_visuals[i].configure(beam.direction, float(beam.reach), weapon.get_lamp_cone_degrees(), age, bool(beam.child))
+	preload("res://scripts/battle/combat_diagnostics.gd").finish(&"lamp_visual_sync", diagnostic_start)

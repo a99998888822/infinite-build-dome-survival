@@ -100,13 +100,20 @@ func _test_selection_and_slots() -> void:
 		# Fill to the configured limit and exercise real group spawning.
 		manager.current_wave_index = 0
 		var cap := int(BattleDifficulty.get_profile(id).enemy_limit)
-		check(cap == [48, 72, 96][index], "increased supply has crowd-cap headroom: " + id)
+		check(cap == BattleDifficulty.ENEMY_LIMIT, "every difficulty shares one crowd cap: " + id)
 		for n in cap:
 			var blocker := manager.spawn_enemy("enemy_mutated_grub", Vector2(2000 + n * 3, 0))
 			blocker.set_physics_process(false)
 		manager.spawn_timers_ms.fill(0.0)
 		manager._process_spawn_timers(0.1)
 		check(EnemyRegistry.get_registered_enemies().size() == cap, "live enemy cap prevents an extra batch: " + id)
+		# The refused batch is owed rather than lost, and pays out once a slot frees.
+		check(manager.pending_spawn_count() > 0, "capped batch becomes owed spawns: " + id)
+		var owed := manager.pending_spawn_count()
+		for live_enemy in EnemyRegistry.get_registered_enemies().duplicate(): live_enemy.free()
+		manager._drain_pending_spawns()
+		check(manager.pending_spawn_count() == maxi(0, owed - WaveManager.PENDING_SPAWN_DRAIN_PER_FRAME), "owed spawns refill freed slots: " + id)
+		manager.clear_pending_spawns()
 		for live_enemy in EnemyRegistry.get_registered_enemies().duplicate(): live_enemy.free()
 		flow.enter_start_page()
 		await frames(8)

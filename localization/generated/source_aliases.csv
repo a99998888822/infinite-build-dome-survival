@@ -132,6 +132,7 @@ WASD / 方向键移动,WASD / 方向键移动,WASD / arrows to move
 、,、, / 
 一次性还清 %d 金币,一次性还清 %d 金币,Repay all: %d gold
 一次攻击产生的投射物数量。,一次攻击产生的投射物数量。,Number of projectiles produced by one attack.
+一键购买,一键购买,Buy all
 上一步,上一步,Previous
 下一步,下一步,Next
 下一波受到的生命伤害-30%；每抵消1点伤害消耗{单价}本金，本金耗光后失效。,下一波受到的生命伤害-30%；每抵消1点伤害消耗{单价}本金，本金耗光后失效。,Next wave's health damage -30%; each point prevented costs {单价} principal. Expires when principal runs out.
@@ -565,6 +566,7 @@ Extra projectiles [color=#7FD88F]+1[/color]"
 已解锁的属性成长,已解锁的属性成长,Unlocked stat upgrades
 已计复利,已计复利,Interest compounded
 已购买,已购买,Purchased
+已购买 %d 件商品，共花费 %d 金币,已购买 %d 件商品，共花费 %d 金币,Bought %d items for %d gold
 已购买：,已购买：,Purchased: 
 已贷款：%d 金币,已贷款：%d 金币,Borrowed: %d gold
 已达最高等级,已达最高等级,Maximum level reached
@@ -719,6 +721,7 @@ Attacks default to auto; mobility skills default to manual. Each skill's setting
 按编号直接施放手动技能；Esc 武器下方图标切换自动／手动,按编号直接施放手动技能；Esc 武器下方图标切换自动／手动,Cast manual skills by number; toggle Auto/Manual below each weapon in the Esc inventory
 按编号直接施放，无需进入瞄准,按编号直接施放，无需进入瞄准,Press a weapon number to cast immediately
 按编号选择手动技能，再用左键确认；Esc 武器下方图标切换自动／手动,按编号选择手动技能，再用左键确认；Esc 武器下方图标切换自动／手动,Select a manual skill by number and confirm with left-click; toggle Auto/Manual below each weapon in the Esc inventory
+按货架顺序购买所有当前可购买的商品；每件按最新价格结算，跳过余额不足或不可购买的商品。,按货架顺序购买所有当前可购买的商品；每件按最新价格结算，跳过余额不足或不可购买的商品。,Buy eligible items in shelf order at current prices. Skip unaffordable or unavailable items.
 挑战奖励,挑战奖励,Challenge Reward
 挑战存活奖励：金币+%d。,挑战存活奖励：金币+%d。,Challenge survival reward: +%d gold.
 挑战完成 · 结息后已将全部金币存入本金。,挑战完成 · 结息后已将全部金币存入本金。,Challenge complete · All gold deposited after interest.
@@ -998,7 +1001,8 @@ Pellets [color=#7FD88F]+1[/color]"
 燃烧时间,燃烧时间,Burn Duration
 爆伤升级,爆伤升级,Critical damage
 爆炸范围,爆炸范围,Blast Area
-版本 v.0106.261018,版本 v.0106.261018,Version v.0106.261018
+版本 v.0106.261018,版本 v.0106.261117,Version v.0106.261117
+版本 v.0106.261117,版本 v.0106.261117,Version v.0106.261117
 物品,物品,Item
 物品已不存在，请重新选择。,物品已不存在，请重新选择。,This item no longer exists. Select again.
 物品或报价已变化，请重新确认。,物品或报价已变化，请重新确认。,The item or quote changed. Please confirm again.

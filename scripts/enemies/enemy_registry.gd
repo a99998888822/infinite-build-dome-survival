@@ -7,6 +7,8 @@ var _built_revision := -1
 var _cells: Dictionary = {}
 var _parents: Dictionary = {}
 var _untracked := false
+var _order_revision := -1
+var _registry_order: Dictionary = {}
 const CELL_SIZE := 128.0
 
 
@@ -78,3 +80,15 @@ func unregister_enemy(enemy: Node) -> void:
 func get_registered_enemies() -> Array[Node]:
 	# Return the live backing array so hot-path queries do not allocate.
 	return _registered_enemies
+
+
+## Read-only ordering snapshot. Membership edits replace the map, so an ongoing
+## contact sort retains the same ordering even if a later hit changes membership.
+func get_registry_order() -> Dictionary:
+	if _order_revision != revision:
+		var order: Dictionary = {}
+		for index in _registered_enemies.size():
+			order[_registered_enemies[index].get_instance_id()] = index
+		_registry_order = order
+		_order_revision = revision
+	return _registry_order

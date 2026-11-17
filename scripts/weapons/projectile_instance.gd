@@ -45,6 +45,14 @@ var _wood_arrow_visual: Node2D = null
 var _sorted_visual: Node2D = null
 var _hit_shape: CircleShape2D = null
 var _deferred_contacts: Dictionary = {}
+var _flight_query := PhysicsShapeQueryParameters2D.new()
+var _flight_broad := RectangleShape2D.new()
+var _plasma_query := PhysicsShapeQueryParameters2D.new()
+## Swept contact cadence. A pressed frame budget accumulates two or three ticks
+## worth of travel and sweeps it once as a single longer query: the covered area
+## and the hits are identical, only the query rate drops.
+var _sweep_accumulator: float = 0.0
+var _sweep_phase: int = 0
 
 
 func initialize(
@@ -157,8 +165,18 @@ func _physics_process(delta: float) -> void:
 		if not active:
 			return
 	var step := minf(speed * delta, maxf(remaining_distance, 0.0))
-	_sweep_flight(step)
-	if not active: return
+	# Under a pressed budget the sweep runs every second or third tick over the
+	# accumulated travel. The query is a swept shape, so the longer step covers
+	# exactly the same ground and no contact is skipped.
+	_sweep_accumulator += step
+	var period := maxi(1, PerformanceBudget.sweep_period())
+	_sweep_phase += 1
+	if _sweep_phase >= period:
+		var swept := _sweep_accumulator
+		_sweep_phase = 0
+		_sweep_accumulator = 0.0
+		_sweep_flight(swept)
+		if not active: return
 	if remaining_distance <= 0.0:
 		_destroy()
 
@@ -167,9 +185,10 @@ func _sweep_flight(step: float) -> void:
 	var start := global_position
 	ProjectileGuard.intercept_segment(self, weapon, start, start + direction * step, _hit_shape.radius)
 	var space := get_world_2d().direct_space_state
-	var query := PhysicsShapeQueryParameters2D.new()
+	var query := _flight_query
 	query.shape = _hit_shape
 	query.transform = Transform2D(0, start)
+	query.motion = Vector2.ZERO
 	query.collision_mask = TERRAIN_COLLISION_LAYER
 	var terrain := space.intersect_shape(query, 1)
 	var wall_distance := step
@@ -183,7 +202,7 @@ func _sweep_flight(step: float) -> void:
 			wall_distance = step * fractions[0]
 			var rest := space.get_rest_info(query)
 			if not rest.is_empty(): wall = instance_from_id(int(rest.collider_id))
-	var broad := RectangleShape2D.new()
+	var broad := _flight_broad
 	broad.size = Vector2(wall_distance + _hit_shape.radius * 2, _hit_shape.radius * 2)
 	query.shape = broad
 	query.transform = Transform2D(direction.angle(), start + direction * wall_distance * 0.5)
@@ -306,8 +325,12 @@ func _query_plasma_enemies() -> Array[EnemyController]:
 	var enemies: Array[EnemyController] = []
 	if _hit_shape == null:
 		_hit_shape = CircleShape2D.new()
-	_hit_shape.radius = weapon.get_hit_radius()
-	var query := PhysicsShapeQueryParameters2D.new()
+	# Reassigning an unchanged Shape2D radius invalidates the engine's active
+	# physics shape on every contact scan. Retain exact live changes only.
+	var radius := weapon.get_hit_radius()
+	if _hit_shape.radius != radius:
+		_hit_shape.radius = radius
+	var query := _plasma_query
 	query.shape = _hit_shape
 	query.transform = Transform2D(0.0, global_position)
 	query.collision_mask = ENEMY_COLLISION_LAYER

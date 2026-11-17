@@ -469,7 +469,7 @@
     "combat_tags": [
       "范围"
     ],
-    "icon": "res://assets/ui/icons/weapons/weapon_furnace.svg",
+    "icon": "res://assets/ui/icons/weapons/weapon_furnace.png",
     "hit_sfx": "res://assets/audio/sfx/combat/wood_arrow_01.wav",
     "rarity": "uncommon",
     "attack_kind": "element",
@@ -575,7 +575,7 @@
       "范围",
       "位移"
     ],
-    "icon": "res://assets/ui/icons/weapons/weapon_saber.svg",
+    "icon": "res://assets/ui/icons/weapons/weapon_saber.png",
     "hit_sfx": "res://assets/audio/sfx/combat/wood_arrow_01.wav",
     "rarity": "uncommon",
     "attack_kind": "melee",

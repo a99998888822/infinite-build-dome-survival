@@ -3,6 +3,10 @@ class_name NightwatchSpearShard
 
 const SPEAR := preload("res://assets/sprites/weapons/weapon_nightwatch_spear.png")
 var _paused_contacts: Dictionary = {}
+## The blade is a fixed rectangle rotated by `direction`. Redrawing an unchanged
+## item rebuilds its canvas commands, and a split spear can keep hundreds of
+## shards alive at once, so redraw only when a drawn input actually moves.
+var _painted_direction := Vector2.INF
 
 
 func _ready() -> void:
@@ -27,7 +31,9 @@ func _physics_process(delta: float) -> void:
 		if is_instance_valid(body):
 			_on_body_entered(body)
 	super._physics_process(delta)
-	queue_redraw()
+	if not _painted_direction.is_equal_approx(direction):
+		_painted_direction = direction
+		queue_redraw()
 
 
 func _on_body_entered(body: Node) -> void:

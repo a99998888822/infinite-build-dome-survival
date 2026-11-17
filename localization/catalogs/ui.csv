@@ -391,7 +391,7 @@ ui.main_menu.language,语言：,Language：
 ui.main_menu.quit,退出,Quit
 ui.main_menu.start_run,开始战斗,Start Run
 ui.main_menu.talents,天赋,Talents
-ui.main_menu.version,版本 v.0106.261018,Version v.0106.261018
+ui.main_menu.version,版本 v.0106.261117,Version v.0106.261117
 ui.performance.counter,FPS %d   怪物 %d   粒子 %d,FPS %d   Enemies %d   Particles %d
 ui.performance.tooltip,实时帧率、存活怪物、共享粒子与闪电采样点。每0.5秒更新。,"Live FPS, enemies, shared particles and lightning samples. Updates every 0.5 seconds."
 ui.preview.void_blade_upgrade,虚空刃 升至2级,Void Blade to Lv.2

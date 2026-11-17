@@ -813,6 +813,18 @@ func fade_out_and_free() -> void:
 	tween.tween_callback(queue_free)
 
 
+## Display admission only. The pool stays at MAX_DAMAGE_NUMBERS so a tier change
+## never reallocates labels; a pressed frame budget just shows fewer at once.
+static func _damage_number_limit(is_critical: bool) -> int:
+	match PerformanceBudget.tier():
+		PerformanceBudget.TIER_REDUCED:
+			return 96 if is_critical else 72
+		PerformanceBudget.TIER_MINIMAL:
+			return 48 if is_critical else 36
+		_:
+			return MAX_DAMAGE_NUMBERS if is_critical else MAX_DAMAGE_NUMBERS - 32
+
+
 func _spawn_damage_number(
 	final_damage: int,
 	is_critical: bool = false,
@@ -822,8 +834,9 @@ func _spawn_damage_number(
 	light_base_damage: int = 0
 ) -> void:
 	# This is a display budget only. Damage, reactions and accounting have already
-	# resolved. Reserve 32 slots for critical hits during dense area attacks.
-	if active_damage_numbers >= (MAX_DAMAGE_NUMBERS if is_critical else MAX_DAMAGE_NUMBERS - 32):
+	# resolved. Reserve 32 slots for critical hits during dense area attacks; a
+	# pressed frame budget lowers both numbers without touching the pool or damage.
+	if active_damage_numbers >= _damage_number_limit(is_critical):
 		return
 	var damage_number_parent := get_parent()
 	if damage_number_parent == null or not damage_number_parent.is_inside_tree():

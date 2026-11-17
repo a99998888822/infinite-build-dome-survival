@@ -82,12 +82,11 @@ func _ready() -> void:
 	_kind_label = Label.new()
 	_kind_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	_kind_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_kind_label.custom_minimum_size.y = 50 if MobileProfile.is_mobile() else 40
+	_kind_label.max_lines_visible = 2 if MobileProfile.is_mobile() else 1
 	_kind_label.mouse_filter = Control.MOUSE_FILTER_PASS
 	FinanceUIStyle.label(_kind_label, KIND_FONT_SIZE, FinanceUIStyle.MUTED)
 	titles.add_child(_kind_label)
 	var description_margin := MarginContainer.new()
-	description_margin.add_theme_constant_override("margin_top", 8)
 	description_margin.add_theme_constant_override("margin_left", TEXT_LEFT_PADDING)
 	description_margin.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	description_margin.mouse_filter = Control.MOUSE_FILTER_IGNORE

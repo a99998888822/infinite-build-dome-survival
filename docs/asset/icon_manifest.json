@@ -21,7 +21,7 @@
       34
     ],
     "colors": 10,
-    "installed_sha256": "895171f1903648812594f597c179adaa698577814a5efdf1a673569e5a364a63",
+    "installed_sha256": "79d38aa39be36fa34a780bea6d984469902a888b66629ed6eb9981eecbc3bb00",
     "pixel_source": "assets/ui/icons/weapons/weapon_wood_arrow.pxg",
     "palette_source": "assets/ui/icons/weapons/weapon_wood_arrow.pal"
   },
@@ -47,7 +47,7 @@
       33
     ],
     "colors": 12,
-    "installed_sha256": "baf90ca42ba1809452a7547e33500fe07403f3e000b1d2de0fd8587b287211b2",
+    "installed_sha256": "8da3c4bcfd79a8d4b4105c52eee6ec1a845467d5cf579e8fc96490e302dade32",
     "pixel_source": "assets/ui/icons/weapons/weapon_plasma_cannon_v2.pxg",
     "palette_source": "assets/ui/icons/weapons/weapon_plasma_cannon_v2.pal"
   },
@@ -73,7 +73,7 @@
       34
     ],
     "colors": 9,
-    "installed_sha256": "343eba481a89584a51f02c45d0d1f84650f9b2a7140563368e5355ed0f3adc59",
+    "installed_sha256": "5ec14556307df2cf2952d1fc5ae7f5eaa63b87efa763f7c2ca0e1a349d8906f2",
     "pixel_source": "assets/ui/icons/weapons/weapon_iron_grenade_cannon.pxg",
     "palette_source": "assets/ui/icons/weapons/weapon_iron_grenade_cannon.pal"
   },
@@ -99,7 +99,7 @@
       34
     ],
     "colors": 11,
-    "installed_sha256": "3c20391e1081382ff1e8f110985014151b6de5049ab4cbff82c61041d0554fde",
+    "installed_sha256": "5579de3de7a506a472e855d86f5e93d31f5a07645b7177922dc773b6e36b9a63",
     "pixel_source": "assets/ui/icons/weapons/weapon_kunyu_ritual_tome.pxg",
     "palette_source": "assets/ui/icons/weapons/weapon_kunyu_ritual_tome.pal"
   },
@@ -125,7 +125,7 @@
       34
     ],
     "colors": 6,
-    "installed_sha256": "8263b7ddd890d618616ec11a4e278e8a1efdcc06b5354d6029507b71e445ff28",
+    "installed_sha256": "b86f2eeeb2361f47a6ffaa66c43b0dfcb81ba6a2c6c66a875f680d387de0bba9",
     "pixel_source": "assets/ui/icons/weapons/weapon_rentier_purse.pxg",
     "palette_source": "assets/ui/icons/weapons/weapon_rentier_purse.pal"
   },
@@ -151,7 +151,7 @@
       34
     ],
     "colors": 10,
-    "installed_sha256": "79d38563a14351acaee94b15ad554fe2be99f1dee2e17e93f19dd54c56b6d103",
+    "installed_sha256": "df4a0d72cca440bdd4b392fff94ade76505f15e1302a0f01c6f4253a0fe14cba",
     "pixel_source": "assets/ui/icons/weapons/weapon_nightwatch_spear.pxg",
     "palette_source": "assets/ui/icons/weapons/weapon_nightwatch_spear.pal"
   },
@@ -177,7 +177,7 @@
       34
     ],
     "colors": 8,
-    "installed_sha256": "18f8c22500736cdda010eddc26dbfd0f838e69042371b1c0b6cb63a03909de21",
+    "installed_sha256": "6f99e7fab6828d92a9d4cae3a89cf0341b936b4bef1899569c5bbc62c04f97dd",
     "pixel_source": "assets/ui/icons/weapons/weapon_meteor_flail.pxg",
     "palette_source": "assets/ui/icons/weapons/weapon_meteor_flail.pal"
   },
@@ -203,7 +203,7 @@
       34
     ],
     "colors": 13,
-    "installed_sha256": "edf76e9791e5c763d763c2383452cd6af42f92645281068b08ad5562fecdff80",
+    "installed_sha256": "e2acfee2efb29522368c3178b8e3b771c294c6c7ba019b40720ff2a152c58f78",
     "pixel_source": "assets/ui/icons/weapons/weapon_copper_lamp.pxg",
     "palette_source": "assets/ui/icons/weapons/weapon_copper_lamp.pal"
   },
@@ -229,7 +229,7 @@
       34
     ],
     "colors": 11,
-    "installed_sha256": "3b83cd1ea1e844d6efe326f27c0365569ab66bb1fefb63a5dc796cff50c0cc0d",
+    "installed_sha256": "daff0e4600806103ab90e1ed6b095c4e70e9c04ca7481a4b2088797eec23a6eb",
     "pixel_source": "assets/ui/icons/weapons/weapon_mutant_tentacle.pxg",
     "palette_source": "assets/ui/icons/weapons/weapon_mutant_tentacle.pal"
   },
@@ -255,7 +255,7 @@
       34
     ],
     "colors": 8,
-    "installed_sha256": "42fc6ed98d476da44ed64d2ce0d34e9ef7ea84865e9741dbc2df3ea82770c150",
+    "installed_sha256": "471dcfd6a078bf244f707dcef2b2fedbdcbc93098b387e2f92e5d7c131c17f5e",
     "pixel_source": "assets/ui/icons/weapons/weapon_earth_hammer.pxg",
     "palette_source": "assets/ui/icons/weapons/weapon_earth_hammer.pal"
   },
@@ -280,8 +280,8 @@
       31,
       34
     ],
-    "colors": 9,
-    "installed_sha256": "0e81f762665b654bf1e5d53f54820640b6ead9ab006ce65635201d96b71a056a",
+    "colors": 8,
+    "installed_sha256": "266543663777263372fca6f9fe2916f8ab4a063f91d4805239cc8b82177004a8",
     "pixel_source": "assets/ui/icons/weapons/weapon_camp_dagger.pxg",
     "palette_source": "assets/ui/icons/weapons/weapon_camp_dagger.pal"
   },
@@ -325,7 +325,7 @@
       34
     ],
     "colors": 9,
-    "installed_sha256": "4a32ca78ef189ee4cbbe6acd92f12722e70fb47e6a8c15b981e9bc972edf0134",
+    "installed_sha256": "1b632d7286ee34ce1be79cb2c866b8ce0ddebb26f8816ab71556706b2a7cfc11",
     "pixel_source": "assets/ui/icons/relics/relic_piggy_bank.pxg",
     "palette_source": "assets/ui/icons/relics/relic_piggy_bank.pal"
   },
@@ -369,7 +369,7 @@
       32
     ],
     "colors": 12,
-    "installed_sha256": "54fb5d8e08e3a670edfdee342f2de98ad168f1d3f16eab99a13e76d1efb4ef44",
+    "installed_sha256": "4a7861b74846cf9bc0dd3df563226783d1542419122a307303f009fd4b7e115a",
     "pixel_source": "assets/ui/icons/relics/relic_finance_manager.pxg",
     "palette_source": "assets/ui/icons/relics/relic_finance_manager.pal"
   },
@@ -413,7 +413,7 @@
       35
     ],
     "colors": 12,
-    "installed_sha256": "b550531c0a76c1eaeb8142e838d85f65535f690950d905af1c470dac1df35686",
+    "installed_sha256": "963a15af811fdd7cb22162db53e8dbdc849ad4000d02b0caf34e7a36fc198a65",
     "pixel_source": "assets/ui/icons/relics/relic_dividend_check.pxg",
     "palette_source": "assets/ui/icons/relics/relic_dividend_check.pal"
   },
@@ -457,7 +457,7 @@
       35
     ],
     "colors": 12,
-    "installed_sha256": "4d8add622c6ce0692e74744cd1c179d3551dccf04f72346288adf307f83502e0",
+    "installed_sha256": "1e55e59ed901b4664335715b2b53ac4ffb87477f8c530f77a22b60112bcd467a",
     "pixel_source": "assets/ui/icons/relics/relic_fixed_deposit_certificate.pxg",
     "palette_source": "assets/ui/icons/relics/relic_fixed_deposit_certificate.pal"
   },
@@ -501,7 +501,7 @@
       35
     ],
     "colors": 11,
-    "installed_sha256": "479de3d3f74ae22671570a75f5885947df65dc1e1bdb495922d9d6ad82e1baba",
+    "installed_sha256": "27f554d6a9c9d7110b59be7f25c72c36d8ff626f15cdc592a8dc877f0f05c550",
     "pixel_source": "assets/ui/icons/relics/relic_flyer_ad.pxg",
     "palette_source": "assets/ui/icons/relics/relic_flyer_ad.pal"
   },
@@ -545,7 +545,7 @@
       34
     ],
     "colors": 12,
-    "installed_sha256": "68c6657ef5dcd898f6ef61b5d3663cdfe049099ad2c38299a78e46e499f9d127",
+    "installed_sha256": "cd0af7afa07301e2822ab1277794bc6c800eca0de7aa42b3d32261d95825253a",
     "pixel_source": "assets/ui/icons/relics/relic_steel_vault.pxg",
     "palette_source": "assets/ui/icons/relics/relic_steel_vault.pal"
   },
@@ -589,7 +589,7 @@
       35
     ],
     "colors": 11,
-    "installed_sha256": "2f7f744dd841bb30b867f1fb393d76bfc8d564106be8d37b9b9f8fcdc53ebb22",
+    "installed_sha256": "3c075e05e2b8685ab1d5928ad83cac167bbb64dd4733e832374222b8da627e18",
     "pixel_source": "assets/ui/icons/relics/relic_quant_trading.pxg",
     "palette_source": "assets/ui/icons/relics/relic_quant_trading.pal"
   },
@@ -633,7 +633,7 @@
       34
     ],
     "colors": 13,
-    "installed_sha256": "4798a00a86b2f3e514164f146442c9cb0439f281e7daa5422a37fa489f605908",
+    "installed_sha256": "b0e17d198cedac3a6a9489dbb7e44a03177c72172e5e387d4641f4727b5a3ac3",
     "pixel_source": "assets/ui/icons/relics/relic_hostile_takeover.pxg",
     "palette_source": "assets/ui/icons/relics/relic_hostile_takeover.pal"
   },
@@ -677,7 +677,7 @@
       34
     ],
     "colors": 13,
-    "installed_sha256": "0487d3bc5a6455f07fe158675e26b1b9eb7f209a2f1cb1d15333cef8819103e9",
+    "installed_sha256": "2fd7f335521133936d4e3fc166e0e084722b8b4fcd5c682f05e803d5a5c15508",
     "pixel_source": "assets/ui/icons/relics/relic_gold_compass.pxg",
     "palette_source": "assets/ui/icons/relics/relic_gold_compass.pal"
   },
@@ -721,7 +721,7 @@
       27
     ],
     "colors": 12,
-    "installed_sha256": "645d1bca136fed631f24272974bdfbb14b4387ccc27d3b45f12f92a3fafb35e8",
+    "installed_sha256": "e10c9666929eb4470f59c60d2a1458012fc872d4e08ef7e90c17279c95fc8f6e",
     "pixel_source": "assets/ui/icons/relics/relic_tip_tray.pxg",
     "palette_source": "assets/ui/icons/relics/relic_tip_tray.pal"
   },
@@ -765,7 +765,7 @@
       34
     ],
     "colors": 13,
-    "installed_sha256": "283fe139359f90548215462215312b04a519d3fac12655d2bc7ecd1c6958dc2b",
+    "installed_sha256": "ba850c457614a9c179bca09f7187442782b06a5e7f2daeaa8e25841d4a02828a",
     "pixel_source": "assets/ui/icons/relics/relic_compound_interest_tome.pxg",
     "palette_source": "assets/ui/icons/relics/relic_compound_interest_tome.pal"
   },
@@ -809,7 +809,7 @@
       35
     ],
     "colors": 12,
-    "installed_sha256": "51d2f7bd9eb2f5be527029a75e7ef2313894882b7c896d6b145bc9ad9e2af03c",
+    "installed_sha256": "6d05fefcedca7bc181bb9cd92959f8b3e7901e5b9ab8d95447a0456e823b9989",
     "pixel_source": "assets/ui/icons/relics/relic_high_yield_contract.pxg",
     "palette_source": "assets/ui/icons/relics/relic_high_yield_contract.pal"
   },
@@ -853,7 +853,7 @@
       35
     ],
     "colors": 13,
-    "installed_sha256": "a05c1ba921429fa2cbf372e0616f64dce16fb26fe40478a5874683063c4204d0",
+    "installed_sha256": "b65fe60f723751db493dd1a9902f6f43a748ea6b5c5bb82851985b00cb4ad630",
     "pixel_source": "assets/ui/icons/relics/relic_merger_reorg.pxg",
     "palette_source": "assets/ui/icons/relics/relic_merger_reorg.pal"
   },
@@ -897,7 +897,7 @@
       34
     ],
     "colors": 13,
-    "installed_sha256": "34490ad5c60e622e1d1654a3b0926e78d4427f668d4c899c6e63fc64fdb7e569",
+    "installed_sha256": "6e83cbe3f274c7dbe58e98c9dcceaf7c0612456a90b96a3a6845a77e96c7aac0",
     "pixel_source": "assets/ui/icons/relics/relic_periodic_dividend_clock.pxg",
     "palette_source": "assets/ui/icons/relics/relic_periodic_dividend_clock.pal"
   },
@@ -941,7 +941,7 @@
       34
     ],
     "colors": 12,
-    "installed_sha256": "f8bf940745c8c62aa6d064637f1f590166deafbd285f39b980d4f37bbf6621fd",
+    "installed_sha256": "bf8dd1879ef5854189b7aad59d8712c741c8d1c2b523b2dcca673038964e7d40",
     "pixel_source": "assets/ui/icons/relics/relic_medical_cutback.pxg",
     "palette_source": "assets/ui/icons/relics/relic_medical_cutback.pal"
   },
@@ -985,7 +985,7 @@
       29
     ],
     "colors": 12,
-    "installed_sha256": "663e7e49fce5fd48ce13a3c15154517b414c4f99e20fc74ac18dfcd83cc9ecb5",
+    "installed_sha256": "d25ceaf280a123d1b32dc78453d4f2864fd052ae7aad866ce3408babccd5f9c0",
     "pixel_source": "assets/ui/icons/relics/relic_welfare_cutback.pxg",
     "palette_source": "assets/ui/icons/relics/relic_welfare_cutback.pal"
   },
@@ -1029,7 +1029,7 @@
       33
     ],
     "colors": 9,
-    "installed_sha256": "861a971742303c8061de5c7138007c439d8b41da7eea56c2a4da5914c0827dc4",
+    "installed_sha256": "656c4a7d742bab966236bd7040709666a2824e15451798c6a4551fa81305a81c",
     "pixel_source": "assets/ui/icons/relics/relic_annual_leave_cutback.pxg",
     "palette_source": "assets/ui/icons/relics/relic_annual_leave_cutback.pal"
   },
@@ -1117,7 +1117,7 @@
       34
     ],
     "colors": 14,
-    "installed_sha256": "48c008ece01155b94675e540a6448cf1d35665f5245448f73351e187a5a6395f",
+    "installed_sha256": "84c2aec1231847e683da5f127fd9ffc8d32dc7e59e2ba0b9c6b67b4673f32ede",
     "pixel_source": "assets/ui/icons/relics/relic_divine_fusion.pxg",
     "palette_source": "assets/ui/icons/relics/relic_divine_fusion.pal"
   },
@@ -1161,7 +1161,7 @@
       34
     ],
     "colors": 13,
-    "installed_sha256": "ccbddf63514588eb4a11823a0786ce4e277c397206d120d8c0373621ae727a52",
+    "installed_sha256": "8d75990ba92f57ecff9f6b30425d2e539c58a0132b25a664908869aca9726a82",
     "pixel_source": "assets/ui/icons/relics/relic_goblin_central_bank_printer.pxg",
     "palette_source": "assets/ui/icons/relics/relic_goblin_central_bank_printer.pal"
   },
@@ -1205,7 +1205,7 @@
       34
     ],
     "colors": 10,
-    "installed_sha256": "9438468a0ac5599b68b0fca071fb6f4af9007779adc87f893ef03a18569feaf6",
+    "installed_sha256": "c0f31c164842a32ca06169dd34a1dfbbd2f59170ce2659de0635a21d49fd9210",
     "pixel_source": "assets/ui/icons/relics/relic_perpetual_annuity_scroll.pxg",
     "palette_source": "assets/ui/icons/relics/relic_perpetual_annuity_scroll.pal"
   },
@@ -1249,7 +1249,7 @@
       34
     ],
     "colors": 9,
-    "installed_sha256": "2374b2e371e6f6054b187dfeabb07b232a24e34c13babd6c3885ff847264ed2a",
+    "installed_sha256": "2f492aed345a6d33a1cf2213cc4e22aba9e01e2edd038653d165445d2acea850",
     "pixel_source": "assets/ui/icons/relics/relic_bankruptcy_reorg.pxg",
     "palette_source": "assets/ui/icons/relics/relic_bankruptcy_reorg.pal"
   },
@@ -1293,7 +1293,7 @@
       34
     ],
     "colors": 11,
-    "installed_sha256": "5d2dab7337789c12011cc4125cc009d8a41a1ed5da84fdc9dd613ccea81f61f9",
+    "installed_sha256": "7be9250adbc892b64ee4f33d52cc297fab79a734996dabbd3a0c294614ad2564",
     "pixel_source": "assets/ui/icons/relics/relic_worn_hemostatic_cloth.pxg",
     "palette_source": "assets/ui/icons/relics/relic_worn_hemostatic_cloth.pal"
   },
@@ -1337,7 +1337,7 @@
       34
     ],
     "colors": 13,
-    "installed_sha256": "7e5c1386053277b07b9456d9ad352fcb83483c2acaec0601cebd7b71ed5b7fb6",
+    "installed_sha256": "9f2ac36096a9563b0019f87a7c1fb6d88a9e82af58b09b8a1712048bdd5e2f5b",
     "pixel_source": "assets/ui/icons/relics/relic_load_iron_bracer.pxg",
     "palette_source": "assets/ui/icons/relics/relic_load_iron_bracer.pal"
   },
@@ -1381,7 +1381,7 @@
       34
     ],
     "colors": 11,
-    "installed_sha256": "aa64e7aa67b4d7380939ad45fcb6d36674e7ce05a3861661fbb301f55e5b740e",
+    "installed_sha256": "fd2cb6233e6f984f3e7a2a4ab5f42c2ef31cc5ecce52c8172374f7e79646b561",
     "pixel_source": "assets/ui/icons/relics/relic_pungent_sachet.pxg",
     "palette_source": "assets/ui/icons/relics/relic_pungent_sachet.pal"
   },
@@ -1425,7 +1425,7 @@
       34
     ],
     "colors": 10,
-    "installed_sha256": "a87fc67eddaef09d541b27dd657f63d770684ee2624d9c7e03d439302ff76aa5",
+    "installed_sha256": "c3992406adbd3ba86cbe8743095344e2ed1517f10a87c89a95f0fc6b97ae888f",
     "pixel_source": "assets/ui/icons/relics/relic_broken_crystal.pxg",
     "palette_source": "assets/ui/icons/relics/relic_broken_crystal.pal"
   },
@@ -1469,7 +1469,7 @@
       34
     ],
     "colors": 11,
-    "installed_sha256": "b78884dd5e5684dcdca39b37e51f4fb2070b31b367f55193c191b9cf380dc22b",
+    "installed_sha256": "3d3a8488fd728d30968589b842a6db36abceae8f4f144e4b7c11895167866a3b",
     "pixel_source": "assets/ui/icons/relics/relic_vitality_potion.pxg",
     "palette_source": "assets/ui/icons/relics/relic_vitality_potion.pal"
   },
@@ -1513,7 +1513,7 @@
       34
     ],
     "colors": 13,
-    "installed_sha256": "7da935d490c3e38bc2c0450c100d035871e1a1bb60c830c8cde5ff4a1fd60f62",
+    "installed_sha256": "15c10b48f7e9c05a5975800bf2ebfcf74dead39622398191ae726a631835d8cf",
     "pixel_source": "assets/ui/icons/relics/relic_dead_shield_badge.pxg",
     "palette_source": "assets/ui/icons/relics/relic_dead_shield_badge.pal"
   },
@@ -1556,8 +1556,8 @@
       30,
       34
     ],
-    "colors": 10,
-    "installed_sha256": "615289715a684f63c5667d9f25c88e5f94b658258a5e655a39ff8ac86f5a19b6",
+    "colors": 9,
+    "installed_sha256": "3f2a48a3b21fe4db7b97ae28f00a94d5a8ada948598b6a8c0f5edcf52c0a32ba",
     "pixel_source": "assets/ui/icons/relics/relic_turtle_shell_pendant.pxg",
     "palette_source": "assets/ui/icons/relics/relic_turtle_shell_pendant.pal"
   },
@@ -1601,7 +1601,7 @@
       34
     ],
     "colors": 12,
-    "installed_sha256": "669e525f6c890fbc745967229b6f0b8e9319aa587aeec68300cd1d57b15076cd",
+    "installed_sha256": "46427b01db57b938a03106176fdac8581d1df0a3b5a14702ca3087c4b383c919",
     "pixel_source": "assets/ui/icons/relics/relic_prison_copper_anklet.pxg",
     "palette_source": "assets/ui/icons/relics/relic_prison_copper_anklet.pal"
   },
@@ -1645,7 +1645,7 @@
       34
     ],
     "colors": 10,
-    "installed_sha256": "2cae53ccd012b7abf88a9a8dc894ebdba22a90f03a9c7e5d9d757df624afcae3",
+    "installed_sha256": "83aba1633f071f78303dd6d75b62ade58c163508e1f43201dbbf9e528f37cfd2",
     "pixel_source": "assets/ui/icons/relics/relic_brass_pocket_watch.pxg",
     "palette_source": "assets/ui/icons/relics/relic_brass_pocket_watch.pal"
   },
@@ -1689,7 +1689,7 @@
       35
     ],
     "colors": 14,
-    "installed_sha256": "bcce9f01eb196c80260758e80c141e492eb2e0e4ea68acdcb49c41527e6511fb",
+    "installed_sha256": "bf002ade5fe22e04480ca382636da2e7963ae91f89e70bd2b17910a2b2d6bf48",
     "pixel_source": "assets/ui/icons/relics/relic_flesh_pauldron.pxg",
     "palette_source": "assets/ui/icons/relics/relic_flesh_pauldron.pal"
   },
@@ -1733,7 +1733,7 @@
       35
     ],
     "colors": 13,
-    "installed_sha256": "ca27fee05b97cebc33be8cbd4f96182b4cd202fa828356bc8fd0b7ca5a487edf",
+    "installed_sha256": "2f5082c7e6673ba1ee1fe115ce1e392e1a83bf50cee3cdbc37e05255edae9e0e",
     "pixel_source": "assets/ui/icons/relics/relic_nightmare_healing_urn.pxg",
     "palette_source": "assets/ui/icons/relics/relic_nightmare_healing_urn.pal"
   },
@@ -1777,7 +1777,7 @@
       34
     ],
     "colors": 12,
-    "installed_sha256": "98719c5931159b4a06746c31e489d2d14b7955e557214152e36252bb99f6f634",
+    "installed_sha256": "0f45c13e7db3caca92b743956d63e626d06d846037e101921ea44608302f43d3",
     "pixel_source": "assets/ui/icons/relics/relic_barrier_crystal.pxg",
     "palette_source": "assets/ui/icons/relics/relic_barrier_crystal.pal"
   },
@@ -1821,7 +1821,7 @@
       34
     ],
     "colors": 13,
-    "installed_sha256": "5bda785f2d6a7f3a5052a8f676b8eaf2c9a27bf2f1c22db9beba9ecd612cb703",
+    "installed_sha256": "afde08adbf27b7377df9b829872909fd67d9d361afa8b7d2717e2bbcf37d1a75",
     "pixel_source": "assets/ui/icons/relics/relic_cultic_holy_shield.pxg",
     "palette_source": "assets/ui/icons/relics/relic_cultic_holy_shield.pal"
   },
@@ -1865,7 +1865,7 @@
       35
     ],
     "colors": 12,
-    "installed_sha256": "d2002fb277bb1dc2cd49967f8090dc5c81fa3721f97efd54b1c1ca1bce32c425",
+    "installed_sha256": "e607fb919849127c1242b8b23df2eca2cd91716607918daefc85d34056cab71a",
     "pixel_source": "assets/ui/icons/relics/relic_lost_wayfarer_greave.pxg",
     "palette_source": "assets/ui/icons/relics/relic_lost_wayfarer_greave.pal"
   },
@@ -1909,7 +1909,7 @@
       35
     ],
     "colors": 14,
-    "installed_sha256": "1b148da5492ec96698b4b0890f128a169962aca8686c4a90d9f668d196481c6d",
+    "installed_sha256": "2a921199c2d01f74fc6287ada0b104847fbea274ce780c27178b1f7bc60c3bd9",
     "pixel_source": "assets/ui/icons/relics/relic_soul_keeper_face_stone.pxg",
     "palette_source": "assets/ui/icons/relics/relic_soul_keeper_face_stone.pal"
   },
@@ -1953,7 +1953,7 @@
       34
     ],
     "colors": 14,
-    "installed_sha256": "097f74fd533ce1461ebb8dace96313a54009defc53e7b4b94b902d2ced63dd85",
+    "installed_sha256": "1d42e19154bbf723a3ca32d7ca648e1e549a15afad9e1c6380104b2d3c03d40a",
     "pixel_source": "assets/ui/icons/relics/relic_pain_vessel.pxg",
     "palette_source": "assets/ui/icons/relics/relic_pain_vessel.pal"
   },
@@ -1997,7 +1997,7 @@
       34
     ],
     "colors": 11,
-    "installed_sha256": "760a426fcc34e471ae7efe17bddf19904fb3f194a1177c0d3f1d0e1d58712af9",
+    "installed_sha256": "e7f77ea34860523bc9e343048980204eacacf70483ab3d3108486451f1b272d0",
     "pixel_source": "assets/ui/icons/relics/relic_true_silver_armor.pxg",
     "palette_source": "assets/ui/icons/relics/relic_true_silver_armor.pal"
   },
@@ -2041,7 +2041,7 @@
       34
     ],
     "colors": 14,
-    "installed_sha256": "a0519ddfe3280308b49e69c9d73f8102991599d235ad1eafbffd31f717157c18",
+    "installed_sha256": "7af6ff7a674dd823bad40bbc703243eb8c9331e228dc51d8164279e9509f6cb6",
     "pixel_source": "assets/ui/icons/relics/relic_holy_silver_cup.pxg",
     "palette_source": "assets/ui/icons/relics/relic_holy_silver_cup.pal"
   },
@@ -2085,7 +2085,7 @@
       35
     ],
     "colors": 14,
-    "installed_sha256": "d947bb623ac73107114c03e5617554d10221e126c78f3a97c0bc2e29ff22619e",
+    "installed_sha256": "6b8871d9492f60483563f1d261633c7602dd5c5239bbe3ce456156271ffa4c02",
     "pixel_source": "assets/ui/icons/relics/relic_suffering_carapace.pxg",
     "palette_source": "assets/ui/icons/relics/relic_suffering_carapace.pal"
   },
@@ -2129,7 +2129,7 @@
       34
     ],
     "colors": 13,
-    "installed_sha256": "f6bf59c64be8972d42f0e7dce262d9194e458b604feeb21adb848c6f48b16f97",
+    "installed_sha256": "f0118288c2c3bafba3cf20db0433ebbd581bc7c82549d98c1c75a9db68428492",
     "pixel_source": "assets/ui/icons/relics/relic_costly_seed_of_life.pxg",
     "palette_source": "assets/ui/icons/relics/relic_costly_seed_of_life.pal"
   },
@@ -2173,7 +2173,7 @@
       35
     ],
     "colors": 11,
-    "installed_sha256": "543e8f55fe6b7727aec2ce24df644670398d050a72351fb7e67d99e7baff1345",
+    "installed_sha256": "ce0ffaadf5059f06e3a58f77d210b5639dbaaa51cae463c2f18fea62cfecd458",
     "pixel_source": "assets/ui/icons/relics/relic_shadowless_greave.pxg",
     "palette_source": "assets/ui/icons/relics/relic_shadowless_greave.pal"
   },
@@ -2217,7 +2217,7 @@
       34
     ],
     "colors": 12,
-    "installed_sha256": "d8fcbb74069ccbaa0c94f9c80bd1e51253e91a259663a661672796ec42333bc2",
+    "installed_sha256": "af27b07a5ff02b4b41843cc6186af84e764496a754e911049dd5ec2d2ac72ee9",
     "pixel_source": "assets/ui/icons/relics/relic_chain_of_hardship.pxg",
     "palette_source": "assets/ui/icons/relics/relic_chain_of_hardship.pal"
   },
@@ -2261,7 +2261,7 @@
       35
     ],
     "colors": 12,
-    "installed_sha256": "ad87194180884e0d01a979b20af28674db52b54ea48f4f158b75eb76b4203b20",
+    "installed_sha256": "81edcc15fefa4baf7908e18757897bc3dcc9226bd90e3a772bb9fae89ac670b1",
     "pixel_source": "assets/ui/icons/relics/relic_void_tentacle.pxg",
     "palette_source": "assets/ui/icons/relics/relic_void_tentacle.pal"
   },
@@ -2305,7 +2305,7 @@
       32
     ],
     "colors": 12,
-    "installed_sha256": "c293856fcf57d1db6d7cdffe3f88b579d58b9dcaa1f3b9382f2ee85c63aaa378",
+    "installed_sha256": "9f2bd00bd89693ea81cb0569cf0c47bae10b18c1a6afe4849f384552fd7f7c47",
     "pixel_source": "assets/ui/icons/relics/relic_worn_fighting_gloves.pxg",
     "palette_source": "assets/ui/icons/relics/relic_worn_fighting_gloves.pal"
   },
@@ -2349,7 +2349,7 @@
       34
     ],
     "colors": 13,
-    "installed_sha256": "9e62d4459efd022ce9103f32384dfa924ff34499705337f79e47ba4d5b899825",
+    "installed_sha256": "961c5ea3e62099e0e19dd3c60265693c501dec5f99425680f7eb83bc095d24dd",
     "pixel_source": "assets/ui/icons/relics/relic_cracked_stone_bullet.pxg",
     "palette_source": "assets/ui/icons/relics/relic_cracked_stone_bullet.pal"
   },
@@ -2393,7 +2393,7 @@
       33
     ],
     "colors": 11,
-    "installed_sha256": "9ac6f24257f5639f7ab6b9313116930ea831f8af1b3911954215277c113f60e1",
+    "installed_sha256": "cd8c3386d41c9900ef9380f93967a59adf39498364338c0f706763b20a834187",
     "pixel_source": "assets/ui/icons/relics/relic_hasty_spring_trigger.pxg",
     "palette_source": "assets/ui/icons/relics/relic_hasty_spring_trigger.pal"
   },
@@ -2437,7 +2437,7 @@
       34
     ],
     "colors": 14,
-    "installed_sha256": "83df1ed80c175f70d4cc0e658b927f8443474a4b7302371ac93ce4cf88b4df18",
+    "installed_sha256": "296992ee63f7afb3ea88b234276c91d8dc533ba48d32bbafd7839592e84ef962",
     "pixel_source": "assets/ui/icons/relics/relic_rough_grinding_lens.pxg",
     "palette_source": "assets/ui/icons/relics/relic_rough_grinding_lens.pal"
   },
@@ -2481,7 +2481,7 @@
       35
     ],
     "colors": 12,
-    "installed_sha256": "1011b3cce926189a07409771908d4ded7883856c9539b1fcf89cf418c62c7386",
+    "installed_sha256": "98257bff9c68c10028c09f9f1b4a93e86f4c45c7c9dde70f95dd4dc99736cb01",
     "pixel_source": "assets/ui/icons/relics/relic_blocking_counterweight.pxg",
     "palette_source": "assets/ui/icons/relics/relic_blocking_counterweight.pal"
   },
@@ -2525,7 +2525,7 @@
       32
     ],
     "colors": 13,
-    "installed_sha256": "648811d0865f6b11fdbd206c5edef67ad27b510a9828edb3902eb93233d1de4c",
+    "installed_sha256": "41ccc88d3371216dc66a5d6b16dd74c7b5f69b161893be2833dcc8452862a44e",
     "pixel_source": "assets/ui/icons/relics/relic_bloodstained_belt.pxg",
     "palette_source": "assets/ui/icons/relics/relic_bloodstained_belt.pal"
   },
@@ -2569,7 +2569,7 @@
       35
     ],
     "colors": 13,
-    "installed_sha256": "f4e8edd1eadd6db95cc2a4a11a3238f88de4ab84aa8d2d31d53cab96f082d58a",
+    "installed_sha256": "22ac31665521d5754f6574e0928dab51fe6fb82430c8b334937f36e7dba4a3e7",
     "pixel_source": "assets/ui/icons/relics/relic_poison_mist_pouch.pxg",
     "palette_source": "assets/ui/icons/relics/relic_poison_mist_pouch.pal"
   },
@@ -2613,7 +2613,7 @@
       34
     ],
     "colors": 13,
-    "installed_sha256": "dc2d2176fb1a8ecf35065a9acee525989ea72cadf481301e1c04c78b29a95c0e",
+    "installed_sha256": "dd325f78e97794371fa70edc7258845cd9d343672b270ab6e8b412ca0aeee92b",
     "pixel_source": "assets/ui/icons/relics/relic_tremor_grip.pxg",
     "palette_source": "assets/ui/icons/relics/relic_tremor_grip.pal"
   },
@@ -2657,7 +2657,7 @@
       33
     ],
     "colors": 13,
-    "installed_sha256": "99d1f9faaa239ae63b741cfedcdfd70b0a18f9e6261cd57db43c32503d50c537",
+    "installed_sha256": "6c883ccd51d344440d5ab58b566fae96c12e1d0b0c031afb24ee778bf73c57ff",
     "pixel_source": "assets/ui/icons/relics/relic_black_spot_eagle_eye.pxg",
     "palette_source": "assets/ui/icons/relics/relic_black_spot_eagle_eye.pal"
   },
@@ -2701,7 +2701,7 @@
       35
     ],
     "colors": 12,
-    "installed_sha256": "721911db46d2e0b0e76f7b8e5fc8ff7187dac66a0ba41c6ee92f10a5f1eda272",
+    "installed_sha256": "3456a978a9c7e21cb231f4018fce676bd83e839b1926369885e612f71a090c47",
     "pixel_source": "assets/ui/icons/relics/relic_berserker_copper_badge.pxg",
     "palette_source": "assets/ui/icons/relics/relic_berserker_copper_badge.pal"
   },
@@ -2745,7 +2745,7 @@
       34
     ],
     "colors": 13,
-    "installed_sha256": "ea8e56c2bc06da61723be6abfc0face73f82720199ea779dd58b894e8437e871",
+    "installed_sha256": "59522d91f394b14e22d6411d2ff09808106df2be14ff803c583d3f8dd76dad01",
     "pixel_source": "assets/ui/icons/relics/relic_corroded_blowpipe.pxg",
     "palette_source": "assets/ui/icons/relics/relic_corroded_blowpipe.pal"
   },
@@ -2789,7 +2789,7 @@
       33
     ],
     "colors": 10,
-    "installed_sha256": "0ffdc6f07393d476b5a4c38e9a727b3fb994c35fbbbc90b087cae614e1588b9a",
+    "installed_sha256": "075f64065ca2f7a56f53a54292af4ea9126bee8edd7a3e42ffb4a0f4b54fbf6b",
     "pixel_source": "assets/ui/icons/relics/relic_gale_roulette.pxg",
     "palette_source": "assets/ui/icons/relics/relic_gale_roulette.pal"
   },
@@ -2833,7 +2833,7 @@
       35
     ],
     "colors": 11,
-    "installed_sha256": "79e12e39a202f477def37e8d3b32f73f8082eabc3bdbc1a22f3570680bc93b11",
+    "installed_sha256": "2447d9c7f937f296e1ba2e8f4c3755b5eb1595d8491e367636af8f05fb4a2643",
     "pixel_source": "assets/ui/icons/relics/relic_executioner_bracer.pxg",
     "palette_source": "assets/ui/icons/relics/relic_executioner_bracer.pal"
   },
@@ -2877,7 +2877,7 @@
       34
     ],
     "colors": 12,
-    "installed_sha256": "bebe90d153e92f5b63fb491fe7fac64db03384c4757cc6441c82e9de26ed7f98",
+    "installed_sha256": "938aef72f678c63c75e8af883c2d5b2042d5506089ce6bfaad449845b47f6601",
     "pixel_source": "assets/ui/icons/relics/relic_judgment_eye_pendant.pxg",
     "palette_source": "assets/ui/icons/relics/relic_judgment_eye_pendant.pal"
   },
@@ -2921,7 +2921,7 @@
       34
     ],
     "colors": 12,
-    "installed_sha256": "0a56a5d30898288918992f7cbb73bcf798c4988818a235038edda48e722d7201",
+    "installed_sha256": "28c8979dbd3ddc18d70ed82ee69f6399b27c2e2bd622eb857b4a2e6e6a2a8d5e",
     "pixel_source": "assets/ui/icons/relics/relic_split_crystal_warhead.pxg",
     "palette_source": "assets/ui/icons/relics/relic_split_crystal_warhead.pal"
   },
@@ -2965,7 +2965,7 @@
       34
     ],
     "colors": 13,
-    "installed_sha256": "1bb78b44c6cd6fca1730fee6bdf52a048812572509c827d973f294af2cfa027e",
+    "installed_sha256": "f3920583dcb541a2890c42a6ede12f31965baa0573653ea4629b3b750c8466da",
     "pixel_source": "assets/ui/icons/relics/relic_gold_digger_gloves.pxg",
     "palette_source": "assets/ui/icons/relics/relic_gold_digger_gloves.pal"
   },
@@ -3009,7 +3009,7 @@
       33
     ],
     "colors": 11,
-    "installed_sha256": "1b1cabb488a3e3afcca422393803759b4af97ac1dc8651abf3637dff677f4cfa",
+    "installed_sha256": "65c3f58bc3c5b618771d046604b96d4c2f64d835a77c1ec45480e5bd21baf994",
     "pixel_source": "assets/ui/icons/relics/relic_incomplete_divination_dice.pxg",
     "palette_source": "assets/ui/icons/relics/relic_incomplete_divination_dice.pal"
   },
@@ -3053,7 +3053,7 @@
       34
     ],
     "colors": 10,
-    "installed_sha256": "e492d9c5fc60e4112106169e59b23caa652b3998567864b51878dd33908fdb46",
+    "installed_sha256": "4511e74f6228b7a5cc16c2f886a562e9068fa23a4691e773247656535f96580c",
     "pixel_source": "assets/ui/icons/relics/relic_travelers_ledger.pxg",
     "palette_source": "assets/ui/icons/relics/relic_travelers_ledger.pal"
   },
@@ -3097,7 +3097,7 @@
       35
     ],
     "colors": 13,
-    "installed_sha256": "6643bbe821c1ae847807a8d71f8a471863189d84df5c9bd8b04efb43de83437e",
+    "installed_sha256": "d8f4caabad81add3cfedb6953562bbb1f8c34735ff1ea03e632fb0f001e4e3c6",
     "pixel_source": "assets/ui/icons/relics/relic_defiled_blessing_coin.pxg",
     "palette_source": "assets/ui/icons/relics/relic_defiled_blessing_coin.pal"
   },
@@ -3141,7 +3141,7 @@
       34
     ],
     "colors": 14,
-    "installed_sha256": "3096a181e0dfb7067a10a63dc80c9a81b934f442fd1b209ea2d7c153a6ac2ae8",
+    "installed_sha256": "177e53e22092e4446b92fccce9a48189d2cddc773bdfde7987e5b070dabdb165",
     "pixel_source": "assets/ui/icons/relics/relic_expanded_backpack_strap.pxg",
     "palette_source": "assets/ui/icons/relics/relic_expanded_backpack_strap.pal"
   },
@@ -3185,7 +3185,7 @@
       33
     ],
     "colors": 12,
-    "installed_sha256": "5244422ce6afd2fc9ce8b6cc1cb077b1a6465746e66ad8ded6558ec94d95a357",
+    "installed_sha256": "b70688e0541caa39ce85029abd272da48c3eb9bea068a85112635d6be029cbe6",
     "pixel_source": "assets/ui/icons/relics/relic_stargazers_lens.pxg",
     "palette_source": "assets/ui/icons/relics/relic_stargazers_lens.pal"
   },
@@ -3229,7 +3229,7 @@
       32
     ],
     "colors": 14,
-    "installed_sha256": "52a6388f0282650d05fb8bc028832a1324471abd3cdb3820b9b3a0b23bd801a3",
+    "installed_sha256": "5fbe5d4b25b7c7672593362b44ea39dced4311a139eb202141830c9fd329d2e7",
     "pixel_source": "assets/ui/icons/relics/relic_harvest_sacrificial_vessel.pxg",
     "palette_source": "assets/ui/icons/relics/relic_harvest_sacrificial_vessel.pal"
   },
@@ -3273,7 +3273,7 @@
       35
     ],
     "colors": 14,
-    "installed_sha256": "aeac871a068187738771635c474d471b10dc1b9babec15b4717e9d1138d2d048",
+    "installed_sha256": "007e92069de5a6ed6305fd0047e71e5b383aa8f63dee10e059c09c0938f00433",
     "pixel_source": "assets/ui/icons/relics/relic_amulet_of_humanity.pxg",
     "palette_source": "assets/ui/icons/relics/relic_amulet_of_humanity.pal"
   },
@@ -3317,7 +3317,7 @@
       33
     ],
     "colors": 9,
-    "installed_sha256": "7f37544c4d5d8a35644c7f23bfe70676cdb424c782bd92622d9d66ba66bd485a",
+    "installed_sha256": "1ad64869fb0c1e46cd644bafd8eac0199fb761e8f6d5d6790983c7725d9d2186",
     "pixel_source": "assets/ui/icons/relics/relic_gift_mark.pxg",
     "palette_source": "assets/ui/icons/relics/relic_gift_mark.pal"
   },
@@ -3360,8 +3360,8 @@
       33,
       34
     ],
-    "colors": 12,
-    "installed_sha256": "ef1f7434057f139d5be216e5976efaa54157d25f90b103ea0dbb5a4f70953887",
+    "colors": 11,
+    "installed_sha256": "a93427acb45e12a0510c99ab810419c6aed6aee235feabbbf1b4f3b104f354e2",
     "pixel_source": "assets/ui/icons/relics/relic_void_storage_casket.pxg",
     "palette_source": "assets/ui/icons/relics/relic_void_storage_casket.pal"
   },
@@ -3405,7 +3405,7 @@
       34
     ],
     "colors": 11,
-    "installed_sha256": "36d312fad4b3133d4e54e8be4e0ce134db4c7fa78788ed1be1c7c95d6e6d16c7",
+    "installed_sha256": "96f08a9d2933f19640311698e0c65485e25820cd2665935ded5a4c6111533c9a",
     "pixel_source": "assets/ui/icons/relics/relic_reincarnation_hellfire_candle.pxg",
     "palette_source": "assets/ui/icons/relics/relic_reincarnation_hellfire_candle.pal"
   },
@@ -3449,7 +3449,7 @@
       34
     ],
     "colors": 14,
-    "installed_sha256": "4674b012a86299570975d37a29a3785baf9a35605cdb4ff9b284b67411e92927",
+    "installed_sha256": "28774d3cd4804f1a328ffb62c791ecb07612b53f2dbe7ad8722f0bd92e465d8b",
     "pixel_source": "assets/ui/icons/relics/relic_guarding_heart_copper_mirror.pxg",
     "palette_source": "assets/ui/icons/relics/relic_guarding_heart_copper_mirror.pal"
   },
@@ -3493,7 +3493,7 @@
       30
     ],
     "colors": 12,
-    "installed_sha256": "b5a4eb69677d4276c072e277810f6995214755e9968e8eec6c59190b49021e34",
+    "installed_sha256": "9ee8f029e4d6ae2d7b6644b790d90b1830a107dc4168555e190d5432a997482c",
     "pixel_source": "assets/ui/icons/relics/relic_sleepless_ledger.pxg",
     "palette_source": "assets/ui/icons/relics/relic_sleepless_ledger.pal"
   },
@@ -3537,7 +3537,7 @@
       32
     ],
     "colors": 13,
-    "installed_sha256": "3756d577e62b3d1941103a4b401802579fd63744c5142523d8d6cc67a1261a5c",
+    "installed_sha256": "98c94e06286ef4c3af8644cf00b6edb29697ff6611883b711b24863bacf133b7",
     "pixel_source": "assets/ui/icons/relics/relic_frenzied_dividend.pxg",
     "palette_source": "assets/ui/icons/relics/relic_frenzied_dividend.pal"
   },
@@ -3581,7 +3581,7 @@
       31
     ],
     "colors": 11,
-    "installed_sha256": "7cd18f02e5c697b318adc71e098749af1f0c6bdd6eb362c8b1f85d750d1efb7a",
+    "installed_sha256": "8f1829ba67ceb03635a9bc10e62d98ba16fe6d5d0b37a5eafea554519da93f1b",
     "pixel_source": "assets/ui/icons/relics/relic_gilded_trigger.pxg",
     "palette_source": "assets/ui/icons/relics/relic_gilded_trigger.pal"
   },
@@ -3625,7 +3625,7 @@
       33
     ],
     "colors": 12,
-    "installed_sha256": "3618624a9289b186d1dcd91a703ed9dfaf6541ea30f416de5381cf2295e7fbf9",
+    "installed_sha256": "870d06bbe3b0d50f46bf044ce6ac8bfbc465f4ed8a871814721558ca734302e9",
     "pixel_source": "assets/ui/icons/relics/relic_runaway_amplifier.pxg",
     "palette_source": "assets/ui/icons/relics/relic_runaway_amplifier.pal"
   },
@@ -3669,7 +3669,7 @@
       34
     ],
     "colors": 12,
-    "installed_sha256": "1b166db367ac60a323ed6f810804dff15b680b722f7421e486e4b5ac6d2df582",
+    "installed_sha256": "673a089394964139e8a3cd587ca7b4a73399c89dc53a6ec78e20cf3ea290f107",
     "pixel_source": "assets/ui/icons/relics/relic_lucid_vow.pxg",
     "palette_source": "assets/ui/icons/relics/relic_lucid_vow.pal"
   },
@@ -3713,7 +3713,7 @@
       32
     ],
     "colors": 12,
-    "installed_sha256": "92ff4657db70544251e75039f0a60083b2b37dda13ece7de2a8edba6d4878b28",
+    "installed_sha256": "61e1c312a8505ee6ae7f88b6b24595ef81eb4464370d3ba7b1c318c71b5678f9",
     "pixel_source": "assets/ui/icons/relics/relic_coin_heart.pxg",
     "palette_source": "assets/ui/icons/relics/relic_coin_heart.pal"
   },
@@ -3757,7 +3757,7 @@
       35
     ],
     "colors": 14,
-    "installed_sha256": "d973bea2190a43bacbe0bb279b3178ac5779aa4eab67d4825a1f0f5a80231653",
+    "installed_sha256": "c1d9082cf619ca8e787ff6b372ea0124618d11f689355487df0f2598942fb354",
     "pixel_source": "assets/ui/icons/relics/relic_hoarders_ring.pxg",
     "palette_source": "assets/ui/icons/relics/relic_hoarders_ring.pal"
   },
@@ -3801,7 +3801,7 @@
       34
     ],
     "colors": 12,
-    "installed_sha256": "f6489620d07048bc36cc2d024f1f6332dd1791d6a3b8f24b5ea99e05df37e4b1",
+    "installed_sha256": "42bd01eeebbb0e82d853d0e61246c16e49e3860fb417f236845c3f9c4ef32805",
     "pixel_source": "assets/ui/icons/relics/relic_golden_sarcophagus.pxg",
     "palette_source": "assets/ui/icons/relics/relic_golden_sarcophagus.pal"
   },
@@ -3845,7 +3845,7 @@
       29
     ],
     "colors": 13,
-    "installed_sha256": "09411b6f94d9a2cc444c4ff59872f2a30cf306dbc7575f56ca1ef51b49e1a8a8",
+    "installed_sha256": "1eb9a333e161a86ba1abd2d5e61c8ef7a31847e58cdc1d5de41d27f7818e3eb2",
     "pixel_source": "assets/ui/icons/relics/relic_old_brass_telescope.pxg",
     "palette_source": "assets/ui/icons/relics/relic_old_brass_telescope.pal"
   },
@@ -3889,7 +3889,7 @@
       35
     ],
     "colors": 14,
-    "installed_sha256": "071f359fad9478416b8584eef8868e20e7ca02155c4ef8e84bf4ec065de3f150",
+    "installed_sha256": "22c686333e49cf0de595205c108fbaa837188777e0d0e942897ca30b5f758c4a",
     "pixel_source": "assets/ui/icons/relics/relic_cracked_bronze_bell.pxg",
     "palette_source": "assets/ui/icons/relics/relic_cracked_bronze_bell.pal"
   },
@@ -3933,7 +3933,7 @@
       32
     ],
     "colors": 13,
-    "installed_sha256": "9e91fa23633db1401a3c9d028a776e144721135c739e4b66e30998c46d0aef6f",
+    "installed_sha256": "13218b7bf15627abaf66aa7ef80bddf0b4d8899146ddea3576e2eeca9db63fa6",
     "pixel_source": "assets/ui/icons/relics/relic_long_focus_eyepiece.pxg",
     "palette_source": "assets/ui/icons/relics/relic_long_focus_eyepiece.pal"
   },
@@ -3977,7 +3977,7 @@
       32
     ],
     "colors": 11,
-    "installed_sha256": "74b14003670376c5272fb28dd8db4dc6bb2688591d7d7399fff86824a7cb7280",
+    "installed_sha256": "086198c1ad86cffb0869ac67e4999bdb4f1e24071645af87165715f41915db62",
     "pixel_source": "assets/ui/icons/relics/relic_diffusion_nozzle.pxg",
     "palette_source": "assets/ui/icons/relics/relic_diffusion_nozzle.pal"
   },
@@ -4020,8 +4020,8 @@
       31,
       35
     ],
-    "colors": 12,
-    "installed_sha256": "d364563b271ec275c5255972681c04cc8494bbab967d7d2dd38cbb4828dd95b3",
+    "colors": 11,
+    "installed_sha256": "4f4c1fc2aac0aa5244ec672a5db4be76ae48ca603eaaf116b7f8e415901f36f5",
     "pixel_source": "assets/ui/icons/relics/relic_range_tripod.pxg",
     "palette_source": "assets/ui/icons/relics/relic_range_tripod.pal"
   },
@@ -4065,7 +4065,7 @@
       35
     ],
     "colors": 14,
-    "installed_sha256": "b1dea4a6676301e574e10229e9672a119ec7ea995bbd3331c245a4f11968d005",
+    "installed_sha256": "c977750b0dcc71b3827e4d81700d40eb4a460ea16122c29c79b54d5251cd2ba7",
     "pixel_source": "assets/ui/icons/relics/relic_aftershock_hourglass.pxg",
     "palette_source": "assets/ui/icons/relics/relic_aftershock_hourglass.pal"
   },
@@ -4109,7 +4109,7 @@
       34
     ],
     "colors": 9,
-    "installed_sha256": "0ea8a14b3180072e1aba835e3d866c16164435fa23a055143ef7751019efd55a",
+    "installed_sha256": "67f369ee50b1ddd4c52ed84850b516de714b11b057633ae41d418498fd80c5d6",
     "pixel_source": "assets/ui/icons/relics/relic_golden_rangefinder.pxg",
     "palette_source": "assets/ui/icons/relics/relic_golden_rangefinder.pal"
   },
@@ -4153,7 +4153,7 @@
       34
     ],
     "colors": 14,
-    "installed_sha256": "c1e00ede13c2d6a9d5f0be5a9d02c2764b30047305ba74de94e4c5eee7646d2d",
+    "installed_sha256": "7e84d3d14f71d4f506a8f8569c791514e4c4e6084ba77fffd6e852e36b24356c",
     "pixel_source": "assets/ui/icons/relics/relic_abyssal_echo_shell.pxg",
     "palette_source": "assets/ui/icons/relics/relic_abyssal_echo_shell.pal"
   },
@@ -4197,7 +4197,7 @@
       31
     ],
     "colors": 13,
-    "installed_sha256": "385a80fd2d02887fab712630ce65e5d1d535daf81230ea7aa3e4ccb258416f4d",
+    "installed_sha256": "cab4dba8facc702eae8fb99787e28861e02705ac0e230b1ba48d6d77f84480ef",
     "pixel_source": "assets/ui/icons/relics/relic_folded_star_chart.pxg",
     "palette_source": "assets/ui/icons/relics/relic_folded_star_chart.pal"
   },
@@ -4241,7 +4241,7 @@
       34
     ],
     "colors": 8,
-    "installed_sha256": "5ae01cf7bdb060c76234da3c82f3aab7bfa562339fd9b36d23bc14a46a6f3b24",
+    "installed_sha256": "5ff1ac11eb0dd2ffc2b5c6897b059f05fc19516f0c4ffd49823cf69ececbaa82",
     "pixel_source": "assets/ui/icons/relics/relic_horizon_orrery.pxg",
     "palette_source": "assets/ui/icons/relics/relic_horizon_orrery.pal"
   },
@@ -5190,7 +5190,7 @@
       34
     ],
     "colors": 11,
-    "installed_sha256": "d4f15bec58d2cf01cfdacdfd0d7e2fb0057c18ea6a86ebf348bccd1e3a7c1f91",
+    "installed_sha256": "849345b7eb35c619dd410f0eaae391b542804da62f1fca18d43638e2f3b41372",
     "pixel_source": "assets/ui/icons/weapons/weapon_dash_blade.pxg",
     "palette_source": "assets/ui/icons/weapons/weapon_dash_blade.pal"
   },
@@ -5242,7 +5242,7 @@
       34
     ],
     "colors": 10,
-    "installed_sha256": "998f1cec27aef3bf1dc63282d87d4512eb56743a62ba4570764ccc51284d51d3",
+    "installed_sha256": "839bf6d1550944a5400bf659bb7d7d36e53779c50a10feff0e2680434f5b231b",
     "pixel_source": "assets/ui/icons/weapons/weapon_star_tome.pxg",
     "palette_source": "assets/ui/icons/weapons/weapon_star_tome.pal"
   },
@@ -5268,8 +5268,60 @@
       34
     ],
     "colors": 10,
-    "installed_sha256": "934ef037ec690d66bf3e4efe677179587d0718db6007f97ca2f0a6abb52fa5f7",
+    "installed_sha256": "c0cbc2b7fc7f13b347c3a1b669ff19be0057f4996b709ad6535531d099ad2635",
     "pixel_source": "assets/ui/icons/weapons/weapon_star_tome_return.pxg",
     "palette_source": "assets/ui/icons/weapons/weapon_star_tome_return.pal"
+  },
+  {
+    "key": "weapon_furnace",
+    "names": [
+      "刚焰炉"
+    ],
+    "config_ids": [
+      "weapon_furnace"
+    ],
+    "table": "weapons",
+    "status": "installed",
+    "installed_path": "res://assets/ui/icons/weapons/weapon_furnace.png",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      6,
+      5,
+      30,
+      32
+    ],
+    "colors": 7,
+    "installed_sha256": "5ac57516b7879e75eb6cadf130769bb59bd5ec83aabd829db64222d8ecce09c2",
+    "pixel_source": "assets/ui/icons/weapons/weapon_furnace.pxg",
+    "palette_source": "assets/ui/icons/weapons/weapon_furnace.pal"
+  },
+  {
+    "key": "weapon_saber",
+    "names": [
+      "斩马刀"
+    ],
+    "config_ids": [
+      "weapon_saber"
+    ],
+    "table": "weapons",
+    "status": "installed",
+    "installed_path": "res://assets/ui/icons/weapons/weapon_saber.png",
+    "installed_size": [
+      36,
+      36
+    ],
+    "visible_bounds": [
+      4,
+      4,
+      32,
+      33
+    ],
+    "colors": 6,
+    "installed_sha256": "d50c595769be0ff8d9c54994441fbef1627a0120361a1c7cd7d085caba340595",
+    "pixel_source": "assets/ui/icons/weapons/weapon_saber.pxg",
+    "palette_source": "assets/ui/icons/weapons/weapon_saber.pal"
   }
 ]
